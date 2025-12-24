@@ -1,0 +1,1160 @@
+[
+  {
+    "_id": "d559516e-9808-4809-9d18-eece9fbb8505",
+    "name": "Vertex Service 36",
+    "description": "Vertex Service 36 is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2019-04-09T17:53:19",
+    "python_version": "3.7",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      }
+    ]
+  },
+  {
+    "_id": "747a5d8c-ea42-4a8b-898f-991fa1afd980",
+    "name": "Delta Engine",
+    "description": "Delta Engine is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2020-11-15T21:14:38",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "2.1.4"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      }
+    ]
+  },
+  {
+    "_id": "c198d76f-2615-4c4d-a334-6a74f7776917",
+    "name": "Echo Runner",
+    "description": "Echo Runner is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2025-06-30T02:14:54",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "numpy",
+        "version": "1.21.6"
+      },
+      {
+        "name": "django",
+        "version": "3.2.25"
+      }
+    ]
+  },
+  {
+    "_id": "b9389e8e-4638-46e3-a588-b734595210ef",
+    "name": "Beta Collector 45",
+    "description": "Beta Collector 45 is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2024-12-29T00:41:03",
+    "python_version": "3.7",
+    "packages": [
+      {
+        "name": "django",
+        "version": "4.2.7"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      }
+    ]
+  },
+  {
+    "_id": "613109ef-daf0-46aa-87f7-f9647f381076",
+    "name": "Vertex Engine",
+    "description": "Vertex Engine is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2021-05-13T15:12:51",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      }
+    ]
+  },
+  {
+    "_id": "1580ed18-d77a-4f8c-8455-f87c94eb5531",
+    "name": "Lighthouse Dashboard 46",
+    "description": "Lighthouse Dashboard 46 is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2020-05-22T16:10:22",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.66.1"
+      },
+      {
+        "name": "django",
+        "version": "3.2.25"
+      },
+      {
+        "name": "requests",
+        "version": "2.26.0"
+      }
+    ]
+  },
+  {
+    "_id": "18cf5853-220c-4f98-af9b-1714a7fca878",
+    "name": "Echo Manager",
+    "description": "Echo Manager is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2022-05-31T09:00:53",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      }
+    ]
+  },
+  {
+    "_id": "8be5608e-a783-484d-b9c6-8342569b759b",
+    "name": "Delta Core",
+    "description": "Delta Core is a Python project that uses 4 well-known libraries to support development tasks.",
+    "last_update": "2021-02-05T05:52:47",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      },
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      }
+    ]
+  },
+  {
+    "_id": "8f86181d-d6e2-43ca-9ff3-5bcf27c79afa",
+    "name": "Orbit Toolkit",
+    "description": "Orbit Toolkit is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2020-04-19T20:40:29",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "2.1.4"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      },
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      }
+    ]
+  },
+  {
+    "_id": "56dc082a-45da-44e1-8821-d3f47e1b8f53",
+    "name": "Pulse Manager",
+    "description": "Pulse Manager is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2023-07-02T21:37:30",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      }
+    ]
+  },
+  {
+    "_id": "7c83570f-c43c-48d3-b6ff-bdd268e9c52b",
+    "name": "Orbit Pipeline",
+    "description": "Orbit Pipeline is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2019-12-13T13:55:58",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "pandas",
+        "version": "1.5.3"
+      }
+    ]
+  },
+  {
+    "_id": "e7b1a9de-6fec-4124-9428-78b597d3c862",
+    "name": "Gamma Studio 93",
+    "description": "Gamma Studio 93 is a Python project that uses 4 well-known libraries to support development tasks.",
+    "last_update": "2022-03-07T17:02:14",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.5.3"
+      },
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.5.3"
+      },
+      {
+        "name": "requests",
+        "version": "2.26.0"
+      }
+    ]
+  },
+  {
+    "_id": "08d4e41f-3292-4031-ac95-6f49d24f66dd",
+    "name": "Orbit Runner",
+    "description": "Orbit Runner is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2019-12-14T13:27:43",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "2.0.3"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      }
+    ]
+  },
+  {
+    "_id": "57b45911-2478-4619-8c9d-0ed3966cbfea",
+    "name": "Lighthouse Runner",
+    "description": "Lighthouse Runner is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2025-03-23T22:59:08",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      },
+      {
+        "name": "pandas",
+        "version": "1.2.5"
+      }
+    ]
+  },
+  {
+    "_id": "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3",
+    "name": "Beta Runner",
+    "description": "Beta Runner is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2023-06-28T10:12:32",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      }
+    ]
+  },
+  {
+    "_id": "c7159a3a-6f8d-4637-8b66-adbb637ba9dd",
+    "name": "Nimbus Engine",
+    "description": "Nimbus Engine is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2023-05-28T01:15:07",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.66.1"
+      },
+      {
+        "name": "django",
+        "version": "4.0.10"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      }
+    ]
+  },
+  {
+    "_id": "7220bd04-6fde-4319-9847-54efee7fffdf",
+    "name": "Delta Engine 3",
+    "description": "Delta Engine 3 is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2023-05-17T10:15:33",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.2.5"
+      },
+      {
+        "name": "flask",
+        "version": "2.0.3"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      }
+    ]
+  },
+  {
+    "_id": "16f0df65-191a-44f0-a73c-b3a0d0490988",
+    "name": "Vertex Studio 17",
+    "description": "Vertex Studio 17 is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2022-12-21T23:52:59",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.2.5"
+      },
+      {
+        "name": "numpy",
+        "version": "1.19.5"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      }
+    ]
+  },
+  {
+    "_id": "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d",
+    "name": "Alpha Manager",
+    "description": "Alpha Manager is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2021-02-11T13:09:36",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "numpy",
+        "version": "1.19.5"
+      }
+    ]
+  },
+  {
+    "_id": "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b",
+    "name": "Orbit Studio 24",
+    "description": "Orbit Studio 24 is a Python project that uses 4 well-known libraries to support development tasks.",
+    "last_update": "2019-10-17T18:10:35",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      }
+    ]
+  },
+  {
+    "_id": "4cee5c57-2aac-454c-9dbc-f4adceb47879",
+    "name": "Lighthouse Engine 63",
+    "description": "Lighthouse Engine 63 is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2022-08-07T05:43:26",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      }
+    ]
+  },
+  {
+    "_id": "2be88558-56db-4273-a19d-99ee0fd86ecd",
+    "name": "Aperture Runner",
+    "description": "Aperture Runner is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2023-12-20T23:26:19",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "django",
+        "version": "4.0.10"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      }
+    ]
+  },
+  {
+    "_id": "381ae4f1-eaf7-4a7c-823e-6566b314f0f5",
+    "name": "Lighthouse Analyzer 66",
+    "description": "Lighthouse Analyzer 66 is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2019-07-31T03:31:45",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      }
+    ]
+  },
+  {
+    "_id": "48f38163-ec45-4a4b-90a5-98c8ef0ad9f8",
+    "name": "Delta Collector 73",
+    "description": "Delta Collector 73 is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2024-08-04T09:17:45",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "2.1.4"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      }
+    ]
+  },
+  {
+    "_id": "cad4836f-c839-48a7-b1f5-1f4f8191efa9",
+    "name": "Orbit Dashboard",
+    "description": "Orbit Dashboard is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2020-02-11T14:59:30",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.7.4"
+      },
+      {
+        "name": "django",
+        "version": "4.1.13"
+      }
+    ]
+  },
+  {
+    "_id": "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3",
+    "name": "Echo Studio",
+    "description": "Echo Studio is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2023-07-29T08:55:36",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      },
+      {
+        "name": "numpy",
+        "version": "1.19.5"
+      }
+    ]
+  },
+  {
+    "_id": "abe640e2-ac67-452e-8a4f-a66f692c5226",
+    "name": "Echo Lab",
+    "description": "Echo Lab is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2022-09-23T09:24:34",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "2.1.3"
+      },
+      {
+        "name": "django",
+        "version": "3.2.25"
+      }
+    ]
+  },
+  {
+    "_id": "b96b175d-f73b-4b33-b8ef-83f42fa75e1d",
+    "name": "Aperture Toolkit",
+    "description": "Aperture Toolkit is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2021-04-26T03:45:17",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "requests",
+        "version": "2.26.0"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "pandas",
+        "version": "1.2.5"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.5.3"
+      }
+    ]
+  },
+  {
+    "_id": "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d",
+    "name": "Delta Gateway",
+    "description": "Delta Gateway is a Python project that uses 4 well-known libraries to support development tasks.",
+    "last_update": "2019-01-12T00:23:08",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.2.5"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "django",
+        "version": "4.0.10"
+      },
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      }
+    ]
+  },
+  {
+    "_id": "a3f09c67-8e97-4956-a4d7-a120ab466e08",
+    "name": "Gamma Manager",
+    "description": "Gamma Manager is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2019-01-31T01:01:30",
+    "python_version": "3.8",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.66.1"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "pandas",
+        "version": "2.1.4"
+      }
+    ]
+  },
+  {
+    "_id": "f2e5efa5-846b-4100-9e57-0ea3c80a0c24",
+    "name": "Aperture Lab",
+    "description": "Aperture Lab is a Python project that uses 4 well-known libraries to support development tasks.",
+    "last_update": "2025-10-09T11:10:53",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "flask",
+        "version": "2.1.3"
+      },
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      }
+    ]
+  },
+  {
+    "_id": "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90",
+    "name": "Alpha Dashboard 32",
+    "description": "Alpha Dashboard 32 is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2025-05-17T13:06:05",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "django",
+        "version": "4.1.13"
+      },
+      {
+        "name": "pandas",
+        "version": "2.1.4"
+      }
+    ]
+  },
+  {
+    "_id": "c5c0125e-f35b-4246-9852-c78a1681d417",
+    "name": "Delta Lab",
+    "description": "Delta Lab is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2021-04-08T22:28:32",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      },
+      {
+        "name": "flask",
+        "version": "2.0.3"
+      }
+    ]
+  },
+  {
+    "_id": "9c4a41e8-de0f-4e0d-9b4c-a211aa507218",
+    "name": "Aperture Service",
+    "description": "Aperture Service is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2025-12-12T01:06:37",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.5.3"
+      },
+      {
+        "name": "numpy",
+        "version": "1.21.6"
+      }
+    ]
+  },
+  {
+    "_id": "1de5e9f8-76e7-4402-ae66-ccfa116dc672",
+    "name": "Atlas Toolkit",
+    "description": "Atlas Toolkit is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2019-08-04T16:23:11",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.7.4"
+      }
+    ]
+  },
+  {
+    "_id": "fe4ff3f3-9a66-4566-a0a1-110942d84e3c",
+    "name": "Echo Dashboard",
+    "description": "Echo Dashboard is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2019-12-03T19:04:47",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      },
+      {
+        "name": "django",
+        "version": "4.2.7"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "numpy",
+        "version": "1.19.5"
+      }
+    ]
+  },
+  {
+    "_id": "b6659cc7-40b4-4d30-b095-a621e2a1fa5b",
+    "name": "Atlas Gateway",
+    "description": "Atlas Gateway is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2023-06-04T08:04:15",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.7.4"
+      },
+      {
+        "name": "requests",
+        "version": "2.25.1"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      }
+    ]
+  },
+  {
+    "_id": "8afad62b-eaa8-4859-9957-01be42881d8c",
+    "name": "Orbit Manager",
+    "description": "Orbit Manager is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2024-08-23T01:45:18",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "django",
+        "version": "4.0.10"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      }
+    ]
+  },
+  {
+    "_id": "ac150542-d1b7-4ce4-a17a-5646b09b7154",
+    "name": "Aperture Toolkit",
+    "description": "Aperture Toolkit is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2022-06-15T15:09:33",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "django",
+        "version": "4.1.13"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.5.3"
+      },
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      }
+    ]
+  },
+  {
+    "_id": "955aa9e5-241e-4aa3-a5c6-16e3b62473b0",
+    "name": "Alpha Toolkit 56",
+    "description": "Alpha Toolkit 56 is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2023-05-21T10:53:14",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.66.1"
+      },
+      {
+        "name": "django",
+        "version": "4.1.13"
+      },
+      {
+        "name": "numpy",
+        "version": "1.21.6"
+      },
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.7.4"
+      }
+    ]
+  },
+  {
+    "_id": "7877123d-abdb-4c02-a536-9af2c19ae8b6",
+    "name": "Zenith Dashboard 97",
+    "description": "Zenith Dashboard 97 is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2019-05-24T13:56:41",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.62.3"
+      },
+      {
+        "name": "django",
+        "version": "3.2.25"
+      },
+      {
+        "name": "flask",
+        "version": "1.1.4"
+      }
+    ]
+  },
+  {
+    "_id": "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f",
+    "name": "Vector Core",
+    "description": "Vector Core is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2025-02-09T19:45:12",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.5.3"
+      }
+    ]
+  },
+  {
+    "_id": "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
+    "name": "Vector Collector 84",
+    "description": "Vector Collector 84 is a Python project that uses 2 well-known libraries to support development tasks.",
+    "last_update": "2020-06-30T11:03:40",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      },
+      {
+        "name": "requests",
+        "version": "2.26.0"
+      }
+    ]
+  },
+  {
+    "_id": "5f315977-3b6b-450d-86ce-1c584275088a",
+    "name": "Aperture Analyzer",
+    "description": "Aperture Analyzer is a Python project that uses 6 well-known libraries to support development tasks.",
+    "last_update": "2022-10-30T07:38:01",
+    "python_version": "3.9",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.2"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      },
+      {
+        "name": "pandas",
+        "version": "1.3.5"
+      },
+      {
+        "name": "django",
+        "version": "4.1.13"
+      }
+    ]
+  },
+  {
+    "_id": "259ed84d-720a-4244-9edb-638913fc430d",
+    "name": "Delta Manager 67",
+    "description": "Delta Manager 67 is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2021-09-20T07:16:22",
+    "python_version": "3.12",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.66.1"
+      },
+      {
+        "name": "flask",
+        "version": "2.1.3"
+      },
+      {
+        "name": "django",
+        "version": "3.2.25"
+      },
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      }
+    ]
+  },
+  {
+    "_id": "e99ce168-3614-49ee-8573-5c933b5695e8",
+    "name": "Beta Lab 50",
+    "description": "Beta Lab 50 is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2023-08-13T20:01:09",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "tqdm",
+        "version": "4.64.1"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      }
+    ]
+  },
+  {
+    "_id": "c4319ce8-e8b8-452d-be77-3a601645965f",
+    "name": "Alpha Engine",
+    "description": "Alpha Engine is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2023-07-31T04:38:02",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "pandas",
+        "version": "1.5.3"
+      },
+      {
+        "name": "requests",
+        "version": "2.28.2"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      }
+    ]
+  },
+  {
+    "_id": "738f2d70-1df3-499c-b990-fff8902686cc",
+    "name": "Orbit Runner",
+    "description": "Orbit Runner is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2022-04-23T03:17:40",
+    "python_version": "3.10",
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "flask",
+        "version": "2.2.5"
+      },
+      {
+        "name": "django",
+        "version": "2.2.28"
+      }
+    ]
+  },
+  {
+    "_id": "23674bd2-d22d-4af0-b0fb-3242c28fe4c7",
+    "name": "Vertex Runner",
+    "description": "Vertex Runner is a Python project that uses 3 well-known libraries to support development tasks.",
+    "last_update": "2023-10-20T12:06:59",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "matplotlib",
+        "version": "3.3.4"
+      },
+      {
+        "name": "numpy",
+        "version": "1.24.4"
+      },
+      {
+        "name": "flask",
+        "version": "3.0.0"
+      }
+    ]
+  },
+  {
+    "_id": "a312f5a2-c2af-426b-b60c-8a1da4709da4",
+    "name": "Beta Manager",
+    "description": "Beta Manager is a Python project that uses 5 well-known libraries to support development tasks.",
+    "last_update": "2021-05-14T12:19:01",
+    "python_version": "3.11",
+    "packages": [
+      {
+        "name": "flask",
+        "version": "2.0.3"
+      },
+      {
+        "name": "requests",
+        "version": "2.31.0"
+      },
+      {
+        "name": "django",
+        "version": "4.0.10"
+      },
+      {
+        "name": "numpy",
+        "version": "1.23.5"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.8.2"
+      }
+    ]
+  }
+]
