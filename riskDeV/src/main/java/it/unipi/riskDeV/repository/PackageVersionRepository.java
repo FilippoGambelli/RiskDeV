@@ -7,6 +7,6 @@ import java.util.Optional;
 public interface PackageVersionRepository extends MongoRepository<PackageVersion, String> {
 
     // Optional is used in order to avoid null return if query fails
-    Optional<PackageVersion> findByPackage_nameAndVersion(String name, String version);
+    Optional<PackageVersion> findByPackageNameAndVersion(String name, String version);
 
 }

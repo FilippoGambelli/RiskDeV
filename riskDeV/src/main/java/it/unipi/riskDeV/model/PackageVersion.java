@@ -3,26 +3,41 @@ package it.unipi.riskDeV.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
 @Data
-@Document(collection = "package_versions")
+@Document(collection = "packageVersion")
 public class PackageVersion {
 
     @Id
     private String id;
-    private String package_id;
-    private String package_name;
+
+    @Field("package_id")
+    private String packageId;
+
+    @Field("package_name")
+    private String packageName;
+
     private String version;
-    private String upload_time;
+
+    @Field("upload_time")
+    private String uploadTime;
+
     private List<EmbeddedVulnerability> vulnerabilities;
 
     @Data
     public static class EmbeddedVulnerability {
 
-        private String cve_id;
+        @Field("cve_id")
+        private String cveId;
+
         private String details;
-        private List<String> fixed_in;
+
+        @Field("fixed_in")
+        private List<String> fixedIn;
+        
         private String link;
 
     }

@@ -1,11 +1,17 @@
 package it.unipi.riskDeV.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
 import it.unipi.riskDeV.service.PackageService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/packages")
@@ -19,28 +25,41 @@ public class PackageController {
         this.packageService = packageService;
     }
 
-    // Query getPackageByName: Info package + version list
-    // Example: GET /api/packages/{name}
     @GetMapping("/{packageName}")
-    public ResponseEntity<GeneralPackageDTO> getPackageByName(@PathVariable String packageName) {
+    @Operation(summary = "List of all the generic information about a specific package",
+            description = "Fetches all the generic information about a specific package. This includes: author, description, homepage url and a list of all the versions")
+    public ResponseEntity<GeneralPackageDTO> getPackageByName(
+            @Parameter(
+                description = "The name of the package to retrive details", example = "numpy",
+                required = true, schema = @Schema(type = "string")
+            ) @PathVariable String packageName) {
         System.out.println("Searching package by name: " + packageName);
-        
         return packageService.getPackageByName(packageName)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Package not found: " + packageName
+            ));
     }
 
-    // Query getPackageVersion: Info specific version
-    // Example: GET /api/packages/{name}/{version}
-    @GetMapping("/{packageName}/{version}")
+    @GetMapping("/{packageName}/{packageVersion}")
+    @Operation(summary = "List of all the information about a specific package version",
+            description = "Fetches all the information about a specific package version. This includes: upload time, requires packages, requires python version and a list of all the vulnerabilities")
     public ResponseEntity<PackageVersionDTO> getPackageVersion(
-            @PathVariable String packageName, 
-            @PathVariable String version) {
-            
-        System.out.println("Searching package version information of: " + packageName + " " + version);
-
-        return packageService.getPackageVersion(packageName, version)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            @Parameter(
+                description = "The name of the package to retrive details", example = "numpy",
+                required = true, schema = @Schema(type = "string")
+            ) @PathVariable String packageName, 
+            @Parameter(
+                description = "The version of the package to retrive details", example = "x.y",
+                required = true, schema = @Schema(type = "string")
+            ) @PathVariable String packageVersion) {
+        System.out.println("Searching package version information of: " + packageName + " " + packageVersion);
+        return packageService.getPackageVersion(packageName, packageVersion)
+            .map(ResponseEntity::ok)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Package not found: " + packageName + " " + packageVersion
+        ));
     }
 }

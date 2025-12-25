@@ -6,7 +6,12 @@ import java.util.Optional;
 
 public interface GeneralPackageRepository extends MongoRepository<GeneralPackage, String> {
 
-    // Optional is used in order to avoid null return if query fails
-    Optional<GeneralPackage> findByPackage_name(String name);
+    /**
+     * Finds a GeneralPackage entity by its package name.
+     * 
+     * @param name The name of the package to search for.
+     * @return An Optional containing the GeneralPackage if found or empty if no package with the given name exists.
+     */
+    Optional<GeneralPackage> findByPackageName(String name);
 
 }

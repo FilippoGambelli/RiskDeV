@@ -11,24 +11,35 @@ import java.util.Optional;
 @Service
 public class PackageService {
 
-    private final GeneralPackageRepository generalRepo;
-    private final PackageVersionRepository versionRepo;
+    private final GeneralPackageRepository generalPackageRepository;
+    private final PackageVersionRepository packageVersionRepository;
 
     // Constructor
     public PackageService(GeneralPackageRepository generalRepo, PackageVersionRepository versionRepo) {
-        this.generalRepo = generalRepo;
-        this.versionRepo = versionRepo;
+        this.generalPackageRepository = generalRepo;
+        this.packageVersionRepository = versionRepo;
     }
 
-    // Retrieves a package by name and converts it to a DTO. Returns an empty Optional if it doesn't exist
+    /**
+     * Retives a package by its name and converts it to a DTO.
+     * 
+     * @param packageName The name of the package to retrive.
+     * @return An Optional containing the GeneralPackageDTO if found or empty if the package does not exist.
+     */
     public Optional<GeneralPackageDTO> getPackageByName(String packageName) {
-        return generalRepo.findByPackage_name(packageName)
+        return generalPackageRepository.findByPackageName(packageName)
                 .map(GeneralPackageDTO::new);
     }
 
-    // Retrieves a specific version and converts it to a DTO
+    /**
+     * Retrieves a specific version of a package and converts it to a DTO.
+     *
+     * @param packageName The name of the package.
+     * @param version The version string of the package to retrieve.
+     * @return An Optional containing the PackageVersionDTO if found or empty if the version does not exist.
+     */
     public Optional<PackageVersionDTO> getPackageVersion(String packageName, String version) {
-        return versionRepo.findByPackage_nameAndVersion(packageName, version)
+        return packageVersionRepository.findByPackageNameAndVersion(packageName, version)
                 .map(PackageVersionDTO::new);
     }
 }
