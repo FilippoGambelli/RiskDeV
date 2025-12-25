@@ -14,7 +14,7 @@ public class GeneralPackageDTO {
     // Only the list of version numbers (ex. "1.0.0", "1.0.1") is returned
     private List<String> versions;
 
-    // Constructor for the convertion: model -> DTO
+    // Constructor for the conversion: model -> DTO
     public GeneralPackageDTO(GeneralPackage model) {
         this.packageName = model.getPackage_name();
         this.author = model.getAuthor();
