@@ -1,5 +1,4 @@
 import json
-import uuid
 
 def main():
     with open("packages.json", "r", encoding="utf-8") as f:
@@ -13,19 +12,16 @@ def main():
 
         # Process versions
         for ver in pkg.get("versions_detailed", []):
-            ver_id = str(uuid.uuid4())
 
             # Reference saved in general_packages
             version_refs.append({
                 "version": ver["version"],
-                "version_id": ver_id
             })
 
             # Detailed version document
             package_versions.append({
-                "_id": ver_id,
-                "package_id": pkg.get("_id"),
-                "package_name": pkg["name"],
+                "_id": pkg["_id"] + ' ' + ver["version"],
+                "package_name": pkg["_id"],
                 "version": ver["version"],
                 "upload_time": ver.get("upload_time"),
                 "requires_dist": ver.get("requires_dist"),
@@ -35,8 +31,7 @@ def main():
 
         # General package document
         general_packages.append({
-            "_id": pkg.get("_id"),  # preserve original package id
-            "package_name": pkg["name"],
+            "_id": pkg["_id"],
             "author": pkg.get("author"),
             "author_email": pkg.get("author_email"),
             "description": pkg.get("description"),
