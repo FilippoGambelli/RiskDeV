@@ -42,7 +42,7 @@ public class GeneralPackageDTO {
      * @param model the GeneralPackage entity from the database
      */
     public GeneralPackageDTO(GeneralPackage model) {
-        this.packageName = model.getPackageName();
+        this.packageName = model.getId();
         this.author = model.getAuthor();
         this.authorEmail = model.getAuthorEmail();
         this.description = model.getDescription();

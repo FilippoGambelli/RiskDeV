@@ -14,9 +14,6 @@ public class PackageVersion {
     @Id
     private String id;
 
-    @Field("package_id")
-    private String packageId;
-
     @Field("package_name")
     private String packageName;
 

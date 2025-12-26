@@ -27,7 +27,7 @@ public class PackageService {
      * @return An Optional containing the GeneralPackageDTO if found or empty if the package does not exist.
      */
     public Optional<GeneralPackageDTO> getPackageByName(String packageName) {
-        return generalPackageRepository.findByPackageName(packageName)
+        return generalPackageRepository.findById(packageName)
                 .map(GeneralPackageDTO::new);
     }
 
@@ -39,7 +39,7 @@ public class PackageService {
      * @return An Optional containing the PackageVersionDTO if found or empty if the version does not exist.
      */
     public Optional<PackageVersionDTO> getPackageVersion(String packageName, String version) {
-        return packageVersionRepository.findByPackageNameAndVersion(packageName, version)
+        return packageVersionRepository.findById(packageName + " " + version)
                 .map(PackageVersionDTO::new);
     }
 }

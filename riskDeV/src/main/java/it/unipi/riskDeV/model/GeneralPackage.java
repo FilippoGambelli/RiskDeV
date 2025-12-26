@@ -14,9 +14,6 @@ public class GeneralPackage {
     @Id
     private String id;
 
-    @Field("package_name")
-    private String packageName;
-
     private String author;
 
     @Field("author_email")
