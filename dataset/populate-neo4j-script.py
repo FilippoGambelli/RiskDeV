@@ -2,216 +2,340 @@ import json
 import os
 import re
 from neo4j import GraphDatabase
+from packaging.specifiers import SpecifierSet
+from packaging.version import Version as PyVersion, InvalidVersion
+from tqdm import tqdm
 
-# FILE CONFIGURATION
+
+# ==========================================
+# Configuration
+# ==========================================
 FILES = {
     "packages": "pkg-cve/generalPackages.json",
     "versions": "pkg-cve/packageVersions.json",
     "vulnerabilities": "pkg-cve/vulnerabilities.json",
     "projects": "project/projects.json",
-    "users": "user/users.json"
+    "users": "user/users.json",
 }
 
 NEO4J_URI = "bolt://localhost:7687"
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "password"
+TARGET_DB = "neo4j"
+
+BATCH_SIZE = 2000
+
+
+# ==========================================
+# Data Model Mapping
+# ==========================================
+NEO4J_DATA_MODEL = {
+    "Package": {"_id": "id"},
+    "Version": {"_id": "id", "package_name": "name", "version": "version"},
+    "Vulnerability": {"_id": "id"},
+    "Project": {"_id": "id"},
+    "User": {"_id": "id"},
+}
 
 
 class Neo4jImporter:
-    def __init__(self, uri, user, password):
+    def __init__(self, uri, user, password, database="neo4j"):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
+        self.database = database
+        self.available_versions_map = {}
+        self.raw_version_data = []
 
     def close(self):
         self.driver.close()
 
-    def _load_json_file(self, filename):
+    # ==========================================
+    # Utility methods
+    # ==========================================
+    def _load_json(self, filename):
         if not os.path.exists(filename):
-            print(f"File '{filename}' not found.")
             return []
-        with open(filename, "r", encoding="utf-8") as f:
-            return json.load(f)
 
-    def clear_database(self):
-        """Delete all nodes and relationships."""
-        print("Clearing database...")
-        query = "MATCH (n) DETACH DELETE n"
-        with self.driver.session() as session:
-            session.run(query)
-        print("Database cleared.")
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if not content:
+                    return []
 
-    def create_constraints_and_indexes(self):
+                data = json.loads(content)
+                return [data] if isinstance(data, dict) else data
+
+        except Exception as e:
+            print(f"Error reading '{filename}': {e}")
+            return []
+
+    def _prepare_data(self, raw_list, node_type, rel_keys=None):
+        if rel_keys is None:
+            rel_keys = []
+
+        mapping = NEO4J_DATA_MODEL.get(node_type, {})
+        processed = []
+
+        for item in raw_list:
+            props = {
+                neo_k: item[k]
+                for k, neo_k in mapping.items()
+                if k in item
+            }
+
+            rels = {k: item[k] for k in rel_keys if k in item}
+
+            if "_id" in item:
+                rels["origin_id"] = item["_id"]
+
+            processed.append({"props": props, "rels": rels})
+
+        return processed
+
+    def _run_batch(self, query, data, description):
+        if not data:
+            return
+
+        chunks = [data[i:i + BATCH_SIZE] for i in range(0, len(data), BATCH_SIZE)]
+
+        with self.driver.session(database=self.database) as session:
+            for chunk in chunks:
+                session.run(query, batch=chunk)
+
+    # ==========================================
+    # Dependency resolution
+    # ==========================================
+    def _parse_requirement(self, req_str):
+        match = re.match(r"^([a-zA-Z0-9_\-\.]+)(.*)$", req_str.split(";")[0].strip())
+        if not match:
+            return None, None
+
+        name = match.group(1).strip()
+        constraints = match.group(2).strip().replace("(", "").replace(")", "")
+        return name, constraints
+
+    def _resolve_dependencies(self):
+        edges = []
+
+        # Only show progress bar here
+        for item in tqdm(self.raw_version_data, desc="Resolving dependencies", unit="ver"):
+            src_id = item.get("_id")
+            requirements = item.get("requires_dist")
+
+            if not src_id or not requirements:
+                continue
+
+            for req in requirements:
+                name, constraints = self._parse_requirement(req)
+
+                if not name or name not in self.available_versions_map:
+                    continue
+
+                candidates = self.available_versions_map[name]
+
+                if not constraints:
+                    valid_targets = candidates
+                else:
+                    try:
+                        spec = SpecifierSet(constraints)
+                        valid_targets = [
+                            t for t in candidates
+                            if spec.contains(t["ver_obj"], prereleases=True)
+                        ]
+                    except Exception:
+                        continue
+
+                for target in valid_targets:
+                    edges.append({
+                        "source": src_id,
+                        "target": target["id"],
+                    })
+
+        return edges
+
+    # ==========================================
+    # Schema creation
+    # ==========================================
+    def create_schema(self):
+        print("Creating schema...")
+
         queries = [
-            # Unique constraints
             "CREATE CONSTRAINT IF NOT EXISTS FOR (p:Package) REQUIRE p.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (v:Version) REQUIRE v.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (vuln:Vulnerability) REQUIRE vuln.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (prj:Project) REQUIRE prj.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (u:User) REQUIRE u.id IS UNIQUE",
-
-            # Performance indexes
             "CREATE INDEX IF NOT EXISTS FOR (p:Package) ON (p.name)",
-            "CREATE INDEX IF NOT EXISTS FOR (v:Version) ON (v.version)"
+            "CREATE INDEX IF NOT EXISTS FOR (v:Version) ON (v.version)",
         ]
-        with self.driver.session() as session:
+
+        with self.driver.session(database=self.database) as session:
             for q in queries:
                 session.run(q)
-        print("Constraints and indexes ready.")
 
-    def _parse_dependencies(self, requires_dist_list):
-        parsed = []
-        if not requires_dist_list:
-            return parsed
+    # ==========================================
+    # Import nodes
+    # ==========================================
+    def import_vulnerabilities(self):
+        data = self._load_json(FILES["vulnerabilities"])
+        batch = self._prepare_data(data, "Vulnerability")
 
-        pattern = re.compile(r"^([a-zA-Z0-9_\-\.]+)(.*)$")
+        query = """
+        UNWIND $batch AS row
+        MERGE (v:Vulnerability {id: row.props.id})
+        SET v += row.props
+        """
 
-        for item in requires_dist_list:
-            match = pattern.match(item)
-            if match:
-                pkg_name = match.group(1).strip()
-                constraint = match.group(2).strip()
-                parsed.append({
-                    "name": pkg_name,
-                    "constraint": constraint
+        self._run_batch(query, batch, "Importing vulnerabilities")
+
+    def import_packages(self):
+        data = self._load_json(FILES["packages"])
+        batch = self._prepare_data(data, "Package")
+
+        query = """
+        UNWIND $batch AS row
+        MERGE (p:Package {id: row.props.id})
+        SET p += row.props
+        """
+
+        self._run_batch(query, batch, "Importing packages")
+
+    def import_versions(self):
+        self.raw_version_data = self._load_json(FILES["versions"])
+
+        # Build version lookup cache
+        for item in self.raw_version_data:
+            pkg = item.get("package_name")
+            ver = item.get("version")
+            vid = item.get("_id")
+
+            if not (pkg and ver and vid):
+                continue
+
+            self.available_versions_map.setdefault(pkg, [])
+
+            try:
+                self.available_versions_map[pkg].append({
+                    "ver_obj": PyVersion(ver),
+                    "id": vid,
                 })
-        return parsed
+            except InvalidVersion:
+                pass
 
-    def import_packages(self, filename):
-        data = self._load_json_file(filename)
-        if not data:
-            return
+        batch = self._prepare_data(
+            self.raw_version_data,
+            "Version",
+            rel_keys=["package_name", "vulnerabilities"],
+        )
 
-        query = """
-        UNWIND $batch AS row
-        MERGE (p:Package {id: row._id})
-        SET p.name = row.package_name,
-            p.author = row.author,
-            p.url = row.package_url
-        """
-        with self.driver.session() as session:
-            session.run(query, batch=data)
-        print(f"Packages loaded: {len(data)}")
+        # Add semver components
+        for item in batch:
+            ver_str = item["props"].get("version", "0.0.0")
+            try:
+                v = PyVersion(ver_str).release
+                item["props"]["major"] = v[0] if len(v) > 0 else 0
+                item["props"]["minor"] = v[1] if len(v) > 1 else 0
+                item["props"]["patch"] = v[2] if len(v) > 2 else 0
+            except Exception:
+                item["props"]["major"] = 0
+                item["props"]["minor"] = 0
+                item["props"]["patch"] = 0
 
-    def import_vulnerabilities(self, filename):
-        data = self._load_json_file(filename)
-        if not data:
-            return
-
-        query = """
-        UNWIND $batch AS row
-        MERGE (v:Vulnerability {id: row._id})
-        SET v.description = row.description,
-            v.published = row.published
-        """
-        with self.driver.session() as session:
-            session.run(query, batch=data)
-        print(f"Vulnerabilities loaded: {len(data)}")
-
-    def import_versions_advanced(self, filename):
-        raw_data = self._load_json_file(filename)
-        if not raw_data:
-            return
-
-        processed = []
-        for item in raw_data:
-            deps = self._parse_dependencies(item.get("requires_dist"))
-            processed.append({
-                "_id": item["_id"],
-                "package_id": item["package_id"],
-                "version": item["version"],
-                "upload_time": item.get("upload_time"),
-                "vulnerabilities": item.get("vulnerabilities", []),
-                "dependencies": deps
-            })
+            item["rels"]["vuln_list"] = item["rels"].get("vulnerabilities", [])
 
         query = """
         UNWIND $batch AS row
-        MATCH (p:Package {id: row.package_id})
-        MERGE (v:Version {id: row._id})
-        SET v.version = row.version,
-            v.upload_time = row.upload_time
+        MERGE (v:Version {id: row.props.id})
+        SET v += row.props
+
+        WITH v, row
+        MATCH (p:Package {id: row.rels.package_name})
         MERGE (p)-[:HAS_VERSION]->(v)
 
-        FOREACH (vuln_data IN row.vulnerabilities |
-            MERGE (vn:Vulnerability {id: vuln_data.cve_id})
+        FOREACH (entry IN row.rels.vuln_list |
+            MERGE (vn:Vulnerability {id: entry.cve_id})
             MERGE (v)-[:AFFECTED_BY]->(vn)
         )
-
-        FOREACH (dep IN row.dependencies |
-            MERGE (target_pkg:Package {name: dep.name})
-            MERGE (v)-[r:DEPENDS_ON]->(target_pkg)
-            SET r.constraint = dep.constraint
-        )
-        """
-        with self.driver.session() as session:
-            session.run(query, batch=processed)
-        print(f"Versions (with dependencies) loaded: {len(processed)}")
-
-    def import_projects(self, filename):
-        data = self._load_json_file(filename)
-        if not data:
-            return
-
-        create_projects = """
-        UNWIND $batch AS row
-        MERGE (prj:Project {id: row._id})
-        SET prj.name = row.name,
-            prj.last_update = row.last_update
         """
 
-        link_versions = """
+        self._run_batch(query, batch, "Importing versions")
+
+    # ==========================================
+    # Import relationships
+    # ==========================================
+    def import_dependencies(self):
+        edges = self._resolve_dependencies()
+
+        query = """
         UNWIND $batch AS row
-        MATCH (prj:Project {id: row._id})
-        UNWIND row.packages AS pkg
-        MATCH (p:Package {name: pkg.name})-[:HAS_VERSION]->(v:Version {version: pkg.version})
+        MATCH (s:Version {id: row.source})
+        MATCH (t:Version {id: row.target})
+        MERGE (s)-[:DEPENDS_ON]->(t)
+        """
+
+        # Progress bar ONLY here
+        chunks = [edges[i:i + BATCH_SIZE] for i in range(0, len(edges), BATCH_SIZE)]
+
+        with self.driver.session(database=self.database) as session:
+            for chunk in tqdm(chunks, desc="Importing dependencies", unit="batch"):
+                session.run(query, batch=chunk)
+
+    def import_projects(self):
+        data = self._load_json(FILES["projects"])
+        batch = self._prepare_data(data, "Project", ["packages"])
+
+        query = """
+        UNWIND $batch AS row
+        MERGE (prj:Project {id: row.props.id})
+        SET prj += row.props
+
+        WITH prj, row
+        UNWIND row.rels.packages AS req
+        MATCH (p:Package {id: req.name})-[:HAS_VERSION]->(v:Version {version: req.version})
         MERGE (prj)-[:USES]->(v)
         """
 
-        with self.driver.session() as session:
-            session.run(create_projects, batch=data)
-            session.run(link_versions, batch=data)
+        self._run_batch(query, batch, "Importing projects")
 
-        print(f"Projects loaded: {len(data)}")
-
-    def import_users(self, filename):
-        data = self._load_json_file(filename)
-        if not data:
-            return
+    def import_users(self):
+        data = self._load_json(FILES["users"])
+        batch = self._prepare_data(data, "User", ["project_ids"])
 
         query = """
         UNWIND $batch AS row
-        MERGE (u:User {id: row._id})
-        SET u.username = row.username
+        MERGE (u:User {id: row.props.id})
+        SET u += row.props
+
         WITH u, row
-        UNWIND row.project_ids AS pid
+        UNWIND row.rels.project_ids AS pid
         MATCH (prj:Project {id: pid})
         MERGE (u)-[:OWNS_PROJECT]->(prj)
         """
-        with self.driver.session() as session:
-            session.run(query, batch=data)
 
-        print(f"Users loaded: {len(data)}")
+        self._run_batch(query, batch, "Importing users")
 
+    # ==========================================
+    # Orchestration
+    # ==========================================
     def run(self):
-        print("STARTING DATA IMPORT\n")
+        self.create_schema()
 
-        self.clear_database()
-        self.create_constraints_and_indexes()
+        self.import_vulnerabilities()
+        self.import_packages()
+        self.import_versions()
 
-        print("\n--- Importing data ---")
-        self.import_vulnerabilities(FILES["vulnerabilities"])
-        self.import_packages(FILES["packages"])
-        self.import_versions_advanced(FILES["versions"])
-        self.import_projects(FILES["projects"])
-        self.import_users(FILES["users"])
+        self.import_dependencies()
+        self.import_projects()
+        self.import_users()
 
-        print("\nAll operations completed successfully!")
+        print("IMPORT COMPLETED SUCCESSFULLY")
 
 
 if __name__ == "__main__":
     importer = Neo4jImporter(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
+
     try:
         importer.run()
     except Exception as e:
-        print(f"\nCritical error: {e}")
+        print(f"\nCRITICAL ERROR: {e}")
     finally:
         importer.close()

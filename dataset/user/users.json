@@ -3,7 +3,6 @@
     "_id": "emily.smith",
     "first_name": "Emily",
     "last_name": "Smith",
-    "username": "emily.smith",
     "email": "emily.smith@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -14,7 +13,6 @@
     "_id": "laura.bianchi",
     "first_name": "Laura",
     "last_name": "Bianchi",
-    "username": "laura.bianchi",
     "email": "laura.bianchi@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -25,7 +23,6 @@
     "_id": "emily.brown",
     "first_name": "Emily",
     "last_name": "Brown",
-    "username": "emily.brown",
     "email": "emily.brown@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -36,7 +33,6 @@
     "_id": "jane.smith",
     "first_name": "Jane",
     "last_name": "Smith",
-    "username": "jane.smith",
     "email": "jane.smith@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -47,7 +43,6 @@
     "_id": "robert.bianchi",
     "first_name": "Robert",
     "last_name": "Bianchi",
-    "username": "robert.bianchi",
     "email": "robert.bianchi@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -58,7 +53,6 @@
     "_id": "chris.rossi",
     "first_name": "Chris",
     "last_name": "Rossi",
-    "username": "chris.rossi",
     "email": "chris.rossi@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -69,7 +63,6 @@
     "_id": "laura.wilson",
     "first_name": "Laura",
     "last_name": "Wilson",
-    "username": "laura.wilson",
     "email": "laura.wilson@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -80,7 +73,6 @@
     "_id": "john.martin",
     "first_name": "John",
     "last_name": "Martin",
-    "username": "john.martin",
     "email": "john.martin@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -91,7 +83,6 @@
     "_id": "marco.romano",
     "first_name": "Marco",
     "last_name": "Romano",
-    "username": "marco.romano",
     "email": "marco.romano@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -102,7 +93,6 @@
     "_id": "robert.esposito",
     "first_name": "Robert",
     "last_name": "Esposito",
-    "username": "robert.esposito",
     "email": "robert.esposito@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -113,7 +103,6 @@
     "_id": "michael.conti",
     "first_name": "Michael",
     "last_name": "Conti",
-    "username": "michael.conti",
     "email": "michael.conti@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -124,7 +113,6 @@
     "_id": "luca.russo",
     "first_name": "Luca",
     "last_name": "Russo",
-    "username": "luca.russo",
     "email": "luca.russo@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -135,7 +123,6 @@
     "_id": "jane.wilson",
     "first_name": "Jane",
     "last_name": "Wilson",
-    "username": "jane.wilson",
     "email": "jane.wilson@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -146,7 +133,6 @@
     "_id": "giulia.brown",
     "first_name": "Giulia",
     "last_name": "Brown",
-    "username": "giulia.brown",
     "email": "giulia.brown@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -157,7 +143,6 @@
     "_id": "emma.russo",
     "first_name": "Emma",
     "last_name": "Russo",
-    "username": "emma.russo",
     "email": "emma.russo@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -168,7 +153,6 @@
     "_id": "michael.johnson",
     "first_name": "Michael",
     "last_name": "Johnson",
-    "username": "michael.johnson",
     "email": "michael.johnson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -179,7 +163,6 @@
     "_id": "anna.brown",
     "first_name": "Anna",
     "last_name": "Brown",
-    "username": "anna.brown",
     "email": "anna.brown@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -190,7 +173,6 @@
     "_id": "emily.conti",
     "first_name": "Emily",
     "last_name": "Conti",
-    "username": "emily.conti",
     "email": "emily.conti@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -201,7 +183,6 @@
     "_id": "paolo.russo",
     "first_name": "Paolo",
     "last_name": "Russo",
-    "username": "paolo.russo",
     "email": "paolo.russo@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -212,7 +193,6 @@
     "_id": "luca.russo1",
     "first_name": "Luca",
     "last_name": "Russo",
-    "username": "luca.russo1",
     "email": "luca.russo1@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -223,7 +203,6 @@
     "_id": "daniel.brown",
     "first_name": "Daniel",
     "last_name": "Brown",
-    "username": "daniel.brown",
     "email": "daniel.brown@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -234,7 +213,6 @@
     "_id": "chris.bianchi",
     "first_name": "Chris",
     "last_name": "Bianchi",
-    "username": "chris.bianchi",
     "email": "chris.bianchi@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -245,7 +223,6 @@
     "_id": "paolo.conti",
     "first_name": "Paolo",
     "last_name": "Conti",
-    "username": "paolo.conti",
     "email": "paolo.conti@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -256,7 +233,6 @@
     "_id": "chris.bianchi1",
     "first_name": "Chris",
     "last_name": "Bianchi",
-    "username": "chris.bianchi1",
     "email": "chris.bianchi1@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -267,7 +243,6 @@
     "_id": "jane.bianchi",
     "first_name": "Jane",
     "last_name": "Bianchi",
-    "username": "jane.bianchi",
     "email": "jane.bianchi@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -278,7 +253,6 @@
     "_id": "marco.conti",
     "first_name": "Marco",
     "last_name": "Conti",
-    "username": "marco.conti",
     "email": "marco.conti@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -289,7 +263,6 @@
     "_id": "michael.rossi",
     "first_name": "Michael",
     "last_name": "Rossi",
-    "username": "michael.rossi",
     "email": "michael.rossi@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -300,7 +273,6 @@
     "_id": "robert.moore",
     "first_name": "Robert",
     "last_name": "Moore",
-    "username": "robert.moore",
     "email": "robert.moore@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -311,7 +283,6 @@
     "_id": "paolo.anderson",
     "first_name": "Paolo",
     "last_name": "Anderson",
-    "username": "paolo.anderson",
     "email": "paolo.anderson@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -322,7 +293,6 @@
     "_id": "david.bianchi",
     "first_name": "David",
     "last_name": "Bianchi",
-    "username": "david.bianchi",
     "email": "david.bianchi@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -333,7 +303,6 @@
     "_id": "sophia.miller",
     "first_name": "Sophia",
     "last_name": "Miller",
-    "username": "sophia.miller",
     "email": "sophia.miller@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -344,7 +313,6 @@
     "_id": "luca.bianchi",
     "first_name": "Luca",
     "last_name": "Bianchi",
-    "username": "luca.bianchi",
     "email": "luca.bianchi@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -355,7 +323,6 @@
     "_id": "tom.moore",
     "first_name": "Tom",
     "last_name": "Moore",
-    "username": "tom.moore",
     "email": "tom.moore@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -366,7 +333,6 @@
     "_id": "jane.taylor",
     "first_name": "Jane",
     "last_name": "Taylor",
-    "username": "jane.taylor",
     "email": "jane.taylor@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -377,7 +343,6 @@
     "_id": "sarah.miller",
     "first_name": "Sarah",
     "last_name": "Miller",
-    "username": "sarah.miller",
     "email": "sarah.miller@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -388,7 +353,6 @@
     "_id": "giulia.conti",
     "first_name": "Giulia",
     "last_name": "Conti",
-    "username": "giulia.conti",
     "email": "giulia.conti@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -399,7 +363,6 @@
     "_id": "tom.romano",
     "first_name": "Tom",
     "last_name": "Romano",
-    "username": "tom.romano",
     "email": "tom.romano@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -410,7 +373,6 @@
     "_id": "emily.romano",
     "first_name": "Emily",
     "last_name": "Romano",
-    "username": "emily.romano",
     "email": "emily.romano@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -421,7 +383,6 @@
     "_id": "emily.ferrari",
     "first_name": "Emily",
     "last_name": "Ferrari",
-    "username": "emily.ferrari",
     "email": "emily.ferrari@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -432,7 +393,6 @@
     "_id": "sarah.wilson",
     "first_name": "Sarah",
     "last_name": "Wilson",
-    "username": "sarah.wilson",
     "email": "sarah.wilson@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -443,7 +403,6 @@
     "_id": "daniel.martin",
     "first_name": "Daniel",
     "last_name": "Martin",
-    "username": "daniel.martin",
     "email": "daniel.martin@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -454,7 +413,6 @@
     "_id": "anna.rossi",
     "first_name": "Anna",
     "last_name": "Rossi",
-    "username": "anna.rossi",
     "email": "anna.rossi@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -465,7 +423,6 @@
     "_id": "luca.martin",
     "first_name": "Luca",
     "last_name": "Martin",
-    "username": "luca.martin",
     "email": "luca.martin@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -476,7 +433,6 @@
     "_id": "emma.esposito",
     "first_name": "Emma",
     "last_name": "Esposito",
-    "username": "emma.esposito",
     "email": "emma.esposito@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -487,7 +443,6 @@
     "_id": "john.taylor",
     "first_name": "John",
     "last_name": "Taylor",
-    "username": "john.taylor",
     "email": "john.taylor@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -498,7 +453,6 @@
     "_id": "anna.bianchi",
     "first_name": "Anna",
     "last_name": "Bianchi",
-    "username": "anna.bianchi",
     "email": "anna.bianchi@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -509,7 +463,6 @@
     "_id": "laura.brown",
     "first_name": "Laura",
     "last_name": "Brown",
-    "username": "laura.brown",
     "email": "laura.brown@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -520,7 +473,6 @@
     "_id": "alice.brown",
     "first_name": "Alice",
     "last_name": "Brown",
-    "username": "alice.brown",
     "email": "alice.brown@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -531,7 +483,6 @@
     "_id": "david.moore",
     "first_name": "David",
     "last_name": "Moore",
-    "username": "david.moore",
     "email": "david.moore@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
@@ -542,7 +493,6 @@
     "_id": "daniel.miller",
     "first_name": "Daniel",
     "last_name": "Miller",
-    "username": "daniel.miller",
     "email": "daniel.miller@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [

@@ -14,9 +14,7 @@ def main():
         for ver in pkg.get("versions_detailed", []):
 
             # Reference saved in general_packages
-            version_refs.append({
-                "version": ver["version"],
-            })
+            version_refs.append(ver["version"])
 
             # Detailed version document
             package_versions.append({
