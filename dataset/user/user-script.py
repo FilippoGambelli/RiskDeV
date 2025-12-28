@@ -75,7 +75,6 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
                 "_id": username,
                 "first_name": first,
                 "last_name": last,
-                "username": username,
                 "email": generate_email(username),
                 "password": hash_password("Password123"),
                 "project_ids": [project_id],
