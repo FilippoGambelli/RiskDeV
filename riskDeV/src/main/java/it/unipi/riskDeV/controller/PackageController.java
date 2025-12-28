@@ -51,7 +51,7 @@ public class PackageController {
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageName, 
             @Parameter(
-                description = "The version of the package to retrive details", example = "x.y",
+                description = "The version of the package to retrive details", example = "0.9.6",
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageVersion) {
         System.out.println("Searching package version information of: " + packageName + " " + packageVersion);
