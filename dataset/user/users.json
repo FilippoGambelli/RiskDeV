@@ -7,7 +7,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "d559516e-9808-4809-9d18-eece9fbb8505"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.bianchi",
@@ -17,7 +18,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "747a5d8c-ea42-4a8b-898f-991fa1afd980"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.brown",
@@ -27,7 +29,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c198d76f-2615-4c4d-a334-6a74f7776917"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.smith",
@@ -37,7 +40,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "b9389e8e-4638-46e3-a588-b734595210ef"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.bianchi",
@@ -47,7 +51,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "613109ef-daf0-46aa-87f7-f9647f381076"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.rossi",
@@ -57,7 +62,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "1580ed18-d77a-4f8c-8455-f87c94eb5531"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.wilson",
@@ -67,7 +73,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "18cf5853-220c-4f98-af9b-1714a7fca878"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.martin",
@@ -77,7 +84,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8be5608e-a783-484d-b9c6-8342569b759b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.romano",
@@ -87,7 +95,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8f86181d-d6e2-43ca-9ff3-5bcf27c79afa"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.esposito",
@@ -97,7 +106,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "56dc082a-45da-44e1-8821-d3f47e1b8f53"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.conti",
@@ -107,7 +117,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "7c83570f-c43c-48d3-b6ff-bdd268e9c52b"
-    ]
+    ],
+    "role": "ROLE_ADMIN"
   },
   {
     "_id": "luca.russo",
@@ -117,7 +128,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "e7b1a9de-6fec-4124-9428-78b597d3c862"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.wilson",
@@ -127,7 +139,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "08d4e41f-3292-4031-ac95-6f49d24f66dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.brown",
@@ -137,7 +150,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "57b45911-2478-4619-8c9d-0ed3966cbfea"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.russo",
@@ -147,7 +161,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.johnson",
@@ -157,7 +172,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.brown",
@@ -167,7 +183,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "7220bd04-6fde-4319-9847-54efee7fffdf"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.conti",
@@ -177,7 +194,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "16f0df65-191a-44f0-a73c-b3a0d0490988"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.russo",
@@ -187,7 +205,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.russo1",
@@ -197,7 +216,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.brown",
@@ -207,7 +227,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "4cee5c57-2aac-454c-9dbc-f4adceb47879"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.bianchi",
@@ -217,7 +238,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "2be88558-56db-4273-a19d-99ee0fd86ecd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.conti",
@@ -227,7 +249,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "381ae4f1-eaf7-4a7c-823e-6566b314f0f5"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.bianchi1",
@@ -237,7 +260,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "48f38163-ec45-4a4b-90a5-98c8ef0ad9f8"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.bianchi",
@@ -247,7 +271,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9"
-    ]
+    ],
+    "role": "ROLE_ADMIN"
   },
   {
     "_id": "marco.conti",
@@ -257,7 +282,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.rossi",
@@ -267,7 +293,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "abe640e2-ac67-452e-8a4f-a66f692c5226"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.moore",
@@ -277,7 +304,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.anderson",
@@ -287,7 +315,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.bianchi",
@@ -297,7 +326,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a3f09c67-8e97-4956-a4d7-a120ab466e08"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.miller",
@@ -307,7 +337,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.bianchi",
@@ -317,7 +348,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.moore",
@@ -327,7 +359,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c5c0125e-f35b-4246-9852-c78a1681d417"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.taylor",
@@ -337,7 +370,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "9c4a41e8-de0f-4e0d-9b4c-a211aa507218"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.miller",
@@ -347,7 +381,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.conti",
@@ -357,7 +392,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "fe4ff3f3-9a66-4566-a0a1-110942d84e3c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.romano",
@@ -367,7 +403,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "b6659cc7-40b4-4d30-b095-a621e2a1fa5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.romano",
@@ -377,7 +414,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.ferrari",
@@ -387,7 +425,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "ac150542-d1b7-4ce4-a17a-5646b09b7154"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.wilson",
@@ -397,7 +436,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "955aa9e5-241e-4aa3-a5c6-16e3b62473b0"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.martin",
@@ -407,7 +447,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "7877123d-abdb-4c02-a536-9af2c19ae8b6"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.rossi",
@@ -417,7 +458,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.martin",
@@ -427,7 +469,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.esposito",
@@ -437,7 +480,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "5f315977-3b6b-450d-86ce-1c584275088a"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.taylor",
@@ -447,7 +491,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "259ed84d-720a-4244-9edb-638913fc430d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.bianchi",
@@ -457,7 +502,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "e99ce168-3614-49ee-8573-5c933b5695e8"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.brown",
@@ -467,7 +513,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c4319ce8-e8b8-452d-be77-3a601645965f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.brown",
@@ -477,7 +524,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "738f2d70-1df3-499c-b990-fff8902686cc"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.moore",
@@ -487,7 +535,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "23674bd2-d22d-4af0-b0fb-3242c28fe4c7"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.miller",
@@ -497,7 +546,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a312f5a2-c2af-426b-b60c-8a1da4709da4"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.rossi1",
@@ -509,7 +559,8 @@
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.wilson",
@@ -518,7 +569,8 @@
     "username": "paolo.wilson",
     "email": "paolo.wilson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.esposito",
@@ -527,7 +579,8 @@
     "username": "michael.esposito",
     "email": "michael.esposito@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.bianchi",
@@ -536,7 +589,8 @@
     "username": "sophia.bianchi",
     "email": "sophia.bianchi@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.brown1",
@@ -548,7 +602,8 @@
     "project_ids": [
       "613109ef-daf0-46aa-87f7-f9647f381076",
       "c5c0125e-f35b-4246-9852-c78a1681d417"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.moore",
@@ -557,7 +612,8 @@
     "username": "daniel.moore",
     "email": "daniel.moore@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.moore",
@@ -566,7 +622,8 @@
     "username": "sophia.moore",
     "email": "sophia.moore@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "francesca.rossi",
@@ -575,7 +632,8 @@
     "username": "francesca.rossi",
     "email": "francesca.rossi@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.miller",
@@ -588,7 +646,8 @@
       "b9389e8e-4638-46e3-a588-b734595210ef",
       "5f315977-3b6b-450d-86ce-1c584275088a",
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.conti",
@@ -599,7 +658,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.wilson",
@@ -608,7 +668,8 @@
     "username": "robert.wilson",
     "email": "robert.wilson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.wilson",
@@ -617,7 +678,8 @@
     "username": "daniel.wilson",
     "email": "daniel.wilson@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.taylor",
@@ -626,7 +688,8 @@
     "username": "paolo.taylor",
     "email": "paolo.taylor@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.bianchi",
@@ -635,7 +698,8 @@
     "username": "michael.bianchi",
     "email": "michael.bianchi@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.rossi",
@@ -646,7 +710,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "7c83570f-c43c-48d3-b6ff-bdd268e9c52b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.conti",
@@ -658,7 +723,8 @@
     "project_ids": [
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d",
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.rossi",
@@ -669,7 +735,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.johnson",
@@ -678,7 +745,8 @@
     "username": "marco.johnson",
     "email": "marco.johnson@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.martin",
@@ -687,7 +755,8 @@
     "username": "tom.martin",
     "email": "tom.martin@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.brown",
@@ -700,7 +769,8 @@
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd",
       "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3",
       "8be5608e-a783-484d-b9c6-8342569b759b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.johnson",
@@ -712,7 +782,8 @@
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.rossi",
@@ -724,7 +795,8 @@
     "project_ids": [
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd",
       "7220bd04-6fde-4319-9847-54efee7fffdf"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.ferrari",
@@ -735,7 +807,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "d559516e-9808-4809-9d18-eece9fbb8505"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.taylor",
@@ -744,7 +817,8 @@
     "username": "emma.taylor",
     "email": "emma.taylor@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.romano1",
@@ -753,7 +827,8 @@
     "username": "tom.romano1",
     "email": "tom.romano1@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.bianchi1",
@@ -764,7 +839,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.smith",
@@ -777,7 +853,8 @@
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "18cf5853-220c-4f98-af9b-1714a7fca878"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.taylor",
@@ -790,7 +867,8 @@
       "fe4ff3f3-9a66-4566-a0a1-110942d84e3c",
       "56dc082a-45da-44e1-8821-d3f47e1b8f53",
       "16f0df65-191a-44f0-a73c-b3a0d0490988"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.rossi",
@@ -801,7 +879,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "5f315977-3b6b-450d-86ce-1c584275088a"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.moore1",
@@ -812,7 +891,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "1580ed18-d77a-4f8c-8455-f87c94eb5531"
-    ]
+    ],
+    "role": "ROLE_ADMIN"
   },
   {
     "_id": "daniel.johnson",
@@ -821,7 +901,8 @@
     "username": "daniel.johnson",
     "email": "daniel.johnson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.martin1",
@@ -834,7 +915,8 @@
       "e99ce168-3614-49ee-8573-5c933b5695e8",
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d",
       "fe4ff3f3-9a66-4566-a0a1-110942d84e3c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.brown1",
@@ -847,7 +929,8 @@
       "56dc082a-45da-44e1-8821-d3f47e1b8f53",
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672",
       "c198d76f-2615-4c4d-a334-6a74f7776917"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.anderson",
@@ -858,7 +941,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.russo",
@@ -867,7 +951,8 @@
     "username": "jane.russo",
     "email": "jane.russo@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.russo",
@@ -879,7 +964,8 @@
     "project_ids": [
       "955aa9e5-241e-4aa3-a5c6-16e3b62473b0",
       "738f2d70-1df3-499c-b990-fff8902686cc"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.martin",
@@ -890,7 +976,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "abe640e2-ac67-452e-8a4f-a66f692c5226"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.esposito",
@@ -902,7 +989,8 @@
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "738f2d70-1df3-499c-b990-fff8902686cc"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.martin2",
@@ -913,7 +1001,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.bianchi",
@@ -922,7 +1011,8 @@
     "username": "alice.bianchi",
     "email": "alice.bianchi@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.ferrari",
@@ -933,7 +1023,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.conti",
@@ -944,7 +1035,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a312f5a2-c2af-426b-b60c-8a1da4709da4"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.conti",
@@ -957,7 +1049,8 @@
       "2be88558-56db-4273-a19d-99ee0fd86ecd",
       "747a5d8c-ea42-4a8b-898f-991fa1afd980",
       "8be5608e-a783-484d-b9c6-8342569b759b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.romano",
@@ -966,7 +1059,8 @@
     "username": "sarah.romano",
     "email": "sarah.romano@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.esposito",
@@ -979,7 +1073,8 @@
       "8be5608e-a783-484d-b9c6-8342569b759b",
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9",
       "b6659cc7-40b4-4d30-b095-a621e2a1fa5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.johnson1",
@@ -990,7 +1085,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "9c4a41e8-de0f-4e0d-9b4c-a211aa507218"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.miller1",
@@ -999,7 +1095,8 @@
     "username": "luca.miller1",
     "email": "luca.miller1@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.esposito1",
@@ -1010,7 +1107,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c4319ce8-e8b8-452d-be77-3a601645965f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.ferrari",
@@ -1022,7 +1120,8 @@
     "project_ids": [
       "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3",
       "259ed84d-720a-4244-9edb-638913fc430d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.anderson",
@@ -1031,7 +1130,8 @@
     "username": "chris.anderson",
     "email": "chris.anderson@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.ferrari",
@@ -1042,7 +1142,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.miller",
@@ -1055,7 +1156,8 @@
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f",
       "4cee5c57-2aac-454c-9dbc-f4adceb47879",
       "a3f09c67-8e97-4956-a4d7-a120ab466e08"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.rossi",
@@ -1068,7 +1170,8 @@
       "7c83570f-c43c-48d3-b6ff-bdd268e9c52b",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "1580ed18-d77a-4f8c-8455-f87c94eb5531"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.esposito",
@@ -1077,7 +1180,8 @@
     "username": "tom.esposito",
     "email": "tom.esposito@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.bianchi1",
@@ -1088,7 +1192,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "747a5d8c-ea42-4a8b-898f-991fa1afd980"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.moore",
@@ -1099,7 +1204,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a3f09c67-8e97-4956-a4d7-a120ab466e08"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.rossi",
@@ -1111,7 +1217,8 @@
     "project_ids": [
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90",
       "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.smith",
@@ -1122,7 +1229,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "a312f5a2-c2af-426b-b60c-8a1da4709da4"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.martin1",
@@ -1135,7 +1243,8 @@
       "9c4a41e8-de0f-4e0d-9b4c-a211aa507218",
       "a3f09c67-8e97-4956-a4d7-a120ab466e08",
       "b9389e8e-4638-46e3-a588-b734595210ef"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.wilson",
@@ -1144,7 +1253,8 @@
     "username": "emily.wilson",
     "email": "emily.wilson@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.esposito1",
@@ -1156,7 +1266,8 @@
     "project_ids": [
       "955aa9e5-241e-4aa3-a5c6-16e3b62473b0",
       "c4319ce8-e8b8-452d-be77-3a601645965f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.wilson",
@@ -1169,7 +1280,8 @@
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24",
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d",
       "7220bd04-6fde-4319-9847-54efee7fffdf"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.moore1",
@@ -1181,7 +1293,8 @@
     "project_ids": [
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d",
       "613109ef-daf0-46aa-87f7-f9647f381076"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.romano",
@@ -1194,7 +1307,8 @@
       "1580ed18-d77a-4f8c-8455-f87c94eb5531",
       "8f86181d-d6e2-43ca-9ff3-5bcf27c79afa",
       "56dc082a-45da-44e1-8821-d3f47e1b8f53"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.anderson",
@@ -1205,7 +1319,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "abe640e2-ac67-452e-8a4f-a66f692c5226"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.wilson",
@@ -1216,7 +1331,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "abe640e2-ac67-452e-8a4f-a66f692c5226"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.smith",
@@ -1229,7 +1345,8 @@
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9",
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24",
       "d559516e-9808-4809-9d18-eece9fbb8505"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.conti",
@@ -1241,7 +1358,8 @@
     "project_ids": [
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672",
       "738f2d70-1df3-499c-b990-fff8902686cc"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.bianchi1",
@@ -1253,7 +1371,8 @@
     "project_ids": [
       "747a5d8c-ea42-4a8b-898f-991fa1afd980",
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.martin",
@@ -1264,7 +1383,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "955aa9e5-241e-4aa3-a5c6-16e3b62473b0"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.smith",
@@ -1273,7 +1393,8 @@
     "username": "giulia.smith",
     "email": "giulia.smith@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.wilson",
@@ -1282,7 +1403,8 @@
     "username": "david.wilson",
     "email": "david.wilson@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.esposito",
@@ -1291,7 +1413,8 @@
     "username": "giulia.esposito",
     "email": "giulia.esposito@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.conti1",
@@ -1303,7 +1426,8 @@
     "project_ids": [
       "7220bd04-6fde-4319-9847-54efee7fffdf",
       "1580ed18-d77a-4f8c-8455-f87c94eb5531"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.johnson",
@@ -1315,7 +1439,8 @@
     "project_ids": [
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3",
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.smith1",
@@ -1326,7 +1451,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "747a5d8c-ea42-4a8b-898f-991fa1afd980"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.anderson",
@@ -1337,7 +1463,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "b6659cc7-40b4-4d30-b095-a621e2a1fa5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.romano",
@@ -1348,7 +1475,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "ac150542-d1b7-4ce4-a17a-5646b09b7154"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.ferrari1",
@@ -1357,7 +1485,8 @@
     "username": "sarah.ferrari1",
     "email": "sarah.ferrari1@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.conti1",
@@ -1370,7 +1499,8 @@
       "08d4e41f-3292-4031-ac95-6f49d24f66dd",
       "613109ef-daf0-46aa-87f7-f9647f381076",
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.ferrari1",
@@ -1383,7 +1513,8 @@
       "8be5608e-a783-484d-b9c6-8342569b759b",
       "b6659cc7-40b4-4d30-b095-a621e2a1fa5b",
       "c198d76f-2615-4c4d-a334-6a74f7776917"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.miller",
@@ -1394,7 +1525,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c5c0125e-f35b-4246-9852-c78a1681d417"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.miller",
@@ -1405,7 +1537,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.anderson1",
@@ -1418,7 +1551,8 @@
       "9c4a41e8-de0f-4e0d-9b4c-a211aa507218",
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f",
       "16f0df65-191a-44f0-a73c-b3a0d0490988"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.miller",
@@ -1431,7 +1565,8 @@
       "16f0df65-191a-44f0-a73c-b3a0d0490988",
       "4cee5c57-2aac-454c-9dbc-f4adceb47879",
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.wilson1",
@@ -1440,7 +1575,8 @@
     "username": "daniel.wilson1",
     "email": "daniel.wilson1@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.conti",
@@ -1452,7 +1588,8 @@
     "project_ids": [
       "4cee5c57-2aac-454c-9dbc-f4adceb47879",
       "e7b1a9de-6fec-4124-9428-78b597d3c862"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.russo",
@@ -1464,7 +1601,8 @@
     "project_ids": [
       "16f0df65-191a-44f0-a73c-b3a0d0490988",
       "ac150542-d1b7-4ce4-a17a-5646b09b7154"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.smith",
@@ -1475,7 +1613,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "1580ed18-d77a-4f8c-8455-f87c94eb5531"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "francesca.moore",
@@ -1486,7 +1625,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "259ed84d-720a-4244-9edb-638913fc430d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.wilson",
@@ -1497,7 +1637,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.bianchi",
@@ -1510,7 +1651,8 @@
       "48f38163-ec45-4a4b-90a5-98c8ef0ad9f8",
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24",
       "fe4ff3f3-9a66-4566-a0a1-110942d84e3c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "francesca.esposito",
@@ -1522,7 +1664,8 @@
     "project_ids": [
       "16f0df65-191a-44f0-a73c-b3a0d0490988",
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.taylor",
@@ -1534,7 +1677,8 @@
     "project_ids": [
       "8be5608e-a783-484d-b9c6-8342569b759b",
       "738f2d70-1df3-499c-b990-fff8902686cc"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.rossi",
@@ -1546,7 +1690,8 @@
     "project_ids": [
       "c4319ce8-e8b8-452d-be77-3a601645965f",
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.rossi",
@@ -1558,7 +1703,8 @@
     "project_ids": [
       "e7b1a9de-6fec-4124-9428-78b597d3c862",
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.anderson1",
@@ -1569,7 +1715,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "fe4ff3f3-9a66-4566-a0a1-110942d84e3c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.moore1",
@@ -1578,7 +1725,8 @@
     "username": "david.moore1",
     "email": "david.moore1@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.ferrari",
@@ -1590,7 +1738,8 @@
     "project_ids": [
       "2be88558-56db-4273-a19d-99ee0fd86ecd",
       "e7b1a9de-6fec-4124-9428-78b597d3c862"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.moore2",
@@ -1599,7 +1748,8 @@
     "username": "daniel.moore2",
     "email": "daniel.moore2@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "giulia.moore",
@@ -1608,7 +1758,8 @@
     "username": "giulia.moore",
     "email": "giulia.moore@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "david.anderson",
@@ -1620,7 +1771,8 @@
     "project_ids": [
       "1580ed18-d77a-4f8c-8455-f87c94eb5531",
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.miller1",
@@ -1633,7 +1785,8 @@
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3",
       "a312f5a2-c2af-426b-b60c-8a1da4709da4",
       "9c4a41e8-de0f-4e0d-9b4c-a211aa507218"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.wilson1",
@@ -1646,7 +1799,8 @@
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d",
       "cbcb2dba-13f2-47f8-ba61-c0a68af3ed5b",
       "b6659cc7-40b4-4d30-b095-a621e2a1fa5b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.taylor1",
@@ -1657,7 +1811,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "7877123d-abdb-4c02-a536-9af2c19ae8b6"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.brown1",
@@ -1666,7 +1821,8 @@
     "username": "daniel.brown1",
     "email": "daniel.brown1@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.brown",
@@ -1675,7 +1831,8 @@
     "username": "chris.brown",
     "email": "chris.brown@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.moore",
@@ -1686,7 +1843,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.brown",
@@ -1698,7 +1856,8 @@
     "project_ids": [
       "7877123d-abdb-4c02-a536-9af2c19ae8b6",
       "8afad62b-eaa8-4859-9957-01be42881d8c"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "francesca.taylor",
@@ -1711,7 +1870,8 @@
       "56dc082a-45da-44e1-8821-d3f47e1b8f53",
       "16f0df65-191a-44f0-a73c-b3a0d0490988",
       "613109ef-daf0-46aa-87f7-f9647f381076"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sarah.ferrari2",
@@ -1724,7 +1884,8 @@
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d",
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d",
       "8be5608e-a783-484d-b9c6-8342569b759b"
-    ]
+    ],
+    "role": "ROLE_ADMIN"
   },
   {
     "_id": "anna.conti2",
@@ -1737,7 +1898,8 @@
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672",
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90",
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.johnson",
@@ -1750,7 +1912,8 @@
       "4cee5c57-2aac-454c-9dbc-f4adceb47879",
       "ac150542-d1b7-4ce4-a17a-5646b09b7154",
       "7220bd04-6fde-4319-9847-54efee7fffdf"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "michael.bianchi2",
@@ -1763,7 +1926,8 @@
       "8afad62b-eaa8-4859-9957-01be42881d8c",
       "747a5d8c-ea42-4a8b-898f-991fa1afd980",
       "23674bd2-d22d-4af0-b0fb-3242c28fe4c7"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.johnson1",
@@ -1774,7 +1938,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.martin3",
@@ -1786,7 +1951,8 @@
     "project_ids": [
       "7877123d-abdb-4c02-a536-9af2c19ae8b6",
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90"
-    ]
+    ],
+    "role": "ROLE_ADMIN"
   },
   {
     "_id": "alice.russo",
@@ -1798,7 +1964,8 @@
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "18cf5853-220c-4f98-af9b-1714a7fca878"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.miller",
@@ -1810,7 +1977,8 @@
     "project_ids": [
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "8f30e075-4433-4ef0-93fd-65ebd5fbb1b3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.brown1",
@@ -1822,7 +1990,8 @@
     "project_ids": [
       "8be5608e-a783-484d-b9c6-8342569b759b",
       "a312f5a2-c2af-426b-b60c-8a1da4709da4"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.smith",
@@ -1835,7 +2004,8 @@
       "a3f09c67-8e97-4956-a4d7-a120ab466e08",
       "abe640e2-ac67-452e-8a4f-a66f692c5226",
       "b9389e8e-4638-46e3-a588-b734595210ef"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.russo",
@@ -1847,7 +2017,8 @@
     "project_ids": [
       "7877123d-abdb-4c02-a536-9af2c19ae8b6",
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "robert.romano",
@@ -1859,7 +2030,8 @@
     "project_ids": [
       "9ae9bdb4-a846-43a8-8bdd-ede3f3204b0d",
       "259ed84d-720a-4244-9edb-638913fc430d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.smith1",
@@ -1872,7 +2044,8 @@
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd",
       "e99ce168-3614-49ee-8573-5c933b5695e8",
       "7c83570f-c43c-48d3-b6ff-bdd268e9c52b"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.smith1",
@@ -1883,7 +2056,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.taylor1",
@@ -1894,7 +2068,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "tom.romano2",
@@ -1906,7 +2081,8 @@
     "project_ids": [
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24",
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "chris.anderson2",
@@ -1919,7 +2095,8 @@
       "c5c0125e-f35b-4246-9852-c78a1681d417",
       "738f2d70-1df3-499c-b990-fff8902686cc",
       "8f86181d-d6e2-43ca-9ff3-5bcf27c79afa"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.miller1",
@@ -1932,7 +2109,8 @@
       "16f0df65-191a-44f0-a73c-b3a0d0490988",
       "d559516e-9808-4809-9d18-eece9fbb8505",
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.moore1",
@@ -1944,7 +2122,8 @@
     "project_ids": [
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672",
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.conti2",
@@ -1956,7 +2135,8 @@
     "project_ids": [
       "08d4e41f-3292-4031-ac95-6f49d24f66dd",
       "259ed84d-720a-4244-9edb-638913fc430d"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.conti1",
@@ -1965,7 +2145,8 @@
     "username": "sophia.conti1",
     "email": "sophia.conti1@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.esposito",
@@ -1978,7 +2159,8 @@
       "cad4836f-c839-48a7-b1f5-1f4f8191efa9",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "a0b4d9c0-b0cc-49bd-9e57-4c193d28257f"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "alice.johnson",
@@ -1987,7 +2169,8 @@
     "username": "alice.johnson",
     "email": "alice.johnson@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emily.wilson1",
@@ -1996,7 +2179,8 @@
     "username": "emily.wilson1",
     "email": "emily.wilson1@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "john.anderson",
@@ -2009,7 +2193,8 @@
       "56dc082a-45da-44e1-8821-d3f47e1b8f53",
       "613109ef-daf0-46aa-87f7-f9647f381076",
       "f2e5efa5-846b-4100-9e57-0ea3c80a0c24"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.conti3",
@@ -2021,7 +2206,8 @@
     "project_ids": [
       "5f315977-3b6b-450d-86ce-1c584275088a",
       "1de5e9f8-76e7-4402-ae66-ccfa116dc672"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "marco.moore",
@@ -2032,7 +2218,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "955aa9e5-241e-4aa3-a5c6-16e3b62473b0"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.ferrari",
@@ -2045,7 +2232,8 @@
       "1580ed18-d77a-4f8c-8455-f87c94eb5531",
       "b96b175d-f73b-4b33-b8ef-83f42fa75e1d",
       "18cf5853-220c-4f98-af9b-1714a7fca878"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.martin",
@@ -2056,7 +2244,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "c198d76f-2615-4c4d-a334-6a74f7776917"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "jane.ferrari",
@@ -2068,7 +2257,8 @@
     "project_ids": [
       "56dc082a-45da-44e1-8821-d3f47e1b8f53",
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.martin",
@@ -2077,7 +2267,8 @@
     "username": "sophia.martin",
     "email": "sophia.martin@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "project_ids": []
+    "project_ids": [],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.conti",
@@ -2088,7 +2279,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "ffd4b2c3-589f-4ef8-a96c-2a3fa11c4b90"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "laura.wilson1",
@@ -2100,7 +2292,8 @@
     "project_ids": [
       "7220bd04-6fde-4319-9847-54efee7fffdf",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "paolo.ferrari",
@@ -2111,7 +2304,8 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "project_ids": [
       "613109ef-daf0-46aa-87f7-f9647f381076"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "luca.ferrari1",
@@ -2123,7 +2317,8 @@
     "project_ids": [
       "259ed84d-720a-4244-9edb-638913fc430d",
       "7220bd04-6fde-4319-9847-54efee7fffdf"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.rossi1",
@@ -2135,7 +2330,8 @@
     "project_ids": [
       "18cf5853-220c-4f98-af9b-1714a7fca878",
       "c7159a3a-6f8d-4637-8b66-adbb637ba9dd"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "sophia.russo",
@@ -2148,7 +2344,8 @@
       "2c75f605-c43f-4e5b-ae6e-1ea32e14c42d",
       "747a5d8c-ea42-4a8b-898f-991fa1afd980",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "daniel.smith",
@@ -2161,7 +2358,8 @@
       "a312f5a2-c2af-426b-b60c-8a1da4709da4",
       "738f2d70-1df3-499c-b990-fff8902686cc",
       "b9389e8e-4638-46e3-a588-b734595210ef"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "anna.bianchi2",
@@ -2173,7 +2371,8 @@
     "project_ids": [
       "dc70d1ed-68b3-4dd1-8885-4eab1fde1df3",
       "7877123d-abdb-4c02-a536-9af2c19ae8b6"
-    ]
+    ],
+    "role": "ROLE_USER"
   },
   {
     "_id": "emma.romano",
@@ -2186,6 +2385,7 @@
       "a312f5a2-c2af-426b-b60c-8a1da4709da4",
       "8ce37e0c-7df6-4bac-bde8-fedfa5ea4808",
       "5f315977-3b6b-450d-86ce-1c584275088a"
-    ]
+    ],
+    "role": "ROLE_USER"
   }
 ]

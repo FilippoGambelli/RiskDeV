@@ -10,6 +10,9 @@ USER_COUNT = 200
 
 PASSWORD_SALT = "static_salt_for_demo_purposes"
 
+# number of admins you want
+ADMIN_COUNT = 5
+
 FIRST_NAMES = [
     "John", "Jane", "Michael", "Emily", "David", "Sarah", "Robert", "Laura",
     "Daniel", "Anna", "Marco", "Luca", "Giulia", "Francesca", "Paolo",
@@ -24,7 +27,6 @@ LAST_NAMES = [
 
 EMAIL_DOMAINS = ["example.com", "mail.com", "company.io", "test.org"]
 
-# Tracks all generated IDs/usernames to ensure uniqueness
 existing_ids: set[str] = set()
 
 
@@ -78,6 +80,7 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
                 "email": generate_email(username),
                 "password": hash_password("Password123"),
                 "project_ids": [project_id],
+                "role": "ROLE_USER",
             }
         )
 
@@ -91,7 +94,6 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
         base_username = f"{first.lower()}.{last.lower()}"
         username = make_unique_username(base_username)
 
-        # 25% with no projects; otherwise 1–3 random projects
         if random.random() < 0.25:
             project_list: List[str] = []
         else:
@@ -109,8 +111,16 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
                 "email": generate_email(username),
                 "password": hash_password("Password123"),
                 "project_ids": project_list,
+                "role": "ROLE_USER",
             }
         )
+
+    # ---- assign admins here ----
+    admin_count = min(ADMIN_COUNT, len(users))
+    admin_indices = random.sample(range(len(users)), k=admin_count)
+
+    for idx in admin_indices:
+        users[idx]["role"] = "ROLE_ADMIN"
 
     return users
 
