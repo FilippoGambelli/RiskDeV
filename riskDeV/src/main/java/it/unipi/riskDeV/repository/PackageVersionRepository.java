@@ -7,12 +7,8 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PackageVersionRepository extends MongoRepository<PackageVersion, String> {
-
-    // Optional is used in order to avoid null return if query fails
-    Optional<PackageVersion> findById(String id);
 
     @Aggregation(pipeline = {
         "{ '$match': { '_id': ?0 } }",

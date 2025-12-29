@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginRequest {
+public class LoginRequestDTO {
 
     @Schema(description = "Username of the user", example = "john_doe")
     @NotBlank(message = "Username is required")

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class RegisterRequestDTO {
 
     @Schema(description = "First name of the user", example = "John")
     @NotBlank(message = "First name is required")

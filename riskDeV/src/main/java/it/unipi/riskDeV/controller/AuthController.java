@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import it.unipi.riskDeV.service.AuthService;
 import jakarta.validation.Valid;
-import it.unipi.riskDeV.DTO.AuthResponse;
-import it.unipi.riskDeV.DTO.LoginRequest;
-import it.unipi.riskDeV.DTO.RegisterRequest;
+import it.unipi.riskDeV.DTO.AuthResponseDTO;
+import it.unipi.riskDeV.DTO.LoginRequestDTO;
+import it.unipi.riskDeV.DTO.RegisterRequestDTO;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,14 +35,14 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Register", description = "Creates a new user account and returns JWT token")
-    public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
+    public AuthResponseDTO register(@Valid @RequestBody RegisterRequestDTO request) {
         log.info("Register attempt for: {}", request.getEmail());
         return authService.register(request);
     }
 
     @PostMapping("/login")
     @Operation(summary = "Login", description = "Authenticates user and returns JWT token")
-    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+    public AuthResponseDTO login(@Valid @RequestBody LoginRequestDTO request) {
         log.info("Login attempt for: {}", request.getUsername());
         return authService.login(request);
     }

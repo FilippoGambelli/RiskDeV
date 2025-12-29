@@ -22,6 +22,12 @@ public class PackageVersion {
     @Field("upload_time")
     private String uploadTime;
 
+    @Field("requires_dist")
+    private List<String> dependences;
+
+    @Field("requires_python")
+    private String requiresPython;
+
     private List<EmbeddedVulnerability> vulnerabilities;
 
     @Data

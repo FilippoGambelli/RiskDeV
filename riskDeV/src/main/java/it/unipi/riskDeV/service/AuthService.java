@@ -7,9 +7,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import it.unipi.riskDeV.DTO.AuthResponse;
-import it.unipi.riskDeV.DTO.RegisterRequest;
-import it.unipi.riskDeV.DTO.LoginRequest;
+import it.unipi.riskDeV.DTO.AuthResponseDTO;
+import it.unipi.riskDeV.DTO.RegisterRequestDTO;
+import it.unipi.riskDeV.DTO.LoginRequestDTO;
 import it.unipi.riskDeV.model.User;
 import it.unipi.riskDeV.model.neo4j.UserNode;
 import it.unipi.riskDeV.repository.UserGraphRepository;
@@ -31,7 +31,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;  
     private final JwtUtil jwtUtil;
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponseDTO register(RegisterRequestDTO request) {
 
         log.info("Registering new user with email: {}", request.getEmail());
         
@@ -67,10 +67,10 @@ public class AuthService {
         }
 
         String token = jwtUtil.generateToken(user.getId(), user.getEmail());
-        return new AuthResponse(token, user.getId(), user.getEmail());
+        return new AuthResponseDTO(token, user.getId(), user.getEmail());
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponseDTO login(LoginRequestDTO request) {
 
         log.info("Authenticating user.");
 
@@ -85,7 +85,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getId(), user.getEmail());
 
         log.info("User logged in successfully.");
-        return new AuthResponse(token, user.getId(), user.getEmail());
+        return new AuthResponseDTO(token, user.getId(), user.getEmail());
     }   
 
     public void deleteAccount(String userId) {

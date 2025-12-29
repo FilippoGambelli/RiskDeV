@@ -2,10 +2,9 @@ package it.unipi.riskDeV.DTO;
 
 import lombok.Data;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.GeneralPackage;
+import it.unipi.riskDeV.model.Package;
 
 @Data
 public class GeneralPackageDTO {
@@ -37,11 +36,7 @@ public class GeneralPackageDTO {
     @Schema(description = "List of version numbers for the package, e.g., '1.0.0', '1.0.1'")
     private List<String> versions;
 
-    /**
-     * Constructor to convert a GeneralPackage model into a GeneralPackageDTO
-     * @param model the GeneralPackage entity from the database
-     */
-    public GeneralPackageDTO(GeneralPackage model) {
+    public GeneralPackageDTO(Package model) {
         this.packageName = model.getId();
         this.author = model.getAuthor();
         this.authorEmail = model.getAuthorEmail();
@@ -50,12 +45,6 @@ public class GeneralPackageDTO {
         this.summary = model.getSummary();
         this.documentationURL = model.getDocumentationURL();
         this.homepageURL = model.getHomepageURL();
-
-        // Convert the list of PackageVersionSummary to a list of version strings
-        this.versions = (model.getVersions() == null || model.getVersions().isEmpty()) 
-                ? List.of() 
-                : model.getVersions().stream()
-                    .map(GeneralPackage.PackageVersionSummary::getVersion)
-                    .collect(Collectors.toList());
+        this.versions = model.getVersions();
     }
 }

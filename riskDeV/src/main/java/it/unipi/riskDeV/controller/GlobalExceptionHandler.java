@@ -14,10 +14,16 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.security.authentication.BadCredentialsException;
 
+import it.unipi.riskDeV.exception.PackageNotFoundExeption;
 import it.unipi.riskDeV.exception.ServiceException;
 import it.unipi.riskDeV.exception.UserAlreadyExistsException;
+import it.unipi.riskDeV.exception.VulnerabilityNotFoundExeption;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RestControllerAdvice
@@ -76,6 +82,27 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
+    @ExceptionHandler(PackageNotFoundExeption.class)
+    public ResponseEntity<ErrorResponse> handlePackageNotFoundExeption(PackageNotFoundExeption ex) {
+        ErrorResponse error = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(VulnerabilityNotFoundExeption.class)
+    public ResponseEntity<ErrorResponse> handleVulnerabilityNotFoundExeption(VulnerabilityNotFoundExeption ex) {
+        ErrorResponse error = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @Schema(name = "ErrorResponse", description = "Standard error response")
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

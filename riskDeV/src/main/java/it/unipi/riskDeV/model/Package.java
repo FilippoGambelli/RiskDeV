@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Document(collection = "package")
-public class GeneralPackage {
+public class Package {
 
     @Id
     private String id;
@@ -32,16 +32,5 @@ public class GeneralPackage {
     @Field("homepage")
     private String homepageURL;
 
-    private List<PackageVersionSummary> versions;
-
-    @Data
-    public static class PackageVersionSummary {
-
-        @Field("version_id")
-        private String versionId; 
-
-        private String version;
-
-    }
-
+    private List<String> versions;
 }
