@@ -53,17 +53,34 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setProject_ids(new ArrayList<>());
 
-        User savedUser = userRepository.save(user);
-        log.info("User saved in MongoDB: {}", savedUser.getId());
+        User savedUser;
 
         try {
+            savedUser = userRepository.save(user);
+            log.info("User saved in MongoDB: {}", savedUser.getId());
+        } catch (org.springframework.dao.DuplicateKeyException ex) {
+            log.warn("Race condition: User {} already exists.", request.getUsername());
+            throw new UserAlreadyExistsException("User already exists");
+        } catch (Exception e) {
+            log.error("Failed to save user in MongoDB.", e);
+            throw new ServiceException("Error during registration. Please try again.");
+        }
+        
+        try {   
             UserNode graphUser = new UserNode(savedUser.getId(), null);
             userGraphRepository.save(graphUser);
             log.info("User node created in Neo4j: {}", savedUser.getId());
         } catch (Exception e) {
             log.error("Failed to save user in Neo4j. Rolling back MongoDB transaction.", e);
-            userRepository.deleteById(savedUser.getId());
-            throw new RuntimeException("Error during registration. Please try again.");
+            try {
+                userRepository.deleteById(savedUser.getId());
+                log.info("Rolled back MongoDB user: {}", savedUser.getId());
+            } catch (Exception ex) {
+                log.error("Failed to rollback MongoDB user after Neo4j failure.", ex);
+                // We could write in a simple log for manual check or implement an alert system 
+                // to send us an alert.
+            }
+            throw new ServiceException("Error during registration. Please try again.");
         }
 
         String token = jwtUtil.generateToken(user.getId(), user.getEmail());
@@ -95,15 +112,23 @@ public class AuthService {
         }
 
         try {
+            userRepository.deleteById(userId);
+            log.info("User account with ID {} deleted successfully from Mongo.", userId);
+        } catch (Exception e) {
+            log.error("Failed to delete user account from MongoDB after Neo4j deletion.", e);
+            throw new ServiceException("System error: account not deleted.");    
+        }
+
+        try {
             userGraphRepository.deleteById(userId);
             log.info("User node with ID {} deleted from Neo4j.", userId);
         } catch (Exception e) {
-            log.error("Neo4j is unreachable. Aborting deletion.", e);
-            throw new ServiceException("System error: cannot delete user graph data. Account not deleted.");
+            log.error("Failed to delete user node from Neo4j.", e);
+            // We could write in a simple log for manual check or implement a daemon to
+            // retry the deletion later.
         }
 
-        userRepository.deleteById(userId);
-        log.info("User account with ID {} deleted successfully from Mongo.", userId);
+        
 
     }
 }
