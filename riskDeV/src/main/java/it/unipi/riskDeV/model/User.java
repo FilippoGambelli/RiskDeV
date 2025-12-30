@@ -26,6 +26,9 @@ public class User {
     @Schema(description = "Hashed password of the user", example = "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Z1Z6jI6j6b6j6b6j6b6j6")  
     private String password;
 
+    @Schema(description = "Role of the user",  example = "ROLE_USER")
+    private String role;
+
     @Schema(description = "List of project IDs associated with the user", example = "[\"proj1\", \"proj2\"]")
     private List<String> project_ids;
 }

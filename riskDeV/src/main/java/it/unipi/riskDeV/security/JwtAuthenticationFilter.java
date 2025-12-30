@@ -1,10 +1,12 @@
 package it.unipi.riskDeV.security;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,11 +37,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             
             if (jwtUtil.validateToken(token)) {
                 String userId = jwtUtil.getUserIdFromToken(token);
+                String role = jwtUtil.getUserRoleFromToken(token);
+
+                List<GrantedAuthority> authorities =
+                    List.of(new SimpleGrantedAuthority(role));
                 
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userId,           
                     null,             
-                    new ArrayList<>() 
+                    authorities
                 );
                 
                 SecurityContextHolder.getContext().setAuthentication(authentication);

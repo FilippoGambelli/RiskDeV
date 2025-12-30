@@ -83,7 +83,7 @@ public class AuthService {
             throw new ServiceException("Error during registration. Please try again.");
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getEmail());
+        String token = jwtUtil.generateToken(user.getId(), user.getRole());
         return new AuthResponseDTO(token, user.getId(), user.getEmail());
     }
 
@@ -99,7 +99,7 @@ public class AuthService {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getEmail());
+        String token = jwtUtil.generateToken(user.getId(), user.getRole());
 
         log.info("User logged in successfully.");
         return new AuthResponseDTO(token, user.getId(), user.getEmail());
