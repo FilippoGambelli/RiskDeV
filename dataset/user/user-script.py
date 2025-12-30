@@ -131,8 +131,20 @@ def main() -> None:
     project_ids = load_project_ids(PROJECTS_FILE)
     users = generate_users(project_ids)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    # Write users.json with project_ids
+    with open("users.json", "w", encoding="utf-8") as f:
         json.dump(users, f, indent=2, ensure_ascii=False)
+
+    # Prepare usersMongo.json without project_ids
+    users_mongo = []
+    for user in users:
+        user_copy = user.copy()
+        if "project_ids" in user_copy:
+            del user_copy["project_ids"]
+        users_mongo.append(user_copy)
+
+    with open("usersMongo.json", "w", encoding="utf-8") as f:
+        json.dump(users_mongo, f, indent=2, ensure_ascii=False)
 
     print("Done!")
 

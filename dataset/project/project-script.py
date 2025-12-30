@@ -39,13 +39,18 @@ def random_iso_datetime(start: datetime, end: datetime) -> str:
     return (start + timedelta(seconds=offset)).isoformat(timespec="seconds")
 
 
-def generate_project(min_packages: int = 2, max_packages: int = 6) -> Dict[str, Any]:
-    """Generate a random project description."""
-    project_id = str(uuid.uuid4())
+def generate_project(existing_names: set, min_packages: int = 2, max_packages: int = 6) -> Dict[str, Any]:
+    """Generate a random project description with a unique name."""
+    base_name = f"{random.choice(PROJECT_NAME_PREFIXES)} {random.choice(PROJECT_NAME_SUFFIXES)}"
+    name = base_name
 
-    name = f"{random.choice(PROJECT_NAME_PREFIXES)} {random.choice(PROJECT_NAME_SUFFIXES)}"
-    if random.random() < 0.3:
-        name += f" {random.randint(1, 99)}"
+    # Ensure uniqueness
+    suffix_num = 1
+    while name in existing_names:
+        suffix_num += 1
+        name = f"{base_name} {suffix_num}"
+
+    existing_names.add(name)
 
     selected_packages = random.sample(
         PACKAGE_NAMES,
@@ -77,8 +82,7 @@ def generate_project(min_packages: int = 2, max_packages: int = 6) -> Dict[str, 
     )[0]
 
     return {
-        "_id": project_id,
-        "name": name,
+        "_id": name,
         "description": description,
         "last_update": last_update,
         "python_version": python_version,
@@ -92,13 +96,13 @@ def main() -> None:
     output_file = "projects.json"
     project_count = 50
 
-    projects = [generate_project() for _ in range(project_count)]
+    existing_names = set()
+    projects = [generate_project(existing_names) for _ in range(project_count)]
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(projects, f, indent=2, ensure_ascii=False)
 
     print("DONE!")
-
 
 if __name__ == "__main__":
     main()
