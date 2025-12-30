@@ -1,7 +1,5 @@
 package it.unipi.riskDeV.service;
 
-import java.util.ArrayList;
-
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,8 +48,8 @@ public class AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
+        user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setProject_ids(new ArrayList<>());
 
         User savedUser;
 

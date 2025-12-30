@@ -1,7 +1,5 @@
 package it.unipi.riskDeV.model;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -28,7 +26,4 @@ public class User {
 
     @Schema(description = "Role of the user",  example = "ROLE_USER")
     private String role;
-
-    @Schema(description = "List of project IDs associated with the user", example = "[\"proj1\", \"proj2\"]")
-    private List<String> project_ids;
 }
