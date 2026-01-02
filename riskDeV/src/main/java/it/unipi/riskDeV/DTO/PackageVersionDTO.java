@@ -35,9 +35,7 @@ public class PackageVersionDTO {
         this.uploadTime = model.getUploadTime();
         this.vulnerabilities = model.getVulnerabilities();
         this.requiresPython = model.getRequiresPython();
-
         this.dependencies = model.getDependencies(); 
-
         this.vulnerabilities = model.getVulnerabilities();
         this.vulnerabilityCount = (model.getVulnerabilities() != null) ? model.getVulnerabilities().size() : 0;
     }
