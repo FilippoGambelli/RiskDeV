@@ -10,7 +10,7 @@ import lombok.Data;
 public class VersionNode {
 
     @Id
-    private String id; // Es: "requests 2.28.1"
+    private String id; // Ex: "requests 2.28.1"
 
     @Property("version")
     private String versionNumber;

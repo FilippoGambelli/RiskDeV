@@ -25,7 +25,7 @@ public class PackageController {
             description = "Fetches all the generic information about a specific package. This includes: author, description, homepage url and a list of all the versions")
     public GeneralPackageDTO getPackageByName(
             @Parameter(
-                description = "The name of the package to retrive details", example = "numpy",
+                description = "The name of the package to retrieve details", example = "numpy",
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageName) {
         log.info("Searching package by name: {}", packageName);
@@ -37,11 +37,11 @@ public class PackageController {
             description = "Fetches all the information about a specific package version. This includes: upload time, requires packages, requires python version and a list of all the vulnerabilities")
     public PackageVersionDTO getPackageVersion(
             @Parameter(
-                description = "The name of the package to retrive details", example = "numpy",
+                description = "The name of the package to retrieve details", example = "numpy",
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageName, 
             @Parameter(
-                description = "The version of the package to retrive details", example = "0.9.6",
+                description = "The version of the package to retrieve details", example = "0.9.6",
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageVersion) {
         log.info("Searching package version information of: {} {}", packageName, packageVersion);

@@ -19,10 +19,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.springframework.security.authentication.BadCredentialsException;
 
-import it.unipi.riskDeV.exception.PackageNotFoundExeption;
+import it.unipi.riskDeV.exception.PackageNotFoundException;
 import it.unipi.riskDeV.exception.ServiceException;
 import it.unipi.riskDeV.exception.UserAlreadyExistsException;
-import it.unipi.riskDeV.exception.VulnerabilityNotFoundExeption;
+import it.unipi.riskDeV.exception.VulnerabilityNotFoundException;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -82,8 +82,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
-    @ExceptionHandler(PackageNotFoundExeption.class)
-    public ResponseEntity<ErrorResponse> handlePackageNotFoundExeption(PackageNotFoundExeption ex) {
+    @ExceptionHandler(PackageNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePackageNotFoundException(PackageNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(
             HttpStatus.NOT_FOUND.value(),
             ex.getMessage(),
@@ -92,8 +92,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(VulnerabilityNotFoundExeption.class)
-    public ResponseEntity<ErrorResponse> handleVulnerabilityNotFoundExeption(VulnerabilityNotFoundExeption ex) {
+    @ExceptionHandler(VulnerabilityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleVulnerabilityNotFoundException(VulnerabilityNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(
             HttpStatus.NOT_FOUND.value(),
             ex.getMessage(),

@@ -23,7 +23,7 @@ public class PackageVersion {
     private String uploadTime;
 
     @Field("requires_dist")
-    private List<String> dependences;
+    private List<String> dependencies;
 
     @Field("requires_python")
     private String requiresPython;

@@ -2,7 +2,7 @@ package it.unipi.riskDeV.service;
 
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
-import it.unipi.riskDeV.exception.PackageNotFoundExeption;
+import it.unipi.riskDeV.exception.PackageNotFoundException;
 import it.unipi.riskDeV.model.Package;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.repository.GeneralPackageRepository;
@@ -21,7 +21,7 @@ public class PackageService {
 
     public GeneralPackageDTO getPackageByName(String packageName) {
         Package pkg = generalPackageRepository.findById(packageName)
-                .orElseThrow(() -> new PackageNotFoundExeption(
+                .orElseThrow(() -> new PackageNotFoundException(
                     "Package " + packageName + " not found."
                 ));
         
@@ -30,7 +30,7 @@ public class PackageService {
 
     public PackageVersionDTO getPackageByNameVersion(String packageName, String packageVersion) {
         PackageVersion pkg = packageVersionRepository.findById(packageName + " " + packageVersion)
-                .orElseThrow(() -> new PackageNotFoundExeption(
+                .orElseThrow(() -> new PackageNotFoundException(
                     "Package " + packageName + " " + packageVersion + "not found."
                 ));
         
