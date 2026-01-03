@@ -38,5 +38,4 @@ public class PackageVersionDTO {
         this.dependencies = model.getDependencies(); 
         this.vulnerabilityCount = (model.getVulnerabilities() != null) ? model.getVulnerabilities().size() : 0;
     }
-    }
 }
