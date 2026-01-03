@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Node("Version")
-public class VersionNode {
+public class PackageVersionNode {
 
     @Id
     private String id; // Corresponds to "package_name version"
@@ -22,7 +22,7 @@ public class VersionNode {
 
     // Relationship (:Version)-[:DEPENDS_ON]->(:Version)
     @Relationship(type = "DEPENDS_ON", direction = Relationship.Direction.OUTGOING)
-    private List<VersionNode> dependencies;
+    private List<PackageVersionNode> dependencies;
 
     // Relationship (:Version)-[:AFFECTED_BY]->(:Vulnerability)
     @Relationship(type = "AFFECTED_BY", direction = Relationship.Direction.OUTGOING)

@@ -10,6 +10,7 @@ import it.unipi.riskDeV.service.PackageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/packages")
@@ -46,5 +47,14 @@ public class PackageController {
             ) @PathVariable String packageVersion) {
         log.info("Searching package version information of: {} {}", packageName, packageVersion);
         return packageService.getPackageByNameVersion(packageName, packageVersion);
+    }
+
+    @GetMapping("/{packageName}/dependents")
+    @Operation(summary = "Find reverse dependencies",
+            description = "Returns a list of package versions that depend on the specified package (using Neo4j).")
+    public List<String> getReverseDependencies(
+            @Parameter(description = "The package name", example = "numpy") 
+            @PathVariable String packageName) {
+        return packageService.getPackagesDependingOn(packageName);
     }
 }
