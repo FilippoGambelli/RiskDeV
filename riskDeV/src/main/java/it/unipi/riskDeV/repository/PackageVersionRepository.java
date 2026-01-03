@@ -5,6 +5,7 @@ import it.unipi.riskDeV.model.Vulnerability;
 
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -27,5 +28,8 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
         "{ '$replaceRoot': { 'newRoot': '$foundVulns' } }"
     })
     List<Vulnerability> findDirectVulnerabilities(String packageId);
+
+    @Query("{ 'package_name': ?0, 'vulnerabilities': [] }")
+    List<PackageVersion> findSafeVersions(String packageName);
 
 }
