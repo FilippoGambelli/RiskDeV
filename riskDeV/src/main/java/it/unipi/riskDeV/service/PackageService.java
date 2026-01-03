@@ -6,6 +6,7 @@ import it.unipi.riskDeV.exception.PackageNotFoundException;
 import it.unipi.riskDeV.exception.ServiceException;
 import it.unipi.riskDeV.model.Package;
 import it.unipi.riskDeV.model.PackageVersion;
+import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import it.unipi.riskDeV.repository.GeneralPackageRepository;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import it.unipi.riskDeV.repository.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.PackageGraphRepository;
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
+import it.unipi.riskDeV.model.neo4j.VulnerabilityNode;
 import it.unipi.riskDeV.model.neo4j.PackageNode;
 
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ public class PackageService {
     private final GeneralPackageRepository generalPackageRepository;
     private final PackageVersionRepository packageVersionRepository;
     private final PackageGraphRepository packageGraphRepository;
+    private final PackageVersionGraphRepository packageVersionGraphRepository;
 
     // Get a package by its name
     public GeneralPackageDTO getPackageByName(String packageName) {

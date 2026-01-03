@@ -20,5 +20,5 @@ public class ProjectNode {
     private String lastUpdate;
 
     @Relationship(type = "USES", direction = Relationship.Direction.OUTGOING)
-    private List<VersionNode> usedVersions;
+    private List<PackageVersionNode> usedVersions;
 }

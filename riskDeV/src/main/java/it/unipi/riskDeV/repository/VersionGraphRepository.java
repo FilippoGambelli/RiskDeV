@@ -1,13 +1,13 @@
 package it.unipi.riskDeV.repository;
 
-import it.unipi.riskDeV.model.neo4j.VersionNode;
+import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.DTO.VulnerabilityReportDTO;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-public interface IndirectVulnerabilityRepository extends Neo4jRepository<VersionNode, String> {
+public interface VersionGraphRepository extends Neo4jRepository<PackageVersionNode, String> {
 
     @Query("MATCH (start:Version {id: $id}) " +
            "MATCH (start)-[:DEPENDS_ON*]->(v:Version) " +

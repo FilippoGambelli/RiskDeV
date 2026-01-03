@@ -17,5 +17,5 @@ public class PackageNode {
 
     // Relationship: (:Package)-[:HAS_VERSION]->(:Version)
     @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.OUTGOING)
-    private List<VersionNode> versions;
+    private List<PackageVersionNode> versions;
 }

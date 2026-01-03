@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.exception.ServiceException;
 import it.unipi.riskDeV.service.PackageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
