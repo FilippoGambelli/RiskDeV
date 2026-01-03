@@ -17,7 +17,7 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
         // 'from': nome della collezione CVE nel database (es. 'vulnerabilities')
         // 'localField': il percorso dell'ID dentro l'oggetto pacchetto
         // 'foreignField': il campo _id nella collezione vulnerabilità
-        "{ '$lookup': { 'from': 'vulnerabilities', 'localField': 'vulnerabilities.cve_id', 'foreignField': '_id', 'as': 'foundVulnerabilities' } }",
+        "{ '$lookup': { 'from': 'vulnerabilities', 'localField': 'vulnerabilities.cve_id', 'foreignField': '_id', 'as': 'foundVulns' } }",
         
         // 3. 'Srotola' l'array trovato per avere una lista di oggetti separati
         "{ '$unwind': '$foundVulns' }",
