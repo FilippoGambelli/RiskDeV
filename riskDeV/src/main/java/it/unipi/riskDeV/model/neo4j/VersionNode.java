@@ -2,25 +2,29 @@ package it.unipi.riskDeV.model.neo4j;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Property;
+import org.springframework.data.neo4j.core.schema.Relationship;
 import lombok.Data;
+import java.util.List;
 
-@Node("Version")
 @Data
+@Node("Version")
 public class VersionNode {
 
     @Id
-    private String id; // Ex: "requests 2.28.1"
+    private String id; // Corresponds to "package_name version"
 
-    @Property("version")
-    private String versionNumber;
+    private String version;
 
-    @Property("major")
+    // Essential for queries comparing package versions
     private Integer major;
-
-    @Property("minor")
     private Integer minor;
-
-    @Property("patch")
     private Integer patch;
+
+    // Relationship (:Version)-[:DEPENDS_ON]->(:Version)
+    @Relationship(type = "DEPENDS_ON", direction = Relationship.Direction.OUTGOING)
+    private List<VersionNode> dependencies;
+
+    // Relationship (:Version)-[:AFFECTED_BY]->(:Vulnerability)
+    @Relationship(type = "AFFECTED_BY", direction = Relationship.Direction.OUTGOING)
+    private List<VulnerabilityNode> vulnerabilities;
 }

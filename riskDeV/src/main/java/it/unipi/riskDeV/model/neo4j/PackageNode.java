@@ -7,18 +7,15 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
-@Node("Package")
 @Data
+@Node("Package")
 public class PackageNode {
 
     @Id
-    private String id;
+    private String id; // Name of the package
+    // private String name;  --> I removed it because redundant if now id is defined as package name 
 
-    private String name;
-    private String author;
-    private String url;
-
-    // Relationship: (Package)-[:HAS_VERSION]->(Version)
+    // Relationship: (:Package)-[:HAS_VERSION]->(:Version)
     @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.OUTGOING)
     private List<VersionNode> versions;
 }
