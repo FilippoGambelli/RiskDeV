@@ -2,6 +2,7 @@ package it.unipi.riskDeV.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -13,9 +14,11 @@ public class User {
     private String id;
 
     @Schema(description = "First name of the user", example = "John")
+    @Field("first_name")
     private String firstName;
 
     @Schema(description = "Last name of the user", example = "Doe")
+    @Field("last_name")
     private String lastName;
 
     @Schema(description = "Email address of the user", example = "john.doe@example.com")
