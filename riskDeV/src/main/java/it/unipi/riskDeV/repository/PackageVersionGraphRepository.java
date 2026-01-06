@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVersionNode, String> {
 
@@ -19,4 +20,34 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
     @Query("MATCH (v:Version {id: $versionId})-[:DEPENDS_ON]->(target:Version) " +
            "RETURN DISTINCT target")
     List<PackageVersionNode> findDirectDependencies(@Param("versionId") String versionId);
+
+    @Query("MATCH (v:Version {id: $versionId}) " +
+           "UNWIND $cveIds AS cve " +
+           "MERGE (vuln:Vulnerability {id: cve}) " +
+           "MERGE (v)-[:AFFECTED_BY]->(vuln)")
+    void attachVulnerabilities(@Param("versionId") String versionId, @Param("cveIds") List<String> cveIds);
+
+    @Query("MATCH (v:Version {id: $versionId}) " +
+           "UNWIND $dependencyNames AS depName " +
+           "MERGE (target:Package {id: depName}) " +
+           "MERGE (v)-[:DEPENDS_ON]->(target)")
+    void attachDependencies(@Param("versionId") String versionId, @Param("dependencyNames") List<String> dependencyNames);
+
+    @Query("""
+        MATCH (source:Version {id: $sourceId})
+        UNWIND $dependenciesList AS dep
+        
+        MERGE (target:Version {id: dep.targetId})
+        ON CREATE SET 
+            target.version = dep.version,
+            target.isStub = true  
+        MERGE (source)-[r:DEPENDS_ON]->(target)
+        SET r.constraint = dep.operator
+        
+        MERGE (p:Package {id: dep.pkgName})
+        ON CREATE SET p.isStub = true
+       
+        MERGE (p)-[:HAS_VERSION]->(target)
+    """)
+    void attachDependenciesWithStubs(@Param("sourceId") String sourceId, @Param("dependenciesList") List<Map<String, String>> dependenciesList);
 }

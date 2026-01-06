@@ -1,21 +1,30 @@
 package it.unipi.riskDeV.model.neo4j;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import java.util.List;
 
-@Node("User")
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
-@AllArgsConstructor
+@Node("User")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
 public class UserNode {
 
     @Id
+    @EqualsAndHashCode.Include 
     private String id;
 
-    // Relationship: (User)-[:OWNS_PROJECT]->(Project)
-    @Relationship(type = "OWNS_PROJECT", direction = Relationship.Direction.OUTGOING)
-    private List<ProjectNode> projects;
+    @Relationship(type = "OWNS", direction = Relationship.Direction.OUTGOING)
+    @ToString.Exclude
+    private Set<ProjectNode> ownedProjects = new HashSet<>();
+
+    @Relationship(type = "WORKS_ON", direction = Relationship.Direction.OUTGOING)
+    @ToString.Exclude 
+    private Set<ProjectNode> projects = new HashSet<>();
+
 }

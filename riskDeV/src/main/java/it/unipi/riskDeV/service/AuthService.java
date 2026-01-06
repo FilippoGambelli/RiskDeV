@@ -51,11 +51,9 @@ public class AuthService {
         user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        User savedUser;
-
         try {
-            savedUser = userRepository.save(user);
-            log.info("User saved in MongoDB: {}", savedUser.getId());
+            userRepository.save(user);
+            log.info("User saved in MongoDB: {}", user.getId());
         } catch (org.springframework.dao.DuplicateKeyException ex) {
             log.warn("Race condition: User {} already exists.", request.getUsername());
             throw new UserAlreadyExistsException("User already exists");
@@ -65,14 +63,15 @@ public class AuthService {
         }
         
         try {   
-            UserNode graphUser = new UserNode(savedUser.getId(), null);
+            UserNode graphUser = new UserNode();
+            graphUser.setId(user.getId());
             userGraphRepository.save(graphUser);
-            log.info("User node created in Neo4j: {}", savedUser.getId());
+            log.info("User node created in Neo4j: {}", user.getId());
         } catch (Exception e) {
             log.error("Failed to save user in Neo4j. Rolling back MongoDB transaction.", e);
             try {
-                userRepository.deleteById(savedUser.getId());
-                log.info("Rolled back MongoDB user: {}", savedUser.getId());
+                userRepository.deleteById(user.getId());
+                log.info("Rolled back MongoDB user: {}", user.getId());
             } catch (Exception ex) {
                 log.error("Failed to rollback MongoDB user after Neo4j failure.", ex);
                 // We could write in a simple log for manual check or implement an alert system 

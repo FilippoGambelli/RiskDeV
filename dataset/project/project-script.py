@@ -82,7 +82,7 @@ def generate_project(existing_names: set, min_packages: int = 2, max_packages: i
     )[0]
 
     return {
-        "_id": name,
+        "name": name,
         "description": description,
         "last_update": last_update,
         "python_version": python_version,

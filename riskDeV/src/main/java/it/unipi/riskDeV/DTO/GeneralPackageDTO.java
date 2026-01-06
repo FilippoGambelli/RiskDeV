@@ -1,12 +1,17 @@
 package it.unipi.riskDeV.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.Package;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GeneralPackageDTO {
 
     @Schema(description = "Name of the package")

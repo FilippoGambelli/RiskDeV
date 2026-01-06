@@ -4,6 +4,7 @@ import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
 import it.unipi.riskDeV.exception.PackageNotFoundException;
 import it.unipi.riskDeV.exception.ServiceException;
+import it.unipi.riskDeV.exception.VersionFormatException;
 import it.unipi.riskDeV.model.Package;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
@@ -11,17 +12,22 @@ import it.unipi.riskDeV.repository.GeneralPackageRepository;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import it.unipi.riskDeV.repository.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.PackageGraphRepository;
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
-import it.unipi.riskDeV.model.neo4j.VulnerabilityNode;
 import it.unipi.riskDeV.model.neo4j.PackageNode;
 
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.time.Instant;
 
 
 
@@ -34,6 +40,7 @@ public class PackageService {
     private final PackageVersionRepository packageVersionRepository;
     private final PackageGraphRepository packageGraphRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
+    private static final Pattern DEP_PATTERN = Pattern.compile("^([a-zA-Z0-9_\\-.]+)\\s*([<>=!~]+)?\\s*(.*)$");
 
     // Get a package by its name
     public GeneralPackageDTO getPackageByName(String packageName) {
@@ -176,7 +183,7 @@ public class PackageService {
         versionDoc.setId(newId);
         versionDoc.setPackageName(packageName);
         versionDoc.setVersion(version);
-        versionDoc.setUploadTime(newVersionDTO.getUploadTime());
+        versionDoc.setUploadTime(Instant.now().toString());
         versionDoc.setRequiresPython(newVersionDTO.getRequiresPython());
         versionDoc.setDependencies(newVersionDTO.getDependencies());
         if (newVersionDTO.getVulnerabilities() != null) {
@@ -195,14 +202,15 @@ public class PackageService {
 
 
         // --- Write on Neo4j ---
-
         try {
-            PackageNode packageNode = packageGraphRepository.findById(packageName)
-                    .orElseThrow(() -> new RuntimeException("Graph node missing for " + packageName));
+            if (!packageGraphRepository.existsById(packageName)) {
+                throw new PackageNotFoundException("Package " + packageName + " not found in the system.");
+            }
 
             PackageVersionNode versionNode = new PackageVersionNode();
             versionNode.setId(newId);
             versionNode.setVersion(version);
+            versionNode.setIsStub(false);
             
             // Parsing the version
             try {
@@ -210,37 +218,66 @@ public class PackageService {
                 if (parts.length > 0) versionNode.setMajor(Integer.parseInt(parts[0]));
                 if (parts.length > 1) versionNode.setMinor(Integer.parseInt(parts[1]));
                 if (parts.length > 2) versionNode.setPatch(Integer.parseInt(parts[2]));
-            } catch (Exception e) { /* ignore */ }
-
-            // Creation of nodes and vulnerabilities in the graph
-            if (newVersionDTO.getVulnerabilities() != null && !newVersionDTO.getVulnerabilities().isEmpty()) {
-                versionNode.setVulnerabilities(new ArrayList<>());
-                
-                for (EmbeddedVulnerability dtoVuln : newVersionDTO.getVulnerabilities()) {
-                    // Vulnerability node has CVE as Id
-                    VulnerabilityNode vNode = new VulnerabilityNode();
-                    vNode.setId(dtoVuln.getCveId());
-                    
-                    versionNode.getVulnerabilities().add(vNode);
-                }
+            } catch (Exception e) { 
+                log.warn("Failed to parse version {} into major.minor.patch", version);
+                throw new VersionFormatException("Failed to parse version " + version);
             }
 
-            // Linking to the father: the Package Node
-            if (packageNode.getVersions() == null) packageNode.setVersions(new ArrayList<>());
-            packageNode.getVersions().add(versionNode);
-            
-            //Cascade saves (Package -> Version -> Vulnerabilities)
-            packageGraphRepository.save(packageNode);
+            packageVersionGraphRepository.save(versionNode);
+
+            packageGraphRepository.addVersionToPackage(packageName, newId);
+
+            if (newVersionDTO.getVulnerabilities() != null && !newVersionDTO.getVulnerabilities().isEmpty()) {
+                List<String> cveIds = newVersionDTO.getVulnerabilities().stream()
+                    .map(EmbeddedVulnerability::getCveId)
+                    .toList();
+
+                packageVersionGraphRepository.attachVulnerabilities(newId, cveIds);
+            }
+
+            if (newVersionDTO.getDependencies() != null && !newVersionDTO.getDependencies().isEmpty()) {
+                List<Map<String, String>> parsedDeps = newVersionDTO.getDependencies().stream()
+                    .map(this::parseDependencyForGraph) 
+                    .toList();
+
+                log.info("Linking {} dependencies with stubs logic for version {}", parsedDeps.size(), newId);
+                packageVersionGraphRepository.attachDependenciesWithStubs(newId, parsedDeps);
+            }
+
             log.info("Successfully published version {} with {} vulnerabilities", newId, 
                     (newVersionDTO.getVulnerabilities() != null ? newVersionDTO.getVulnerabilities().size() : 0));
 
-        } catch (Exception e) {  // <---------------------------- we have to think how handle dramatic rollback fails
-            // MongoDB manual rollback
-            log.error("Neo4j write failed! Rolling back MongoDB changes...", e);
-            packageVersionRepository.deleteById(newId);
-            pkg.getVersions().remove(version);
-            generalPackageRepository.save(pkg);
-            throw new ServiceException("Failed to update Graph DB. Transaction rolled back.");
+        } catch (Exception e) { 
+            try {
+                packageVersionRepository.deleteById(newId);
+                log.info("Deleted orphaned version document {} from MongoDB", newId);
+            } catch (Exception rollbackEx) {
+                log.error("Failed to delete version document {} during rollback!", newId, rollbackEx);
+            }
+
+            try {
+                generalPackageRepository.findById(packageName).ifPresent(p -> {
+                    boolean removed = p.getVersions().remove(version);
+                    if (removed) {
+                        generalPackageRepository.save(p);
+                        log.info("[Rollback] Removed version reference {} from package {} in MongoDB", version, packageName);
+                    }
+                });
+            } catch (Exception rollbackEx) {
+                log.error("Failed to remove version reference {} from package {} during rollback!", version, packageName, rollbackEx);
+            }
+
+            // If Neo4j write fails after creating the node, we have to delete the orphaned node
+            try {
+                if (packageVersionGraphRepository.existsById(newId)) {
+                    packageVersionGraphRepository.deleteById(newId);
+                    log.warn("Cleaned up zombie node {} from Neo4j", newId);
+                }
+            } catch (Exception neoEx) {
+                log.debug("Neo4j cleanup skipped or failed (node might not exist).");
+            }
+
+            throw new ServiceException("Failed to added new version.");
         }
     }
 
@@ -324,4 +361,36 @@ public class PackageService {
             throw new ServiceException("Failed to delete from Graph DB. Operation rolled back.");
         }
     }
+
+    private Map<String, String> parseDependencyForGraph(String rawDep) {
+        Matcher matcher = DEP_PATTERN.matcher(rawDep.trim());
+        Map<String, String> result = new HashMap<>();
+
+        if (matcher.find()) {
+            String pkgName = matcher.group(1);
+            String operator = matcher.group(2); 
+            String version = matcher.group(3); 
+
+            if (version == null || version.isEmpty()) {
+                version = "latest"; 
+                operator = "ANY"; 
+            } else if (operator == null) {
+                operator = "=="; 
+            }
+
+            result.put("pkgName", pkgName);
+            result.put("version", version);
+            result.put("operator", operator);
+            
+            result.put("targetId", pkgName + " " + version);
+        } else {
+            result.put("pkgName", rawDep);
+            result.put("version", "unknown");
+            result.put("operator", "unknown");
+            result.put("targetId", rawDep + " unknown");
+        }
+        return result;
+    }
+
 }
+

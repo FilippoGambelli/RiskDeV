@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.DTO;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
+@NoArgsConstructor
 public class PackageVersionDTO {
     @Schema(description = "Name of the package")
     private String packageName;
@@ -15,7 +17,7 @@ public class PackageVersionDTO {
     @Schema(description = "Version of the package")
     private String version;
 
-    @Schema(description = "Upload time of the package")
+    @Schema(description = "Upload time of the package", accessMode = Schema.AccessMode.READ_ONLY)
     private String uploadTime;
 
     @Schema(description = "Python version requirements (e.g., >=3.6)")
