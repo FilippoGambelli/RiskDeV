@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 
 @Data
-@Document(collection = "packageVersion")
+@Document(collection = "package_version")
 public class PackageVersion {
 
     @Id

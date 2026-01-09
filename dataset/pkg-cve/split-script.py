@@ -1,7 +1,7 @@
 import json
 
 def main():
-    with open("packages.json", "r", encoding="utf-8") as f:
+    with open("allInfoPackages.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
     general_packages = []
@@ -41,10 +41,10 @@ def main():
         })
 
     # Save outputs
-    with open("generalPackages.json", "w", encoding="utf-8") as f:
+    with open("packages.json", "w", encoding="utf-8") as f:
         json.dump(general_packages, f, indent=4)
 
-    with open("packageVersions.json", "w", encoding="utf-8") as f:
+    with open("packageVersion.json", "w", encoding="utf-8") as f:
         json.dump(package_versions, f, indent=4)
 
     print("Done: 'generalPackages.json' and 'packageVersions.json' created.")

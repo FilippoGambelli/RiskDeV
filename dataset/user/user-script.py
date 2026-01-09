@@ -4,8 +4,7 @@ import hashlib
 from pathlib import Path
 from typing import List, Dict
 
-PROJECTS_FILE = "../project/projects.json"
-OUTPUT_FILE = "users.json"
+PROJECTS_FILE = "../project/project.json"
 USER_COUNT = 200
 
 PASSWORD_SALT = "static_salt_for_demo_purposes"
@@ -132,7 +131,7 @@ def main() -> None:
     users = generate_users(project_ids)
 
     # Write users.json with project_ids
-    with open("users.json", "w", encoding="utf-8") as f:
+    with open("allInfoUsers.json", "w", encoding="utf-8") as f:
         json.dump(users, f, indent=2, ensure_ascii=False)
 
     # Prepare usersMongo.json without project_ids
@@ -143,7 +142,7 @@ def main() -> None:
             del user_copy["project_ids"]
         users_mongo.append(user_copy)
 
-    with open("usersMongo.json", "w", encoding="utf-8") as f:
+    with open("user.json", "w", encoding="utf-8") as f:
         json.dump(users_mongo, f, indent=2, ensure_ascii=False)
 
     print("Done!")

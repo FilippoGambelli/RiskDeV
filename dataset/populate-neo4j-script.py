@@ -11,11 +11,11 @@ from tqdm import tqdm
 # Configuration
 # ==========================================
 FILES = {
-    "packages": "pkg-cve/generalPackages.json",
-    "versions": "pkg-cve/packageVersions.json",
-    "vulnerabilities": "pkg-cve/vulnerabilities.json",
-    "projects": "project/projects.json",
-    "users": "user/users.json",
+    "packages": "pkg-cve/package.json",
+    "versions": "pkg-cve/packageVersion.json",
+    "vulnerabilities": "pkg-cve/vulnerability.json",
+    "projects": "project/project.json",
+    "users": "user/allInfoUsers.json",
 }
 
 NEO4J_URI = "bolt://localhost:7687"
