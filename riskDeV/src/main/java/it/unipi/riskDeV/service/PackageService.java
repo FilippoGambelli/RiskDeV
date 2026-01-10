@@ -2,9 +2,8 @@ package it.unipi.riskDeV.service;
 
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
-import it.unipi.riskDeV.exception.PackageNotFoundException;
-import it.unipi.riskDeV.exception.ServiceException;
-import it.unipi.riskDeV.exception.VersionFormatException;
+import it.unipi.riskDeV.common.DomainError;
+import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.model.Package;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
@@ -20,7 +19,6 @@ import it.unipi.riskDeV.repository.PackageGraphRepository;
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.model.neo4j.PackageNode;
 
-import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -43,84 +41,84 @@ public class PackageService {
     private static final Pattern DEP_PATTERN = Pattern.compile("^([a-zA-Z0-9_\\-.]+)\\s*([<>=!~]+)?\\s*(.*)$");
 
     // Get a package by its name
-    public GeneralPackageDTO getPackageByName(String packageName) {
-        Package pkg = generalPackageRepository.findById(packageName)
-                .orElseThrow(() -> new PackageNotFoundException(
-                    "Package " + packageName + " not found."
-                ));
-        
-        return new GeneralPackageDTO(pkg);
+    public Result<GeneralPackageDTO> getPackageByName(String packageName) {
+        var pkgOpt = generalPackageRepository.findById(packageName);
+
+        if (pkgOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+        }
+
+        return new Result.Success<>(new GeneralPackageDTO(pkgOpt.get()));
     }
 
     // Get information about a specific version of a package 
-    public PackageVersionDTO getPackageByNameVersion(String packageName, String packageVersion) {
-        PackageVersion pkg = packageVersionRepository.findById(packageName + " " + packageVersion)
-                .orElseThrow(() -> new PackageNotFoundException(
-                    "Package " + packageName + " " + packageVersion + "not found."
-                ));
+    public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
+        var pkgVerOpt = packageVersionRepository.findById(packageName + " " + packageVersion);
+        if (pkgVerOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
+        }
         
-        return new PackageVersionDTO(pkg);
+        return new Result.Success<>(new PackageVersionDTO(pkgVerOpt.get()));
     }
 
     // Get all the dependencies required by a package
-    public List<String> getPackagesDependingOn(String packageName) {
+    public Result<List<String>> getPackagesDependingOn(String packageName) {
         log.info("Searching for packages depending on: {}", packageName);
 
         // Checking if the package exists
         if (!packageGraphRepository.existsById(packageName)) {
-            throw new PackageNotFoundException("Package " + packageName + " not found.");
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
         }
 
-        List<PackageVersionNode> dependents = packageVersionGraphRepository.findReverseDependencies(packageName);
-        
-        return dependents.stream()
-                .map(PackageVersionNode::getId)
-                .collect(Collectors.toList());
+        try {
+            var dependents = packageVersionGraphRepository.findReverseDependencies(packageName);
+            var ids = dependents.stream().map(PackageVersionNode::getId).toList();
+            return new Result.Success<>(ids);
+        } catch (Exception e) {
+            return new Result.Failure<>(new DomainError.SystemError("Neo4j error fetching dependents", e));
+        }
     }
 
     // Get all the dependencies of a specific package
-    public List<String> getDirectDependencies(String packageName, String version) {
+    public Result<List<String>> getDirectDependencies(String packageName, String version) {
         // Id is defined as packageName + ' ' + version
         String versionId = packageName + " " + version;
         log.info("Searching for direct dependencies of: {}", versionId);
 
         // Checking if the node exists
         if (!packageVersionGraphRepository.existsById(versionId)) {
-            throw new PackageNotFoundException("Package version " + versionId + " not found in the graph.");
+            return new Result.Failure<>(new DomainError.NotFound("Package version " + versionId + " not found in the graph."));
         }
 
         List<PackageVersionNode> dependencies = packageVersionGraphRepository.findDirectDependencies(versionId);
-
-        return dependencies.stream()
-                .map(PackageVersionNode::getId)
-                .collect(Collectors.toList());
+        var ids = dependencies.stream().map(PackageVersionNode::getId).toList();
+        return new Result.Success<>(ids);
     }
 
     // Get versions without CVEs of a specific package
-    public List<PackageVersionDTO> getSafeVersions(String packageName) {
+    public Result<List<PackageVersionDTO>> getSafeVersions(String packageName) {
         log.info("Searching for safe versions of package: {}", packageName);
 
         // Checking if the package exists
         if (!generalPackageRepository.existsById(packageName)) {
-            throw new PackageNotFoundException("Package " + packageName + " not found.");
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
         }
 
         List<PackageVersion> safeVersions = packageVersionRepository.findSafeVersions(packageName);
 
         // Mapping a DTO
-        return safeVersions.stream()
-                .map(PackageVersionDTO::new)
-                .collect(Collectors.toList());
+        var versions = safeVersions.stream().map(PackageVersionDTO::new).toList();
+        return new Result.Success<>(versions);
     }
 
     // Add a new package
-    public void addNewPackage(GeneralPackageDTO packageDTO) {
+    public Result<Void> addNewPackage(GeneralPackageDTO packageDTO) {
         String packageName = packageDTO.getPackageName();
         log.info("Registering new package: {}", packageName);
 
         // Checks for validation
         if (generalPackageRepository.existsById(packageName)) {
-            throw new ServiceException("Package " + packageName + " already exists.");
+            return new Result.Failure<>(new DomainError.AlreadyExists("Package " + packageName + " already exists."));
         }
 
         // Write on MongoDB
@@ -156,28 +154,29 @@ public class PackageService {
             } catch (Exception rollbackEx) {
                 log.error("CRITICAL: Failed to rollback package creation for {}", packageName);
             }
-            
-            throw new ServiceException("Failed to create package in Graph DB. Operation rolled back.");
+            return new Result.Failure<>(new DomainError.SystemError("Failed to create package", e));
         }
+        
+        return new Result.Success<>();
     }
 
     // Add a new version of an existing package
-    public void addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
+    public Result<Void> addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
         String version = newVersionDTO.getVersion();
         String newId = packageName + " " + version;
         log.info("Adding new version {} to package {}", version, packageName);
 
         // Checks for validation
-        Package pkg = generalPackageRepository.findById(packageName)
-                .orElseThrow(() -> new PackageNotFoundException("Package " + packageName + " not found."));
-
-        if (packageVersionRepository.existsById(newId)) {
-            throw new ServiceException("Version " + version + " already exists.");
+        var optPkg = generalPackageRepository.findById(packageName);
+        if (optPkg.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
         }
 
+        if (packageVersionRepository.existsById(newId)) {
+            return new Result.Failure<>(new DomainError.AlreadyExists("Version " + version + " already exists."));
+        }
 
         // --- Write on MongoDB ---
-
         // Creation of the document
         PackageVersion versionDoc = new PackageVersion();
         versionDoc.setId(newId);
@@ -196,6 +195,7 @@ public class PackageService {
         packageVersionRepository.save(versionDoc);
 
         // Update of the father (Package)
+        var pkg = optPkg.get();
         if (pkg.getVersions() == null) pkg.setVersions(new ArrayList<>());
         pkg.getVersions().add(version);
         generalPackageRepository.save(pkg);
@@ -204,7 +204,7 @@ public class PackageService {
         // --- Write on Neo4j ---
         try {
             if (!packageGraphRepository.existsById(packageName)) {
-                throw new PackageNotFoundException("Package " + packageName + " not found in the system.");
+                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
             }
 
             PackageVersionNode versionNode = new PackageVersionNode();
@@ -220,7 +220,7 @@ public class PackageService {
                 if (parts.length > 2) versionNode.setPatch(Integer.parseInt(parts[2]));
             } catch (Exception e) { 
                 log.warn("Failed to parse version {} into major.minor.patch", version);
-                throw new VersionFormatException("Failed to parse version " + version);
+                return new Result.Failure<>(new DomainError.InvalidOperation("Failed to parse version " + version));
             }
 
             packageVersionGraphRepository.save(versionNode);
@@ -277,18 +277,23 @@ public class PackageService {
                 log.debug("Neo4j cleanup skipped or failed (node might not exist).");
             }
 
-            throw new ServiceException("Failed to added new version.");
+            return new Result.Failure<>(new DomainError.SystemError("Failed to added new version.", e));
         }
+
+        return new Result.Success<>();
     }
 
     // Update package's metadata
-    public GeneralPackageDTO updatePackageMetadata(String packageName, GeneralPackageDTO updateData) {
+    public Result<GeneralPackageDTO> updatePackageMetadata(String packageName, GeneralPackageDTO updateData) {
         log.info("Updating metadata for package: {}", packageName);
 
         // Searching for the document
-        Package pkg = generalPackageRepository.findById(packageName)
-                .orElseThrow(() -> new PackageNotFoundException("Package " + packageName + " not found."));
+        var optPkg = generalPackageRepository.findById(packageName);
+        if (optPkg.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+        }
 
+        var pkg = optPkg.get();
         // Update of information (not id and versions, there are other queries to add/delete versions)
         pkg.setAuthor(updateData.getAuthor());
         pkg.setAuthorEmail(updateData.getAuthorEmail());
@@ -300,25 +305,30 @@ public class PackageService {
 
         // Save
         Package updatedPkg = generalPackageRepository.save(pkg);
-        return new GeneralPackageDTO(updatedPkg);
+        return new Result.Success<>(new GeneralPackageDTO(updatedPkg));
     }
 
     // Delete a specific version of a package
-    public void deletePackageVersion(String packageName, String version) {
+    public Result<Void> deletePackageVersion(String packageName, String version) {
         String versionId = packageName + " " + version;
         log.info("Deleting version {} of package {}", version, packageName);
 
         // Check for validation and backup for rollback
-        Package pkg = generalPackageRepository.findById(packageName)
-                .orElseThrow(() -> new PackageNotFoundException("Package " + packageName + " not found."));
+        var optPkg = generalPackageRepository.findById(packageName);
+        if (optPkg.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found.")); 
+        }
 
-        PackageVersion versionDoc = packageVersionRepository.findById(versionId)
-                .orElseThrow(() -> new PackageNotFoundException("Version " + version + " not found."));
+        var optVersionDoc = packageVersionRepository.findById(versionId);
+        if (optVersionDoc.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Version " + version + " not found."));
+        }
 
         // Delete on MongoDB
         packageVersionRepository.deleteById(versionId);
 
         // Remove version from father lists
+        var pkg = optPkg.get();
         boolean removed = false;
         if (pkg.getVersions() != null) {
             removed = pkg.getVersions().remove(version);
@@ -341,6 +351,7 @@ public class PackageService {
 
             try {
                 // Save again the versionDoc (backup), MongoDB uses the same id so not problems
+                var versionDoc = optVersionDoc.get();
                 packageVersionRepository.save(versionDoc);
 
                 // Link again with the father (GeneralPackage)
@@ -355,11 +366,13 @@ public class PackageService {
                 // If the rollback fails, we have to see how to handle it properly --------------------------------------
                 log.error("CRITICAL: Failed to rollback DELETE for {}", versionId);
                 log.error("Data is now deleted from Mongo but orphaned in Neo4j.");
-                throw new ServiceException("System Error: Critical data inconsistency during deletion.");
+                return new Result.Failure<>(new DomainError.SystemError("System Error: Critical data inconsistency during deletion.", e));
             }
 
-            throw new ServiceException("Failed to delete from Graph DB. Operation rolled back.");
+            return new Result.Failure<>(new DomainError.SystemError("Failed to delete from Graph DB. Operation rolled back.", e));
         }
+
+        return new Result.Success<>();
     }
 
     private Map<String, String> parseDependencyForGraph(String rawDep) {

@@ -89,20 +89,22 @@ public class AuthService {
 
         log.info("Authenticating user.");
 
-        return userRepository.findById(request.getUsername())
-            .map(user -> {
-                if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                    log.warn("Authentication failed for user: {}", request.getUsername());
-                    return new Result.Failure<AuthResponseDTO>(new DomainError.InvalidCredentials("Invalid username or password"));
-                }
-                String token = jwtUtil.generateToken(user.getId(), user.getRole());
-                log.info("User logged in successfully.");
-                return new Result.Success<AuthResponseDTO>(new AuthResponseDTO(token, user.getId(), user.getEmail()));
-            })
-            .orElseGet(() -> {
-                log.warn("Authentication failed for user: {}", request.getUsername());
-                return new Result.Failure<AuthResponseDTO>(new DomainError.InvalidCredentials("Invalid username or password"));
-            });
+        var userOpt = userRepository.findById(request.getUsername());
+        if (userOpt.isEmpty()) {
+            log.warn("User not found: {}", request.getUsername());
+            return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
+        }
+
+        var user = userOpt.get();
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            log.warn("Authentication failed for user: {}", request.getUsername());
+            return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
+        }
+
+        String token = jwtUtil.generateToken(user.getId(), user.getRole());
+        log.info("User {} logged in successfully.", user.getId());
+
+        return new Result.Success<>(new AuthResponseDTO(token, user.getId(), user.getEmail()));
     }   
 
     public Result<Map<String, String>> deleteAccount(String userId) {

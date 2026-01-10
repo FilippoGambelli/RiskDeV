@@ -13,7 +13,6 @@ import it.unipi.riskDeV.DTO.InstalledPackageDTO;
 import it.unipi.riskDeV.DTO.ProjectDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.exception.ProjectNotFoundException;
 import it.unipi.riskDeV.repository.ProjectGraphRepository;
 import it.unipi.riskDeV.repository.UserGraphRepository;
 import it.unipi.riskDeV.model.neo4j.ProjectNode;
@@ -85,7 +84,7 @@ public class ProjectService {
         log.info("Requesting deletion of project {} for user: {}", projectId, userId);
 
         if (!projectGraphRepository.existsById(projectId)) {
-             throw new ProjectNotFoundException("Project with ID " + projectId + " not found.");
+            return new Result.Failure<String>(new DomainError.NotFound("Project with ID " + projectId + " not found."));
         }
 
         try {
