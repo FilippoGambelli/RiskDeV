@@ -131,8 +131,6 @@ public class PackageService {
         pkg.setSummary(packageDTO.getSummary());
         pkg.setDocumentationURL(packageDTO.getDocumentationURL());
         pkg.setHomepageURL(packageDTO.getHomepageURL());
-        pkg.setVersions(new ArrayList<>()); // The versions can be added with a specific query
-
         generalPackageRepository.save(pkg);
 
         // Write on Neo4j
@@ -157,7 +155,7 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to create package", e));
         }
         
-        return new Result.Success<>();
+        return new Result.Success<>(null);
     }
 
     // Add a new version of an existing package
@@ -167,8 +165,7 @@ public class PackageService {
         log.info("Adding new version {} to package {}", version, packageName);
 
         // Checks for validation
-        var optPkg = generalPackageRepository.findById(packageName);
-        if (optPkg.isEmpty()) {
+        if (!generalPackageRepository.existsById(packageName)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
         }
 
@@ -193,12 +190,6 @@ public class PackageService {
 
         // Save of the document
         packageVersionRepository.save(versionDoc);
-
-        // Update of the father (Package)
-        var pkg = optPkg.get();
-        if (pkg.getVersions() == null) pkg.setVersions(new ArrayList<>());
-        pkg.getVersions().add(version);
-        generalPackageRepository.save(pkg);
 
 
         // --- Write on Neo4j ---
@@ -255,18 +246,6 @@ public class PackageService {
                 log.error("Failed to delete version document {} during rollback!", newId, rollbackEx);
             }
 
-            try {
-                generalPackageRepository.findById(packageName).ifPresent(p -> {
-                    boolean removed = p.getVersions().remove(version);
-                    if (removed) {
-                        generalPackageRepository.save(p);
-                        log.info("[Rollback] Removed version reference {} from package {} in MongoDB", version, packageName);
-                    }
-                });
-            } catch (Exception rollbackEx) {
-                log.error("Failed to remove version reference {} from package {} during rollback!", version, packageName, rollbackEx);
-            }
-
             // If Neo4j write fails after creating the node, we have to delete the orphaned node
             try {
                 if (packageVersionGraphRepository.existsById(newId)) {
@@ -280,7 +259,7 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to added new version.", e));
         }
 
-        return new Result.Success<>();
+        return new Result.Success<>(null);
     }
 
     // Update package's metadata
@@ -327,14 +306,6 @@ public class PackageService {
         // Delete on MongoDB
         packageVersionRepository.deleteById(versionId);
 
-        // Remove version from father lists
-        var pkg = optPkg.get();
-        boolean removed = false;
-        if (pkg.getVersions() != null) {
-            removed = pkg.getVersions().remove(version);
-            generalPackageRepository.save(pkg);
-        }
-
         // Delete from Neo4j
         try {
             // deleteById remove node and its relationships
@@ -353,12 +324,6 @@ public class PackageService {
                 // Save again the versionDoc (backup), MongoDB uses the same id so not problems
                 var versionDoc = optVersionDoc.get();
                 packageVersionRepository.save(versionDoc);
-
-                // Link again with the father (GeneralPackage)
-                if (removed) {
-                    pkg.getVersions().add(version);
-                    generalPackageRepository.save(pkg);
-                }
                 
                 log.info("Rollback successful. Data restored on Mongo.");
 
@@ -372,7 +337,7 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to delete from Graph DB. Operation rolled back.", e));
         }
 
-        return new Result.Success<>();
+        return new Result.Success<>(null);
     }
 
     private Map<String, String> parseDependencyForGraph(String rawDep) {

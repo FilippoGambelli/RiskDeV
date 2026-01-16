@@ -32,5 +32,4 @@ public class Package {
     @Field("homepage")
     private String homepageURL;
 
-    private List<String> versions;
 }

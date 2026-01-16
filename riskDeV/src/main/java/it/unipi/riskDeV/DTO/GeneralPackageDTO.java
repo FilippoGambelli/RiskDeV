@@ -50,9 +50,6 @@ public class GeneralPackageDTO {
     @Schema(description = "The official homepage URL of the package")
     private String homepageURL;
 
-    @Schema(description = "List of version numbers (Read Only)", accessMode = Schema.AccessMode.READ_ONLY)
-    private List<String> versions;
-
     public GeneralPackageDTO(Package model) {
         this.packageName = model.getId();
         this.author = model.getAuthor();
@@ -62,6 +59,5 @@ public class GeneralPackageDTO {
         this.summary = model.getSummary();
         this.documentationURL = model.getDocumentationURL();
         this.homepageURL = model.getHomepageURL();
-        this.versions = model.getVersions();
     }
 }
