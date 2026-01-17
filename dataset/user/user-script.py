@@ -73,7 +73,7 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
 
         users.append(
             {
-                "_id": username,
+                "username": username,
                 "first_name": first,
                 "last_name": last,
                 "email": generate_email(username),
@@ -103,7 +103,7 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
 
         users.append(
             {
-                "_id": username,
+                "username": username,
                 "first_name": first,
                 "last_name": last,
                 "username": username,
@@ -114,7 +114,6 @@ def generate_users(project_ids: List[str]) -> List[Dict]:
             }
         )
 
-    # ---- assign admins here ----
     admin_count = min(ADMIN_COUNT, len(users))
     admin_indices = random.sample(range(len(users)), k=admin_count)
 

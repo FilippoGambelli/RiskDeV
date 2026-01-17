@@ -1,0 +1,3638 @@
+[
+    {
+        "uuid": "e8e4c06b-0c64-44bb-ad1e-ff020375b0aa",
+        "name": "Vertex Service",
+        "description": "Vertex Service is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2020-11-24T11:47:57",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "8765598e-6579-440e-b5b3-52395fbdad72",
+        "name": "Beta Manager",
+        "description": "Beta Manager is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2019-10-19T02:25:25",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "7cf59844-7153-4a3a-8700-0328f0c41530",
+        "name": "Orbit Core",
+        "description": "Orbit Core is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2025-02-02T14:17:31",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "04ed05c9-0a70-4bb1-8639-f1df4960d413",
+        "name": "Orbit Collector",
+        "description": "Orbit Collector is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2025-11-19T19:30:32",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "3a79009e-74e5-4659-92c6-eba0753b0831",
+        "name": "Pulse Runner",
+        "description": "Pulse Runner is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2021-05-13T07:35:20",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "d0bcd45a-d71b-4e73-ba10-d4775c5bfebb",
+        "name": "Pulse Dashboard",
+        "description": "Pulse Dashboard is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2019-10-28T11:41:45",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "785670c7-986d-4274-bd52-d0545b633841",
+        "name": "Atlas Core",
+        "description": "Atlas Core is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2019-09-02T19:46:06",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "db5a7d21-5411-4ca6-9f48-5368a50411dc",
+        "name": "Lighthouse Manager",
+        "description": "Lighthouse Manager is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2025-07-29T20:09:12",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "77fec6e7-1459-4338-aa05-280b3f636736",
+        "name": "Beta Engine",
+        "description": "Beta Engine is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2022-11-09T16:43:21",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "e59b1d09-cd0d-4851-8584-5bdca08df166",
+        "name": "Atlas Lab",
+        "description": "Atlas Lab is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2024-03-07T12:05:59",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "9d36ec3b-0be8-4456-bcfe-5b78800c4b82",
+        "name": "Orbit Gateway",
+        "description": "Orbit Gateway is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2022-03-24T22:14:55",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "7bd4fc8e-1196-4126-a8b4-4646fb9c2845",
+        "name": "Vertex Gateway",
+        "description": "Vertex Gateway is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2022-05-31T09:00:53",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "6a247a7c-2e4a-48ed-b26a-9fc868224ce9",
+        "name": "Delta Core",
+        "description": "Delta Core is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2020-03-19T21:16:40",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "dbe6cf55-5f59-4fb4-a77f-4b8110e271d9",
+        "name": "Delta Gateway",
+        "description": "Delta Gateway is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2020-11-12T09:44:27",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "7f59d255-819e-40ed-a8e9-12b548bb41e8",
+        "name": "Gamma Analyzer",
+        "description": "Gamma Analyzer is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2024-05-03T09:46:04",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "9d27bf2d-8b2e-40b0-a3e6-04f82efd7e31",
+        "name": "Vertex Collector",
+        "description": "Vertex Collector is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2024-10-14T13:36:26",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "a102ab66-7d45-4dc0-a49d-609bb41468c7",
+        "name": "Vertex Analyzer",
+        "description": "Vertex Analyzer is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2020-05-06T09:05:48",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "17cf79ec-a936-4b46-9463-d5d3bfa5f3a6",
+        "name": "Aperture Gateway",
+        "description": "Aperture Gateway is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2024-06-08T03:31:38",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "fe01ad8c-59ca-4e0b-a502-43a17a492c5b",
+        "name": "Delta Lab",
+        "description": "Delta Lab is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2019-03-02T12:17:28",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "a6086c37-8a19-4b36-9d44-9d3ebe9ede03",
+        "name": "Atlas Runner",
+        "description": "Atlas Runner is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2019-09-24T02:47:02",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "d3b6e074-46e9-420f-abbf-b1af39c00896",
+        "name": "Lighthouse Service",
+        "description": "Lighthouse Service is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2023-06-28T10:12:32",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "d15fea2f-6f2b-48e7-8a9a-12474315e847",
+        "name": "Nimbus Engine",
+        "description": "Nimbus Engine is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2020-01-11T22:43:37",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "3850d947-8670-498d-a711-a766b907b1ac",
+        "name": "Beta Dashboard",
+        "description": "Beta Dashboard is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2024-01-03T05:16:31",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "41c70575-5a76-4059-a609-cacb270bfaa3",
+        "name": "Beta Gateway",
+        "description": "Beta Gateway is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2023-05-17T10:15:33",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "2904e059-2024-4c1c-bc53-d15f6ab29c27",
+        "name": "Vertex Studio",
+        "description": "Vertex Studio is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2025-02-25T09:04:34",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "8d420df9-237b-4480-9dc5-31a0bfd0cdda",
+        "name": "Zenith Core",
+        "description": "Zenith Core is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2019-10-21T01:26:29",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "010e8f5c-00f9-4786-84c5-1e037bb87373",
+        "name": "Nimbus Dashboard",
+        "description": "Nimbus Dashboard is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2019-07-08T07:36:30",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "fe61adc2-08c9-4ebf-8d50-dd82c1077b0c",
+        "name": "Atlas Runner 2",
+        "description": "Atlas Runner 2 is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2020-08-13T23:00:14",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "eb8f7ac7-59cf-4e5c-a86f-b1adbf280765",
+        "name": "Gamma Collector",
+        "description": "Gamma Collector is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2021-02-15T02:55:07",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "f48054f1-663c-442c-ae70-f11a499f1c18",
+        "name": "Beta Studio",
+        "description": "Beta Studio is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2020-05-31T17:03:18",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "0a88733d-f513-477d-9eff-56d5ca8e1658",
+        "name": "Vector Engine",
+        "description": "Vector Engine is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2022-04-27T23:57:22",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "d818da40-c13e-4b3e-a69e-531d36420df2",
+        "name": "Pulse Runner 2",
+        "description": "Pulse Runner 2 is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2020-08-12T23:48:40",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "a29a292b-4985-4e34-979b-182c2b4c108b",
+        "name": "Alpha Core",
+        "description": "Alpha Core is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2023-12-20T23:26:19",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "c1539808-b53a-42c3-9beb-4812cc00ccc4",
+        "name": "Lighthouse Analyzer",
+        "description": "Lighthouse Analyzer is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2020-07-31T08:06:49",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "cf9a9b10-be88-4a50-ac46-4e9ca918d2f2",
+        "name": "Beta Manager 2",
+        "description": "Beta Manager 2 is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2023-11-05T22:04:39",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "a94b243f-ab0e-4ac9-93ac-a4b263a4e1da",
+        "name": "Zenith Pipeline",
+        "description": "Zenith Pipeline is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2024-09-11T18:23:17",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "8c7d732d-73ca-4f2e-a8bd-b535c6aa3e2f",
+        "name": "Delta Toolkit",
+        "description": "Delta Toolkit is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2025-05-24T23:04:47",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "b577309f-d8c2-4489-955a-2facbfa503e0",
+        "name": "Alpha Studio",
+        "description": "Alpha Studio is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2021-12-20T07:59:05",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "2e1db580-fdcf-4f25-adbd-6ee27a46c95c",
+        "name": "Delta Dashboard",
+        "description": "Delta Dashboard is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2024-09-05T23:29:23",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "c864bb27-dc61-4572-ad64-678145d3ef19",
+        "name": "Echo Manager",
+        "description": "Echo Manager is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2019-12-25T14:59:06",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "56509a47-15c0-410f-9ad9-66bdf20d0e65",
+        "name": "Aperture Analyzer",
+        "description": "Aperture Analyzer is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2024-02-23T03:22:50",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "13e28dba-93e3-48bc-ad27-1104ea957277",
+        "name": "Atlas Engine",
+        "description": "Atlas Engine is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2021-05-09T14:46:23",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "0ae758cb-e474-4711-8bc1-ecc8692d89e2",
+        "name": "Atlas Runner 3",
+        "description": "Atlas Runner 3 is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2025-04-21T22:10:57",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "25c68c53-f272-4012-933a-209050ede543",
+        "name": "Aperture Collector",
+        "description": "Aperture Collector is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2023-12-15T19:03:41",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "46b684f4-7dc3-4eab-b6b5-9d9ad3abb63d",
+        "name": "Nimbus Lab",
+        "description": "Nimbus Lab is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2025-10-09T11:10:53",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "cf733d07-cb88-435a-98d1-e8f8f4a28103",
+        "name": "Alpha Dashboard",
+        "description": "Alpha Dashboard is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2022-01-03T20:11:24",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "22c196e6-b301-4de6-ba21-1818f7af9090",
+        "name": "Lighthouse Collector",
+        "description": "Lighthouse Collector is a Python project that uses 3 popular libraries to support development tasks.",
+        "last_update": "2020-07-11T06:06:01",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "fd00cc6b-63c1-4ef6-8c38-d319b0c1c5c7",
+        "name": "Atlas Runner 4",
+        "description": "Atlas Runner 4 is a Python project that uses 2 popular libraries to support development tasks.",
+        "last_update": "2022-04-03T12:22:41",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "5a36c8f1-98cc-4c50-a469-3c6c658ccb07",
+        "name": "Lighthouse Studio",
+        "description": "Lighthouse Studio is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2021-12-22T08:25:18",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    },
+    {
+        "uuid": "8af29f3a-a578-417d-b8c9-4b3dcfa90912",
+        "name": "Pulse Engine",
+        "description": "Pulse Engine is a Python project that uses 1 popular libraries to support development tasks.",
+        "last_update": "2022-05-22T23:46:37",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ]
+    }
+]

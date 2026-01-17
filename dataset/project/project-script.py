@@ -120,7 +120,7 @@ def generate_project(existing_names: set) -> Dict[str, Any]:
     )
 
     return {
-        "_id": str(uuid.uuid4()),
+        "uuid": str(uuid.uuid4()),
         "name": name,
         "description": description,
         "last_update": last_update,
