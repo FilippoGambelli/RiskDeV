@@ -4,10 +4,8 @@ import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.model.Package;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
-import it.unipi.riskDeV.repository.GeneralPackageRepository;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,15 +32,14 @@ import java.time.Instant;
 @Slf4j
 public class PackageService {
 
-    private final GeneralPackageRepository generalPackageRepository;
     private final PackageVersionRepository packageVersionRepository;
     private final PackageGraphRepository packageGraphRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
     private static final Pattern DEP_PATTERN = Pattern.compile("^([a-zA-Z0-9_\\-.]+)\\s*([<>=!~]+)?\\s*(.*)$");
 
-    // Get a package by its name
+    // Get a package by its name (returns metadata from the latest version)
     public Result<GeneralPackageDTO> getPackageByName(String packageName) {
-        var pkgOpt = generalPackageRepository.findById(packageName);
+        var pkgOpt = packageVersionRepository.findTopByPackageNameOrderByUploadTimeDesc(packageName);
 
         if (pkgOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
@@ -53,7 +50,7 @@ public class PackageService {
 
     // Get information about a specific version of a package 
     public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
-        var pkgVerOpt = packageVersionRepository.findById(packageName + " " + packageVersion);
+        var pkgVerOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
         if (pkgVerOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
         }
@@ -65,7 +62,7 @@ public class PackageService {
     public Result<List<String>> getPackagesDependingOn(String packageName) {
         log.info("Searching for packages depending on: {}", packageName);
 
-        // Checking if the package exists
+        // Checking if the package exists on neo4j
         if (!packageGraphRepository.existsById(packageName)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
         }
@@ -100,7 +97,7 @@ public class PackageService {
         log.info("Searching for safe versions of package: {}", packageName);
 
         // Checking if the package exists
-        if (!generalPackageRepository.existsById(packageName)) {
+        if (!packageVersionGraphRepository.existsById(packageName)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
         }
 
@@ -111,25 +108,15 @@ public class PackageService {
         return new Result.Success<>(versions);
     }
 
-    // Add a new package
+    // Add a new package (only Neo4j)
     public Result<Void> addNewPackage(GeneralPackageDTO packageDTO) {
         String packageName = packageDTO.getPackageName();
-        log.info("Registering new package: {}", packageName);
+        log.info("Registering new package structure for: {}", packageName);
 
-        // Checks for validation
-        if (generalPackageRepository.existsById(packageName)) {
+        // Checks for validation on Neo4j
+        if (packageGraphRepository.existsById(packageName)) {
             return new Result.Failure<>(new DomainError.AlreadyExists("Package " + packageName + " already exists."));
         }
-
-        // Write on MongoDB
-        Package pkg = new Package();
-        pkg.setId(packageName);
-        pkg.setAuthor(packageDTO.getAuthor());
-        pkg.setAuthorEmail(packageDTO.getAuthorEmail());
-        pkg.setDescription(packageDTO.getDescription());
-        pkg.setPackageURL(packageDTO.getPackageURL());
-        pkg.setDocumentationURL(packageDTO.getDocumentationURL());
-        generalPackageRepository.save(pkg);
 
         // Write on Neo4j
         try {
@@ -138,19 +125,10 @@ public class PackageService {
             
             packageGraphRepository.save(packageNode);
             
-            log.info("Successfully registered package {}", packageName);
+            log.info("Successfully registered package node {}", packageName);
 
-        } catch (Exception e) {  // <----------- we have to think about rollback fails
-            // MongoDB rollback
-            log.error("Neo4j write failed for package {}. Rolling back Mongo...", packageName, e);
-            
-            try {
-                generalPackageRepository.deleteById(packageName);
-                log.info("Rollback successful.");
-            } catch (Exception rollbackEx) {
-                log.error("CRITICAL: Failed to rollback package creation for {}", packageName);
-            }
-            return new Result.Failure<>(new DomainError.SystemError("Failed to create package", e));
+        } catch (Exception e) {
+            return new Result.Failure<>(new DomainError.SystemError("Failed to create package node", e));
         }
         
         return new Result.Success<>(null);
@@ -159,22 +137,20 @@ public class PackageService {
     // Add a new version of an existing package
     public Result<Void> addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
         String version = newVersionDTO.getVersion();
-        String newId = packageName + " " + version;
         log.info("Adding new version {} to package {}", version, packageName);
 
         // Checks for validation
-        if (!generalPackageRepository.existsById(packageName)) {
-            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+        if (!packageGraphRepository.existsById(packageName)) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found (please register it first)."));
         }
 
-        if (packageVersionRepository.existsById(newId)) {
+        if (packageVersionRepository.existsByPackageNameAndVersion(packageName, version)) {
             return new Result.Failure<>(new DomainError.AlreadyExists("Version " + version + " already exists."));
         }
 
         // --- Write on MongoDB ---
         // Creation of the document
         PackageVersion versionDoc = new PackageVersion();
-        versionDoc.setId(newId);
         versionDoc.setPackageName(packageName);
         versionDoc.setVersion(version);
         versionDoc.setUploadTime(Instant.now().toString());
@@ -185,19 +161,38 @@ public class PackageService {
         } else {
             versionDoc.setVulnerabilities(new ArrayList<>());
         }
+        versionDoc.setAuthor(newVersionDTO.getAuthor());
+        versionDoc.setAuthorEmail(newVersionDTO.getAuthorEmail());
+        versionDoc.setDescription(newVersionDTO.getDescription());
+        versionDoc.setPackageURL(newVersionDTO.getPackageURL());
+        versionDoc.setDocumentationURL(newVersionDTO.getDocumentationURL());
+
+        // If we miss general metadata we can retrieve them from the latest version of that package (it's a fallback)
+        if (versionDoc.getAuthor() == null || versionDoc.getDescription() == null) {
+            var previousVersionOpt = packageVersionRepository.findTopByPackageNameOrderByUploadTimeDesc(packageName);
+            if (previousVersionOpt.isPresent()) {
+                PackageVersion prev = previousVersionOpt.get();
+                if (versionDoc.getAuthor() == null) versionDoc.setAuthor(prev.getAuthor());
+                if (versionDoc.getAuthorEmail() == null) versionDoc.setAuthorEmail(prev.getAuthorEmail());
+                if (versionDoc.getDescription() == null) versionDoc.setDescription(prev.getDescription());
+                if (versionDoc.getPackageURL() == null) versionDoc.setPackageURL(prev.getPackageURL());
+                if (versionDoc.getDocumentationURL() == null) versionDoc.setDocumentationURL(prev.getDocumentationURL());
+            }
+        }
 
         // Save of the document
         packageVersionRepository.save(versionDoc);
 
 
         // --- Write on Neo4j ---
+        String neo4jVersionId = packageName + " " + version;
         try {
             if (!packageGraphRepository.existsById(packageName)) {
                 return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
             }
 
             PackageVersionNode versionNode = new PackageVersionNode();
-            versionNode.setId(newId);
+            versionNode.setId(neo4jVersionId);
             versionNode.setVersion(version);
             versionNode.setIsStub(false);
             
@@ -213,15 +208,14 @@ public class PackageService {
             }
 
             packageVersionGraphRepository.save(versionNode);
-
-            packageGraphRepository.addVersionToPackage(packageName, newId);
+            packageGraphRepository.addVersionToPackage(packageName, neo4jVersionId);
 
             if (newVersionDTO.getVulnerabilities() != null && !newVersionDTO.getVulnerabilities().isEmpty()) {
                 List<String> cveIds = newVersionDTO.getVulnerabilities().stream()
                     .map(EmbeddedVulnerability::getCveId)
                     .toList();
 
-                packageVersionGraphRepository.attachVulnerabilities(newId, cveIds);
+                packageVersionGraphRepository.attachVulnerabilities(neo4jVersionId, cveIds);
             }
 
             if (newVersionDTO.getDependencies() != null && !newVersionDTO.getDependencies().isEmpty()) {
@@ -229,26 +223,29 @@ public class PackageService {
                     .map(this::parseDependencyForGraph) 
                     .toList();
 
-                log.info("Linking {} dependencies with stubs logic for version {}", parsedDeps.size(), newId);
-                packageVersionGraphRepository.attachDependenciesWithStubs(newId, parsedDeps);
+                log.info("Linking {} dependencies with stubs logic for version {}", parsedDeps.size(), neo4jVersionId);
+                packageVersionGraphRepository.attachDependenciesWithStubs(neo4jVersionId, parsedDeps);
             }
 
-            log.info("Successfully published version {} with {} vulnerabilities", newId, 
+            log.info("Successfully published version {} with {} vulnerabilities", neo4jVersionId,
                     (newVersionDTO.getVulnerabilities() != null ? newVersionDTO.getVulnerabilities().size() : 0));
 
         } catch (Exception e) { 
+            // Rollback MongoDB
             try {
-                packageVersionRepository.deleteById(newId);
-                log.info("Deleted orphaned version document {} from MongoDB", newId);
+                if (versionDoc.getId() != null) {
+                    packageVersionRepository.deleteById(versionDoc.getId());
+                    log.info("Rollback: Deleted version document from MongoDB");
+                }
             } catch (Exception rollbackEx) {
-                log.error("Failed to delete version document {} during rollback!", newId, rollbackEx);
+                log.error("Failed to rollback MongoDB insertion", rollbackEx);
             }
 
             // If Neo4j write fails after creating the node, we have to delete the orphaned node
             try {
-                if (packageVersionGraphRepository.existsById(newId)) {
-                    packageVersionGraphRepository.deleteById(newId);
-                    log.warn("Cleaned up zombie node {} from Neo4j", newId);
+                if (packageVersionGraphRepository.existsById(neo4jVersionId)) {
+                    packageVersionGraphRepository.deleteById(neo4jVersionId);
+                    log.warn("Cleaned up zombie node {} from Neo4j", neo4jVersionId);
                 }
             } catch (Exception neoEx) {
                 log.debug("Neo4j cleanup skipped or failed (node might not exist).");
@@ -260,77 +257,65 @@ public class PackageService {
         return new Result.Success<>(null);
     }
 
-    // Update package's metadata
+    // Update package's metadata (propagates to all versions)
     public Result<GeneralPackageDTO> updatePackageMetadata(String packageName, GeneralPackageDTO updateData) {
-        log.info("Updating metadata for package: {}", packageName);
+        log.info("Updating metadata for all the version of package: {}", packageName);
 
-        // Searching for the document
-        var optPkg = generalPackageRepository.findById(packageName);
-        if (optPkg.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+        // Find all the versions
+        List<PackageVersion> allVersions = packageVersionRepository.findByPackageName(packageName);
+        
+        if (allVersions.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found or has no versions."));
         }
 
-        var pkg = optPkg.get();
-        // Update of information (not id and versions, there are other queries to add/delete versions)
-        pkg.setAuthor(updateData.getAuthor());
-        pkg.setAuthorEmail(updateData.getAuthorEmail());
-        pkg.setDescription(updateData.getDescription());
-        pkg.setPackageURL(updateData.getPackageURL());
-        pkg.setDocumentationURL(updateData.getDocumentationURL());
+        // Updating all the versions
+        for (PackageVersion v : allVersions) {
+            v.setAuthor(updateData.getAuthor());
+            v.setAuthorEmail(updateData.getAuthorEmail());
+            v.setDescription(updateData.getDescription());
+            v.setPackageURL(updateData.getPackageURL());
+            v.setDocumentationURL(updateData.getDocumentationURL());
+        }
+        packageVersionRepository.saveAll(allVersions);
 
-        // Save
-        Package updatedPkg = generalPackageRepository.save(pkg);
-        return new Result.Success<>(new GeneralPackageDTO(updatedPkg));
+        // Return updated DTO of a random version (they are all the same)
+        return new Result.Success<>(new GeneralPackageDTO(allVersions.get(0)));
     }
 
     // Delete a specific version of a package
     public Result<Void> deletePackageVersion(String packageName, String version) {
-        String versionId = packageName + " " + version;
+        String neo4jVersionId = packageName + " " + version;
         log.info("Deleting version {} of package {}", version, packageName);
 
-        // Check for validation and backup for rollback
-        var optPkg = generalPackageRepository.findById(packageName);
-        if (optPkg.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found.")); 
-        }
-
-        var optVersionDoc = packageVersionRepository.findById(versionId);
-        if (optVersionDoc.isEmpty()) {
+        // Find on Mongo
+        var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
+        if (versionDocOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("Version " + version + " not found."));
         }
+        PackageVersion versionDoc = versionDocOpt.get();
 
         // Delete on MongoDB
-        packageVersionRepository.deleteById(versionId);
+        packageVersionRepository.delete(versionDoc);
 
         // Delete from Neo4j
         try {
-            // deleteById remove node and its relationships
-            if (!packageVersionGraphRepository.existsById(versionId)) {
-                log.warn("Version node {} not found in Graph, but deleted from Mongo.", versionId);
-            } else {
-                packageVersionGraphRepository.deleteById(versionId);
+            if (packageVersionGraphRepository.existsById(neo4jVersionId)) {
+                packageVersionGraphRepository.deleteById(neo4jVersionId);
             }
-            log.info("Successfully deleted version {}", versionId);
+            log.info("Successfully deleted version {}", neo4jVersionId);
 
         } catch (Exception e) {
-            // Rollback: re-write on MongoDB what we deleted
+            // Rollback: Restore on Mongo
             log.error("Neo4j delete failed! Restoring data on Mongo...", e);
-
             try {
-                // Save again the versionDoc (backup), MongoDB uses the same id so not problems
-                var versionDoc = optVersionDoc.get();
+                // versionDoc.setId(null);   // In this way we force mongo to create a new document with different id ==> fewer conflicts about id already exists
                 packageVersionRepository.save(versionDoc);
-                
                 log.info("Rollback successful. Data restored on Mongo.");
-
             } catch (Exception rollbackEx) {
-                // If the rollback fails, we have to see how to handle it properly --------------------------------------
-                log.error("CRITICAL: Failed to rollback DELETE for {}", versionId);
-                log.error("Data is now deleted from Mongo but orphaned in Neo4j.");
-                return new Result.Failure<>(new DomainError.SystemError("System Error: Critical data inconsistency during deletion.", e));
+                log.error("CRITICAL: Failed to rollback DELETE", rollbackEx);
+                return new Result.Failure<>(new DomainError.SystemError("Critical inconsistency during deletion.", e));
             }
-
-            return new Result.Failure<>(new DomainError.SystemError("Failed to delete from Graph DB. Operation rolled back.", e));
+            return new Result.Failure<>(new DomainError.SystemError("Failed to delete from Graph DB.", e));
         }
 
         return new Result.Success<>(null);

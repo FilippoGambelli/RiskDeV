@@ -37,7 +37,7 @@ public class PackageController {
 
     @GetMapping("/{packageName}")
     @Operation(summary = "List of all the generic information about a specific package",
-            description = "Fetches all the generic information about a specific package. This includes: author, description, homepage url and a list of all the versions")
+            description = "Fetches all the generic information (metadata) about a specific package. Since the removal of the parent collection, this retrieves data from the latest available version.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = GeneralPackageDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
@@ -54,7 +54,7 @@ public class PackageController {
 
     @GetMapping("/{packageName}/{packageVersion}")
     @Operation(summary = "List of all the information about a specific package version",
-            description = "Fetches all the information about a specific package version. This includes: upload time, requires packages, requires python version and a list of all the vulnerabilities")
+            description = "Fetches all the information about a specific package version. This includes: upload time, dependencies, python requirement and a list of all the vulnerabilities")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PackageVersionDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package Version Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
@@ -65,7 +65,7 @@ public class PackageController {
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageName, 
             @Parameter(
-                description = "The version of the package to retrieve details", example = "0.9.6",
+                description = "The version of the package to retrieve details", example = "1.21.0",
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageVersion) {
 
@@ -84,7 +84,7 @@ public class PackageController {
             @Parameter(description = "The package name", example = "numpy") 
             @PathVariable String packageName) {
 
-        log.info("Searching reverse dependencies.");
+        log.info("Searching reverse dependencies for {}", packageName);
         return restResponseMapper.map(packageService.getPackagesDependingOn(packageName), HttpStatus.OK);
     }
 
@@ -121,7 +121,7 @@ public class PackageController {
 
     @PostMapping
     @Operation(summary = "Register a new package",
-            description = "Creates a new empty package container in both MongoDB and Neo4j.")
+            description = "Creates a new package identifier in Neo4j. Metadata will be stored when the first version is uploaded to MongoDB.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Created Successfully"),
         @ApiResponse(responseCode = "409", description = "Package Already Exists", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
@@ -133,7 +133,7 @@ public class PackageController {
 
     @PostMapping("/{packageName}/versions")
     @Operation(summary = "Publish a new version",
-            description = "Creates a new version document in MongoDB and updates the Neo4j graph with the new node and relationship.")
+            description = "Creates a new version document in MongoDB (including metadata) and updates the Neo4j graph with the new node and relationship.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Version Published"),
         @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
@@ -150,7 +150,7 @@ public class PackageController {
 
     @PutMapping("/{packageName}")
     @Operation(summary = "Update package metadata",
-            description = "Updates the descriptive information (author, email, description) of a package. Does not affect versions or graph topology.")
+            description = "Updates the descriptive information (author, email, description) for ALL existing versions of the package.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Updated", content = @Content(schema = @Schema(implementation = GeneralPackageDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))

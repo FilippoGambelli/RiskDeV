@@ -2,15 +2,17 @@ package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.Vulnerability;
-
+import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PackageVersionRepository extends MongoRepository<PackageVersion, String> {
 
+    /*
     @Aggregation(pipeline = {
         "{ '$match': { '_id': ?0 } }",
         
@@ -28,7 +30,31 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
         "{ '$replaceRoot': { 'newRoot': '$foundVulns' } }"
     })
     List<Vulnerability> findDirectVulnerabilities(String packageId);
+    */
 
+    // HO DOVUTO CAMBIARLA PERCHé ORA L'ID NON è PIù NOME + VERSIONE.
+    // CONTROLLARE ANCHE FROM VULNERABILITIES O VULNERABILITY AL SINGOLARE, C'è UN MISMATCH CON VULNERABILITY MODEL
+    @Aggregation(pipeline = {
+        "{ '$match': { 'package_name': ?0, 'version': ?1 } }",
+        "{ '$lookup': { 'from': 'vulnerabilities', 'localField': 'vulnerabilities.cve_id', 'foreignField': '_id', 'as': 'foundVulns' } }",
+        "{ '$unwind': '$foundVulns' }",
+        "{ '$replaceRoot': { 'newRoot': '$foundVulns' } }"
+    })
+    List<Vulnerability> findDirectVulnerabilities(String packageName, String version); 
+    
+    // Find a package using name and version
+    Optional<PackageVersion> findByPackageNameAndVersion(String packageName, String version);
+
+    // Check if a specific version of a package exists
+    boolean existsByPackageNameAndVersion(String packageName, String version);
+
+    // Find the last version of a package
+    Optional<PackageVersion> findTopByPackageNameOrderByUploadTimeDesc(String packageName);
+
+    // Find all the versions of a package (used to propagate updating general package metadata to all the versions)
+    List<PackageVersion> findByPackageName(String packageName);
+
+    // Find safe versions of a package
     @Query("{ 'package_name': ?0, 'vulnerabilities': [] }")
     List<PackageVersion> findSafeVersions(String packageName);
 

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,22 @@ public class PackageVersionDTO {
     @Size(max = 50, message = "Version string is too long (max 50 chars)")
     @Pattern(regexp = "^[a-zA-Z0-9.\\-+]+$", message = "Version contains invalid characters")
     private String version;
+
+    @Schema(description = "Author of the package")
+    private String author;
+
+    @Schema(description = "Email of the author")
+    @Email(message = "Invalid email format")
+    private String authorEmail;
+
+    @Schema(description = "Description of the package")
+    private String description;
+
+    @Schema(description = "The official URL of the package")
+    private String packageURL;
+
+    @Schema(description = "The official documentation URL of the package")
+    private String documentationURL;
 
     @Schema(description = "Upload time of the package (Server generated)", accessMode = Schema.AccessMode.READ_ONLY)
     private String uploadTime;
@@ -55,5 +72,10 @@ public class PackageVersionDTO {
         this.requiresPython = model.getRequiresPython();
         this.dependencies = model.getDependencies(); 
         this.vulnerabilityCount = (model.getVulnerabilities() != null) ? model.getVulnerabilities().size() : 0;
+        this.author = model.getAuthor();
+        this.authorEmail = model.getAuthorEmail();
+        this.description = model.getDescription();
+        this.packageURL = model.getPackageURL();
+        this.documentationURL = model.getDocumentationURL();
     }
 }

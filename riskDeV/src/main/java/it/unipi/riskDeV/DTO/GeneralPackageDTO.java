@@ -3,12 +3,8 @@ package it.unipi.riskDeV.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.Package;
-
+import it.unipi.riskDeV.model.PackageVersion;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -43,8 +39,8 @@ public class GeneralPackageDTO {
     @Schema(description = "The official documentation URL of the package")
     private String documentationURL;
 
-    public GeneralPackageDTO(Package model) {
-        this.packageName = model.getId();
+    public GeneralPackageDTO(PackageVersion model) {
+        this.packageName = model.getPackageName(); 
         this.author = model.getAuthor();
         this.authorEmail = model.getAuthorEmail();
         this.description = model.getDescription();
