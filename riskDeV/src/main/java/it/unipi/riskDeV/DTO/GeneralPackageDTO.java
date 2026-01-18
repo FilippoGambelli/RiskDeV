@@ -40,15 +40,8 @@ public class GeneralPackageDTO {
     @Schema(description = "The official URL of the package", example = "https://numpy.org/")
     private String packageURL;
 
-    @Schema(description = "Summary of the package")
-    @Size(max = 500, message = "Summary is too long (max 500 chars)")
-    private String summary;
-
     @Schema(description = "The official documentation URL of the package")
     private String documentationURL;
-
-    @Schema(description = "The official homepage URL of the package")
-    private String homepageURL;
 
     public GeneralPackageDTO(Package model) {
         this.packageName = model.getId();
@@ -56,8 +49,6 @@ public class GeneralPackageDTO {
         this.authorEmail = model.getAuthorEmail();
         this.description = model.getDescription();
         this.packageURL = model.getPackageURL();
-        this.summary = model.getSummary();
         this.documentationURL = model.getDocumentationURL();
-        this.homepageURL = model.getHomepageURL();
     }
 }

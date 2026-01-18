@@ -24,12 +24,7 @@ public class Package {
     @Field("package_url")
     private String packageURL;
 
-    private String summary;
-
     @Field("documentation")
     private String documentationURL;
-
-    @Field("homepage")
-    private String homepageURL;
 
 }

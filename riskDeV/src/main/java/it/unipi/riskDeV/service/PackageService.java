@@ -128,9 +128,7 @@ public class PackageService {
         pkg.setAuthorEmail(packageDTO.getAuthorEmail());
         pkg.setDescription(packageDTO.getDescription());
         pkg.setPackageURL(packageDTO.getPackageURL());
-        pkg.setSummary(packageDTO.getSummary());
         pkg.setDocumentationURL(packageDTO.getDocumentationURL());
-        pkg.setHomepageURL(packageDTO.getHomepageURL());
         generalPackageRepository.save(pkg);
 
         // Write on Neo4j
@@ -278,9 +276,7 @@ public class PackageService {
         pkg.setAuthorEmail(updateData.getAuthorEmail());
         pkg.setDescription(updateData.getDescription());
         pkg.setPackageURL(updateData.getPackageURL());
-        pkg.setSummary(updateData.getSummary());
         pkg.setDocumentationURL(updateData.getDocumentationURL());
-        pkg.setHomepageURL(updateData.getHomepageURL());
 
         // Save
         Package updatedPkg = generalPackageRepository.save(pkg);
