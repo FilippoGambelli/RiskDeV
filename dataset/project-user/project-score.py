@@ -1,8 +1,8 @@
 import json
 
-PROJECTS_FILE = 'project.json'
-PACKAGES_SCORED_FILE = '../pkg-cve/packages_scored.json'
-OUTPUT_FILE = 'projects_scored.json'
+PROJECTS_FILE = 'projects.json'
+PACKAGES_SCORED_FILE = '../pkg-cve/package.json'
+OUTPUT_FILE = 'projects.json'
 
 def load_json(filename):
     try:
