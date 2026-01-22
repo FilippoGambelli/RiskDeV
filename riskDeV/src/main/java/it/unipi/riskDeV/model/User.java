@@ -1,5 +1,7 @@
 package it.unipi.riskDeV.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -12,6 +14,9 @@ import lombok.Data;
 public class User {
     @Id
     private String id;
+
+    @Schema(description = "username", example = "emily.ferrari")
+    private String username;
 
     @Schema(description = "First name of the user", example = "John")
     @Field("first_name")
@@ -29,4 +34,7 @@ public class User {
 
     @Schema(description = "Role of the user",  example = "ROLE_USER")
     private String role;
+
+    @Field("project_names")
+    private List<String> projectNames;
 }
