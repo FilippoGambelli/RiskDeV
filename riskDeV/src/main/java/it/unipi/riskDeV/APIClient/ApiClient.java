@@ -19,7 +19,7 @@ public class ApiClient {
                 .build();
     }
 
-    public Optional<NvdResponseDTO> getCveById(String cveId) {
+    public Optional<NvdResponseDTO> getCveByCveId(String cveId) {
 
         try {
             NvdResponseDTO response = webClient.get()
