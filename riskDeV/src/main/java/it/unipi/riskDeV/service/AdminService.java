@@ -1,10 +1,14 @@
 package it.unipi.riskDeV.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import it.unipi.riskDeV.repository.PackageCentralityRepository;
 import it.unipi.riskDeV.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import it.unipi.riskDeV.DTO.CentralityResultDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
 
@@ -13,6 +17,18 @@ import it.unipi.riskDeV.common.Result;
 @Slf4j
 public class AdminService {
     private final UserRepository userRepository;
+    private final PackageCentralityRepository packageCentralityRepository;
+
+    public Result<List<CentralityResultDTO>> getTopByDegree() {
+        var results = packageCentralityRepository.topByDegree();
+        return new Result.Success<>(results);
+    }
+
+    public Result<List<CentralityResultDTO>> getTopByPageRank() {
+        var results = packageCentralityRepository.topByPageRank();
+        return new Result.Success<>(results);
+    }
+
 
     public Result<String> addNewAdmin(String username) {
         
