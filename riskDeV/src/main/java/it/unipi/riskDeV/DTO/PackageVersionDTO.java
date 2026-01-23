@@ -60,6 +60,9 @@ public class PackageVersionDTO {
     @Schema(description = "Total number of vulnerabilities found", accessMode = Schema.AccessMode.READ_ONLY)
     private int vulnerabilityCount;
 
+    @Schema(description = "Calculated risk score based on vulnerabilities", example = "7.5", accessMode = Schema.AccessMode.READ_ONLY)
+    private Double riskScore;
+
     @Schema(description = "List of known vulnerabilities associated with this version")
     @Valid 
     private List<EmbeddedVulnerability> vulnerabilities;
@@ -77,5 +80,6 @@ public class PackageVersionDTO {
         this.description = model.getDescription();
         this.packageURL = model.getPackageURL();
         this.documentationURL = model.getDocumentationURL();
+        this.riskScore = model.getRiskScore();
     }
 }

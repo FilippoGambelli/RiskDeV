@@ -12,6 +12,7 @@ import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.PackageService;
+import it.unipi.riskDeV.service.PackageIngestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +35,13 @@ public class PackageController {
 
     private final PackageService packageService;
     private final RestResponseMapper restResponseMapper;
+    private final PackageIngestionService packageIngestionService;
 
     @GetMapping("/{packageName}")
-    @Operation(summary = "List of all the generic information about a specific package",
-            description = "Fetches all the generic information (metadata) about a specific package. Since the removal of the parent collection, this retrieves data from the latest available version.")
+    @Operation(summary = "List of all the information about a specific package updated to its latest version",
+            description = "Fetches all the informations about the latest version of a specific package.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = GeneralPackageDTO.class))),
+        @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PackageVersionDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })        
     public ResponseEntity<?> getPackageByName(
@@ -105,7 +107,7 @@ public class PackageController {
 
     @GetMapping("/{packageName}/{packageVersion}/dependencies")
     @Operation(summary = "Get direct dependencies",
-            description = "Returns a list of packages (and their versions) that the specified package version directly depends on.")
+            description = "Returns a list of packages that the specified package version directly depends on.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = List.class))),
         @ApiResponse(responseCode = "404", description = "Version Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
@@ -117,18 +119,6 @@ public class PackageController {
             @PathVariable String packageVersion) {
         
         return restResponseMapper.map(packageService.getDirectDependencies(packageName, packageVersion), HttpStatus.OK);
-    }
-
-    @PostMapping
-    @Operation(summary = "Register a new package",
-            description = "Creates a new package identifier in Neo4j. Metadata will be stored when the first version is uploaded to MongoDB.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Created Successfully"),
-        @ApiResponse(responseCode = "409", description = "Package Already Exists", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-    })
-    public ResponseEntity<?> addNewPackage(@Valid @RequestBody GeneralPackageDTO packageDTO) {
-        
-        return restResponseMapper.map(packageService.addNewPackage(packageDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/{packageName}/versions")
@@ -163,6 +153,21 @@ public class PackageController {
         return restResponseMapper.map(packageService.updatePackageMetadata(packageName, packageDTO), HttpStatus.OK);
     }
 
+    @PutMapping("/{packageName}/{packageVersion}")
+    @Operation(summary = "Update package version informations",
+            description = "Updates the informations of a specific version.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Updated", content = @Content(schema = @Schema(implementation = GeneralPackageDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    }) 
+    public ResponseEntity<?> updatePackageVersion(
+            @PathVariable String packageName,
+            @PathVariable String packageVersion,
+            @Valid @RequestBody PackageVersionDTO updateDTO) {
+        
+        return restResponseMapper.map(packageService.updatePackageVersion(packageName, packageVersion, updateDTO), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{packageName}/{packageVersion}")
     @Operation(summary = "Unpublish a version",
             description = "Deletes a specific version of a package from both MongoDB and Neo4j. Rolls back if consistency check fails.")
@@ -177,6 +182,18 @@ public class PackageController {
             @PathVariable String packageVersion) {
         
         return restResponseMapper.map(packageService.deletePackageVersion(packageName, packageVersion), HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{packageName}/scan-history")
+    @Operation(summary = "Automatic service that start full history scan of a package",
+            description = "Asynchronously downloads and indexes all versions of the specified package. Adds the package to a background queue.")
+    @ApiResponse(responseCode = "202", description = "Scan accepted and queued")
+    public ResponseEntity<?> startFullHistoryScan(@PathVariable String packageName) {
+        
+        packageIngestionService.enqueuePackage(packageName);
+        
+        return ResponseEntity.accepted()
+            .body("Package " + packageName + " added to ingestion queue. It will be processed in background.");
     }
     
 }

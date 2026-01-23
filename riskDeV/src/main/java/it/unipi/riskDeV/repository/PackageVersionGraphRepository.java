@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
+import it.unipi.riskDeV.DTO.DependencyDTO;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +18,9 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
     List<PackageVersionNode> findReverseDependencies(@Param("packageName") String packageName);
 
     // Find all the dependeces of a target package
-    @Query("MATCH (v:Version {id: $versionId})-[:DEPENDS_ON]->(target:Version) " +
-           "RETURN DISTINCT target")
-    List<PackageVersionNode> findDirectDependencies(@Param("versionId") String versionId);
+    @Query("MATCH (v:Version {id: $versionId})-[r:DEPENDS_ON]->(target:Version) " +
+           "RETURN target.id AS targetPackage, target.version AS targetVersion, r.constraint AS constraint")
+    List<DependencyDTO> findDirectDependencies(@Param("versionId") String versionId);
 
     @Query("MATCH (v:Version {id: $versionId}) " +
            "UNWIND $cveIds AS cve " +
@@ -50,4 +51,12 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
         MERGE (p)-[:HAS_VERSION]->(target)
     """)
     void attachDependenciesWithStubs(@Param("sourceId") String sourceId, @Param("dependenciesList") List<Map<String, String>> dependenciesList);
+
+    // Delete old dependencies (used during manual update of a version)
+    @Query("MATCH (v:Version {id: $versionId})-[r:DEPENDS_ON]->() DELETE r")
+    void deleteDependencies(@Param("versionId") String versionId);
+
+    // Delete vulnerabilities (used during manual update of a version)
+    @Query("MATCH (v:Version {id: $versionId})-[r:AFFECTED_BY]->() DELETE r")
+    void deleteVulnerabilities(@Param("versionId") String versionId);
 }

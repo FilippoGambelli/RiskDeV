@@ -45,11 +45,14 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
     // Find a package using name and version
     Optional<PackageVersion> findByPackageNameAndVersion(String packageName, String version);
 
+    // Check if exists the package using only it's name
+    boolean existsByPackageName(String packageName);
+
     // Check if a specific version of a package exists
     boolean existsByPackageNameAndVersion(String packageName, String version);
 
     // Find the last version of a package
-    Optional<PackageVersion> findTopByPackageNameOrderByUploadTimeDesc(String packageName);
+    Optional<PackageVersion> findTopByPackageNameOrderByVersionArrayDesc(String packageName);
 
     // Find all the versions of a package (used to propagate updating general package metadata to all the versions)
     List<PackageVersion> findByPackageName(String packageName);

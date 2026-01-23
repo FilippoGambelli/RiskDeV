@@ -28,8 +28,7 @@ public class PackageVersionNode {
 
     // Relationship (:Version)-[:DEPENDS_ON]->(:Version)
     @Relationship(type = "DEPENDS_ON", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
-    private Set<PackageVersionNode> dependencies;
+    private Set<DependencyRelationship> dependencies;
 
     // Relationship (:Version)-[:AFFECTED_BY]->(:Vulnerability)
     @Relationship(type = "AFFECTED_BY", direction = Relationship.Direction.OUTGOING)
