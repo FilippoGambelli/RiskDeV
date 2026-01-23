@@ -1,7 +1,7 @@
 package it.unipi.riskDeV.scheduler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unipi.riskDeV.event.UserDeletedEvent;
+import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.model.FailedEvent;
 import it.unipi.riskDeV.repository.FailedEventRepository;
 import it.unipi.riskDeV.service.GraphService;
@@ -38,8 +38,8 @@ public class DlqRetryScheduler {
             try {
                 if ("UserDeletedEvent".equals(failedEvent.getEventType())) {
                     
-                    UserDeletedEvent originalEvent = objectMapper.readValue(
-                        failedEvent.getPayloadJson(), UserDeletedEvent.class
+                    UserEvent.UserDeletedEvent originalEvent = objectMapper.readValue(
+                        failedEvent.getPayloadJson(), UserEvent.UserDeletedEvent.class
                     );
                     
                     // Retry the operation

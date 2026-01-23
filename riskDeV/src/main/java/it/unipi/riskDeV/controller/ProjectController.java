@@ -19,7 +19,6 @@ import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -37,12 +36,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/projects")
 @Tag(name = "Projects controller", description = "API for Projects operations")
 @RequiredArgsConstructor
-@Slf4j
 @ApiResponses(value = {
-    @ApiResponse(responseCode = "500", description = "Internal System Error",
+    @ApiResponse(
+        responseCode = "500", 
+        description = "Internal System Error",
         content = @Content(mediaType = "application/json", 
         schema = @Schema(implementation = ErrorResponseDTO.class))),
-    @ApiResponse(responseCode = "401", description = "Unauthorized",
+    @ApiResponse(
+        responseCode = "401", 
+        description = "Unauthorized",
         content = @Content(mediaType = "application/json", 
         schema = @Schema(implementation = ErrorResponseDTO.class)))
 })
@@ -50,22 +52,6 @@ public class ProjectController {
     
     private final ProjectService projectService;
     private final RestResponseMapper restResponseMapper;
-
-    /*
-    @GetMapping("/")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "List of all the projects in which the user is a collaborator",
-            description = "Fetches a list of all the projects in which the user is a collaborator.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Projects retrieved successfully",
-            content = @Content(mediaType = "application/json", 
-            array = @ArraySchema(schema = @Schema(implementation = String.class, description = "Project ID"))))
-    })
-    public ResponseEntity<?> getAllUserProjects(@AuthenticationPrincipal String userId) {
-        log.info("Searching all the projects in which the user is a collaborator.");
-        return restResponseMapper.map(projectService.getAllUserProjects(userId), HttpStatus.OK);
-    }
-    */
 
     @PostMapping("/")
     @SecurityRequirement(name = "bearerAuth")
@@ -77,7 +63,6 @@ public class ProjectController {
             schema = @Schema(implementation = String.class, description = "The ID of the created project")))
     })
     public ResponseEntity<?> insertProject(@AuthenticationPrincipal String userId, @Valid @RequestBody ProjectDTO projectDTO) {
-        log.info("Inserting a new project for the current user.");
         return restResponseMapper.map(projectService.insertProject(userId, projectDTO), HttpStatus.CREATED);
     }
 
@@ -94,7 +79,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> deleteProject(@AuthenticationPrincipal String userId, @PathVariable String projectId) {
-        log.info("Deleting a project for the current user.");
         return restResponseMapper.map(projectService.deleteProject(userId, projectId), HttpStatus.OK);
     }
 
@@ -113,7 +97,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> updateProjectPackages(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        log.info("Updating packages of a project for the current user.");
         return restResponseMapper.map(projectService.updateProjectPackages(userId, projectId, packages), HttpStatus.OK);
     }
 
@@ -130,7 +113,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removePackagesFromProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        log.info("Removing packages from a project for the current user.");
         return restResponseMapper.map(projectService.removePackagesFromProject(userId, projectId, packages), HttpStatus.OK);
     }
 
@@ -149,7 +131,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> addCollaboratorToProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody CollaboratorDTO collaborator) {
-        log.info("Adding a collaborator to a project for the current user.");
         return restResponseMapper.map(projectService.addCollaboratorToProject(userId, projectId, collaborator.getUsername()), HttpStatus.OK);
     }
 
@@ -166,7 +147,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getCollaboratorsOfProject(@AuthenticationPrincipal String userId, @PathVariable String projectId) {
-        log.info("Fetching collaborators of a project for the current user.");
         return restResponseMapper.map(projectService.getProjectCollaborators(userId, projectId), HttpStatus.OK);
     }   
     
@@ -183,7 +163,6 @@ public class ProjectController {
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removeCollaboratorFromProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody CollaboratorDTO collaborator) {
-        log.info("Removing a collaborator from a project for the current user.");
         return restResponseMapper.map(projectService.removeCollaboratorFromProject(userId, projectId, collaborator.getUsername()), HttpStatus.OK);
     }
     

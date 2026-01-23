@@ -10,8 +10,7 @@ import it.unipi.riskDeV.DTO.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.UserDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.event.UserDeletedEvent;
-import it.unipi.riskDeV.event.UserUpdatedEvent;
+import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.model.User;
 import it.unipi.riskDeV.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,36 +26,41 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public Result<UserDTO> getProfile(String id) {
-
+        log.info("Get user profile");
+        
         var optUser = userRepository.findById(id);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
 
-        var user = optUser.get();
+        User user = optUser.get();
         return new Result.Success<>(UserDTO.fromEntity(user));
     }
 
     public Result<List<String>> getUserProjectNames(String userId) {
+        log.info("Get user projects");
+
         var optUser = userRepository.findById(userId);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
 
-        var user = optUser.get();
+        User user = optUser.get();
         List<String> projectNames = user.getProjectNames() != null ? user.getProjectNames() : List.of();
 
         return new Result.Success<>(projectNames);
     }
 
     public Result<UserDTO> updateProfile(String userId, UpdateProfileDTO request) {
-    
+        log.info("Updating use profile");
+
         var userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
         
         User user = userOpt.get();
+        String oldUsername = user.getUsername();
         boolean isUpdated = false;
         boolean usernameChanged = false;
 
@@ -94,7 +98,7 @@ public class UserService {
 
                 // If username changed, publish event
                 if (usernameChanged) {
-                    eventPublisher.publishEvent(new UserUpdatedEvent(savedUser.getId(), savedUser.getUsername()));
+                    eventPublisher.publishEvent(new UserEvent.UserUpdatedEvent(oldUsername, savedUser.getUsername()));
                 }
 
                 return new Result.Success<>(UserDTO.fromEntity(savedUser));
@@ -104,22 +108,24 @@ public class UserService {
             }
         }
 
+        log.info("User profile updated");
         return new Result.Success<>(UserDTO.fromEntity(user));
     }
 
-    public Result<Void> deleteUser(String id) {
-        
+    public Result<String> deleteUser(String id) {
+        log.info("Deleting user profile");
         if (!userRepository.existsById(id)) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
 
         try {
-            userRepository.deleteById(id); 
-            eventPublisher.publishEvent(new UserDeletedEvent(id));
-            return new Result.Success<>(null);
+            userRepository.deleteById(id);
+            log.info("User profile deleted");
+
+            eventPublisher.publishEvent(new UserEvent.UserDeletedEvent(id));
+            return new Result.Success<>("User profile deleted");
 
         } catch (Exception e) {
-            log.error("Error deleting user {}: {}", id, e.getMessage());
             return new Result.Failure<>(new DomainError.SystemError("Failed to delete user from database", e));
         }
 

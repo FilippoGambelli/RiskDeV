@@ -28,7 +28,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @ApiResponses(value = {
-    @ApiResponse(responseCode = "500", description = "Internal System Error",
+    @ApiResponse(
+        responseCode = "500", 
+        description = "Internal System Error",
         content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
 })
 public class PackageController {
@@ -50,7 +52,6 @@ public class PackageController {
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageName) {
 
-        log.info("Searching package by name: {}", packageName);
         return restResponseMapper.map(packageService.getPackageByName(packageName), HttpStatus.OK);
     }
 
@@ -71,7 +72,6 @@ public class PackageController {
                 required = true, schema = @Schema(type = "string")
             ) @PathVariable String packageVersion) {
 
-        log.info("Searching package version information of: {} {}", packageName, packageVersion);
         return restResponseMapper.map(packageService.getPackageByNameVersion(packageName, packageVersion), HttpStatus.OK);
     }
 
@@ -86,7 +86,6 @@ public class PackageController {
             @Parameter(description = "The package name", example = "numpy") 
             @PathVariable String packageName) {
 
-        log.info("Searching reverse dependencies for {}", packageName);
         return restResponseMapper.map(packageService.getPackagesDependingOn(packageName), HttpStatus.OK);
     }
 
@@ -101,7 +100,6 @@ public class PackageController {
             @Parameter(description = "The package name", example = "django") 
             @PathVariable String packageName) {
         
-        log.info("Searching safe version of the package " + packageName);
         return restResponseMapper.map(packageService.getSafeVersions(packageName), HttpStatus.OK);
     }
 

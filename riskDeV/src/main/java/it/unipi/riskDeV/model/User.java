@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.unipi.riskDeV.DTO.RegisterRequestDTO;
 import lombok.Data;
 
 @Data
@@ -40,4 +41,14 @@ public class User {
     @Schema(description = "List of project names associated with the user")
     @Field("project_names")
     private List<String> projectNames;
+
+    public User(RegisterRequestDTO registerRequestDTO) {
+        this.username = registerRequestDTO.getUsername();
+        this.firstName = registerRequestDTO.getFirstName();
+        this.lastName = registerRequestDTO.getLastName();
+        this.email = registerRequestDTO.getEmail();
+        this.password = null;
+        this.username = null;
+        this.projectNames = null;
+    }
 }

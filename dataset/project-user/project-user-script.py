@@ -143,7 +143,8 @@ def generate_projects(count: int) -> List[Dict]:
             "last_update": last_update,
             "python_version": "3.11.14",
             "packages": pip_packages,
-            "collaborators": [] # To be filled later
+            "admin": {}, # NEW: Placeholder for admin
+            "collaborators": [] 
         })
         
         print(f"Project generated: {name} ({i+1}/{count})")
@@ -180,7 +181,7 @@ def generate_users(count: int) -> List[Dict]:
             "email": f"{username}@{random.choice(EMAIL_DOMAINS)}",
             "password": hash_password("Password123"),
             "role": "ROLE_USER",
-            "project_names": [] # To be filled later
+            "project_names": [] 
         })
 
     # Assign Admin roles randomly
@@ -196,24 +197,48 @@ def generate_users(count: int) -> List[Dict]:
 def link_users_and_projects(users: List[Dict], projects: List[Dict]):
     """
     Assigns projects to users and updates both entities:
-    1. Users get a list of project names.
-    2. Projects get a list of collaborators (username/email).
+    1. Assigns a CREATOR/ADMIN to every project (who is NOT a collaborator).
+    2. Assigns random collaborators to projects.
     """
     print("\n--- Linking Users and Projects ---")
     
-    if not projects:
+    if not projects or not users:
         return
 
+    # 1. Assegnazione dell'ADMIN per ogni progetto
+    # Ogni progetto DEVE avere un admin.
+    for proj in projects:
+        admin_user = random.choice(users)
+        
+        # Imposta l'admin nel progetto
+        proj['admin'] = {
+            "username": admin_user['username'],
+            "email": admin_user['email']
+        }
+        
+        # Aggiunge il progetto alla lista dei progetti dell'utente admin
+        # (L'admin "possiede" il progetto, quindi deve vederlo nella sua lista)
+        if proj['name'] not in admin_user['project_names']:
+            admin_user['project_names'].append(proj['name'])
+
+    # 2. Assegnazione dei COLLABORATORI
     for user in users:
-        # Assign 0 to 3 random projects to this user
+        # Assegna da 0 a 3 progetti random a questo utente come collaboratore
         num_projects = random.randint(0, min(3, len(projects)))
         
         if num_projects > 0:
             assigned_projects = random.sample(projects, k=num_projects)
             
             for proj in assigned_projects:
-                # 1. Update User: Add project name
-                user['project_names'].append(proj['name'])
+                # --- CONTROLLO CRITICO ---
+                # Se l'utente è l'admin di questo progetto, saltiamo.
+                # L'admin non deve essere nella lista collaboratori.
+                if proj['admin']['username'] == user['username']:
+                    continue
+
+                # 1. Update User: Add project name if not present
+                if proj['name'] not in user['project_names']:
+                    user['project_names'].append(proj['name'])
                 
                 # 2. Update Project: Add collaborator info
                 collaborator_entry = {

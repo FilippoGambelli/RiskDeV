@@ -7,9 +7,7 @@ import it.unipi.riskDeV.event.ProjectEvents.CollaboratorRemovedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectCreatedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectDeletedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectPackagesUpdatedEvent;
-import it.unipi.riskDeV.event.UserCreatedEvent;
-import it.unipi.riskDeV.event.UserDeletedEvent;
-import it.unipi.riskDeV.event.UserUpdatedEvent;
+import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.model.FailedEvent;
 import it.unipi.riskDeV.repository.FailedEventRepository;
 import it.unipi.riskDeV.service.GraphService;
@@ -29,13 +27,12 @@ public class GraphSyncListener {
 
     private final GraphService graphService;
     private final FailedEventRepository failedEventRepository;
-    // ObjectMapper to serialize event payloads for DLQ
-    private final ObjectMapper objectMapper; 
+    private final ObjectMapper objectMapper; // ObjectMapper to serialize event payloads for DLQ
 
     // Async listener to handle UserDeletedEvent after mongo transaction commit
     @Async 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true) 
-    public void handleUserDeleted(UserDeletedEvent event) {
+    public void handleUserDeleted(UserEvent.UserDeletedEvent event) {
         try {
             graphService.deleteUserNode(event.username());
             log.info("SUCCESS: User {} deleted from Neo4j.", event.username());
@@ -47,9 +44,9 @@ public class GraphSyncListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUserCreated(UserCreatedEvent event) {
+    public void handleUserCreated(UserEvent.UserCreatedEvent event) {
         try {            
-            graphService.createUserNode(event.userId(), event.username());
+            graphService.createUserNode(event.username());
             log.info("SUCCESS: UserNode {} created in Neo4j.", event.username());
         } catch (Exception e) {
             log.error("FAIL: Could not create user {} in Neo4j. Saving to DLQ.", event.username(), e);
@@ -59,9 +56,9 @@ public class GraphSyncListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUserUpdated(UserUpdatedEvent event) {
+    public void handleUserUpdated(UserEvent.UserUpdatedEvent event) {
         try {
-            graphService.updateUsername(event.userId(), event.newUsername());
+            graphService.updateUsername(event.oldUsername(), event.newUsername());
             log.info("SUCCESS: UserNode {} updated in Neo4j.", event.newUsername());
         } catch (Exception e) {
             log.error("FAIL: Could not update user {} in Neo4j. Saving to DLQ.", event.newUsername(), e);

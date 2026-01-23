@@ -11,43 +11,122 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.UpdateProfileDTO;
+import it.unipi.riskDeV.DTO.UserDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Management", description = "Profile management, User Projects")
+@Tag(name = "User controller", description = "Profile contoller")
 @RequiredArgsConstructor
+@ApiResponses(value = {
+    @ApiResponse(
+        responseCode = "500", 
+        description = "Internal System Error",
+        content = @Content(mediaType = "application/json", 
+        schema = @Schema(implementation = ErrorResponseDTO.class)))
+})
 public class UserController {
 
     private final UserService userService;
     private final RestResponseMapper responseMapper;
 
-    @Operation(summary = "Get current user profile")
     @GetMapping("/me")
+    @Operation(
+        summary = "Get current user profile",
+        description = ""
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Get current user profile",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Not found",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+        )
+    })
     public ResponseEntity<?> getMyProfile(@AuthenticationPrincipal String userId) {
-        var result = userService.getProfile(userId);
-        return responseMapper.map(result, HttpStatus.OK);
+        return responseMapper.map(userService.getProfile(userId), HttpStatus.OK);
     }
     
     @PatchMapping("/me")
+    @Operation(
+        summary = "Update user profile",
+        description = ""
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Update user profile",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Not found",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "409", 
+            description = "Already exists",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+        )
+    })
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal String userId, @RequestBody UpdateProfileDTO dto) {
-        var result = userService.updateProfile(userId, dto);
-        return responseMapper.map(result, HttpStatus.OK);
+        return responseMapper.map(userService.updateProfile(userId, dto), HttpStatus.OK);
     }
 
     @DeleteMapping("/me")
+    @Operation(summary = "Delete account", description = "Deletes the authenticated user's account")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Account deleted successfully",
+            content = @Content(schema = @Schema(implementation = String.class))
+        ),
+        @ApiResponse(
+            responseCode = "401", 
+            description = "Unauthorized",
+            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "User not found",
+            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+        )
+    })
     public ResponseEntity<?> deleteAccount(@AuthenticationPrincipal String userId) {
-        var result = userService.deleteUser(userId);
-        return responseMapper.map(result, HttpStatus.OK);
+        return responseMapper.map(userService.deleteUser(userId), HttpStatus.OK);
     }
 
     @GetMapping("/me/projects")
+    @Operation(
+        summary = "Get current user projects",
+        description = ""
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Get current user projects",
+            content = @Content(mediaType = "application/json")
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Not found",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+        )
+    })
     public ResponseEntity<?> getMyProjects(@AuthenticationPrincipal String userId) {
-        var result = userService.getUserProjectNames(userId);
-        return responseMapper.map(result, HttpStatus.OK);
+        return responseMapper.map(userService.getUserProjectNames(userId), HttpStatus.OK);
     }
 }

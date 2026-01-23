@@ -22,14 +22,14 @@ public class GraphService {
         userGraphRepository.deleteById(id);
     }
 
-    public void createUserNode(String id, String username) {
-        log.debug("Syncing create to Neo4j for user: {} with username: {}", id, username);
-        userGraphRepository.createUserNode(id, username);
+    public void createUserNode(String username) {
+        log.debug("Syncing create to Neo4j for user: {}", username);
+        userGraphRepository.createUserNode(username);
     }
 
-    public void updateUsername(String mongoId, String newUsername) {
-        log.debug("Syncing username update to Neo4j for user mongoId: {} with new username: {}", mongoId, newUsername);
-        userGraphRepository.updateUsername(mongoId, newUsername);
+    public void updateUsername(String oldUsername, String newUsername) {
+        log.debug("Syncing username update to Neo4j for user mongoId: {} with new username: {}", oldUsername, newUsername);
+        userGraphRepository.updateUsername(oldUsername, newUsername);
     }
 
     public void createProjectStructure(String projectName, String adminId, List<String> packageIds) {

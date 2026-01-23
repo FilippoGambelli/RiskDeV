@@ -11,7 +11,7 @@ import it.unipi.riskDeV.DTO.AuthResponseDTO;
 import it.unipi.riskDeV.DTO.RegisterRequestDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.event.UserCreatedEvent;
+import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.DTO.LoginRequestDTO;
 import it.unipi.riskDeV.model.User;
 import it.unipi.riskDeV.repository.UserRepository;
@@ -32,90 +32,47 @@ public class AuthService {
 
     public Result<AuthResponseDTO> register(RegisterRequestDTO request) {
 
-        log.info("Registering new user with email: {}", request.getEmail());
-        
-        if (userRepository.existsByEmail(request.getEmail())) {
-            log.warn("Registration failed: email {} already exists.", request.getEmail());
-            return new Result.Failure<>(new DomainError.AlreadyExists("Email already in use"));
-        }
+        log.info("Registering new user with username: {}", request.getUsername());
 
-        if (userRepository.existsById(request.getUsername())) {
-            log.warn("Registration failed: Username {} is already taken.", request.getUsername());
+        if (userRepository.existsByUsername(request.getUsername())) {
             return new Result.Failure<>(new DomainError.AlreadyExists("Username is already taken"));
         }
-
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setRole("ROLE_USER");
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setProjectNames(new ArrayList<>());
-
-        /*
-        try {
-            userRepository.save(user);
-            log.info("User saved in MongoDB: {}", user.getId());
-        } catch (org.springframework.dao.DuplicateKeyException ex) {
-            log.warn("Race condition: User {} already exists.", request.getUsername());
-            return new Result.Failure<>(new DomainError.AlreadyExists("User already exists"));
-        } catch (Exception e) {
-            log.error("Failed to save user in MongoDB.", e);
-            return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
+        
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return new Result.Failure<>(new DomainError.AlreadyExists("Email already in use"));
         }
         
-        try {   
-            UserNode graphUser = new UserNode();
-            graphUser.setId(user.getId());
-            userGraphRepository.save(graphUser);
-            log.info("User node created in Neo4j: {}", user.getId());
-        } catch (Exception e) {
-            log.error("Failed to save user in Neo4j. Rolling back MongoDB transaction.", e);
-            try {
-                userRepository.deleteById(user.getId());
-                log.info("Rolled back MongoDB user: {}", user.getId());
-            } catch (Exception ex) {
-                log.error("Failed to rollback MongoDB user after Neo4j failure.", ex);
-                // We could write in a simple log for manual check or implement an alert system 
-                // to send us an alert.
-            }
-            return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
-        }
-        */
+        User user = new User(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("ROLE_USER");
+        user.setProjectNames(new ArrayList<>());
 
         try {
             User savedUser = userRepository.save(user);
-            log.info("User saved in MongoDB: {}", savedUser.getId());
+            log.info("User saved in MongoDB: {}", savedUser.getUsername());
 
             // Publish event for Neo4J 
-            eventPublisher.publishEvent(new UserCreatedEvent(savedUser.getId(), savedUser.getUsername()));
-            String token = jwtUtil.generateToken(user.getId(), user.getRole());
+            eventPublisher.publishEvent(new UserEvent.UserCreatedEvent(savedUser.getUsername()));
+            String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getRole());
 
-            return new Result.Success<>(new AuthResponseDTO(token, user.getUsername(), user.getEmail()));
-        } catch (org.springframework.dao.DuplicateKeyException ex) {
-            log.warn("Race condition: User/Email already exists.");
-            return new Result.Failure<>(new DomainError.AlreadyExists("User or Email already exists"));
+            return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));
         } catch (Exception e) {
             log.error("Failed to save user in Mongo.", e);
             return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
         }
-
     }
 
     public Result<AuthResponseDTO> login(LoginRequestDTO request) {
 
-        log.info("Authenticating user.");
+        log.info("Authenticating user with username {}.", request.getUsername());
 
         var userOpt = userRepository.findByUsername(request.getUsername());
         if (userOpt.isEmpty()) {
-            log.warn("User not found: {}", request.getUsername());
             return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
         }
 
-        var user = userOpt.get();
+        User user = userOpt.get();
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            log.warn("Authentication failed for user: {}", request.getUsername());
             return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
         }
 
@@ -123,33 +80,5 @@ public class AuthService {
         log.info("User {} logged in successfully.", user.getId());
 
         return new Result.Success<>(new AuthResponseDTO(token, user.getUsername(), user.getEmail()));
-    }   
-
-    /*
-    public Result<Map<String, String>> deleteAccount(String userId) {
-
-        if (!userRepository.existsById(userId)) {
-            return new Result.Failure<>(new DomainError.NotFound("User not found"));
-        }
-
-        try {
-            userRepository.deleteById(userId);
-            log.info("User account with ID {} deleted successfully from Mongo.", userId);
-        } catch (Exception e) {
-            log.error("Failed to delete user account from MongoDB after Neo4j deletion.", e);
-            return new Result.Failure<>(new DomainError.SystemError("System error: account not deleted.", e));
-        }
-
-        try {
-            userGraphRepository.deleteById(userId);
-            log.info("User node with ID {} deleted from Neo4j.", userId);
-        } catch (Exception e) {
-            log.error("Failed to delete user node from Neo4j.", e);
-            // We could write in a simple log for manual check or implement a daemon to
-            // retry the deletion later.
-        }
-
-        return new Result.Success<>(Map.of("message", "Account deleted successfully"));
     }
-    */
 }

@@ -6,10 +6,6 @@ import it.unipi.riskDeV.model.User;
 import java.util.List;
 
 public record UserDTO(
-
-    @Schema(description = "Unique identifier of the user", example = "64b7f9c2e4b0c8a1d2f3e4b5")
-    String id,
-
     @Schema(description = "Unique username", example = "mario.rossi")
     String username,
 
@@ -33,7 +29,6 @@ public record UserDTO(
         if (user == null) return null;
 
         return new UserDTO(
-            user.getId(),
             user.getUsername(), 
             user.getFirstName(),
             user.getLastName(),

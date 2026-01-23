@@ -3,7 +3,7 @@ package it.unipi.riskDeV.service;
 import it.unipi.riskDeV.APIClient.PyPiResponseDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
 import it.unipi.riskDeV.APIClient.PyPiMapper;
-import it.unipi.riskDeV.common.Result;
+// import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
 import it.unipi.riskDeV.APIClient.OsvApiClient;
@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Slf4j
 public class PackageIngestionService {
 
-    private final PackageService packageService;
+    // private final PackageService packageService;
     private final PyPiApiClient pyPiApiClient;
     private final OsvApiClient osvApiClient;
     private final PackageVersionRepository packageVersionRepository;
@@ -113,11 +113,11 @@ public class PackageIngestionService {
             }
 
             // Save
-            Result<Void> result = packageService.addNewVersion(packageName, dto);
+            // TODO: Result<Void> result = packageService.addNewVersion(packageName, dto);
 
-            if (result instanceof Result.Failure) {
-                log.warn("Failed to save {} {}: {}", packageName, version, ((Result.Failure<?>) result).error().message());
-            }
+            // if (result instanceof Result.Failure) {
+            //     log.warn("Failed to save {} {}: {}", packageName, version, ((Result.Failure<?>) result).error().message());
+            // }
         }
     }
 }
