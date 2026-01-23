@@ -51,6 +51,7 @@ public class ProjectController {
     private final ProjectService projectService;
     private final RestResponseMapper restResponseMapper;
 
+    /*
     @GetMapping("/")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "List of all the projects in which the user is a collaborator",
@@ -64,6 +65,7 @@ public class ProjectController {
         log.info("Searching all the projects in which the user is a collaborator.");
         return restResponseMapper.map(projectService.getAllUserProjects(userId), HttpStatus.OK);
     }
+    */
 
     @PostMapping("/")
     @SecurityRequirement(name = "bearerAuth")

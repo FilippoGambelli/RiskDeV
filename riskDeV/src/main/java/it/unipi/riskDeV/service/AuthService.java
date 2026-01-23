@@ -2,18 +2,18 @@ package it.unipi.riskDeV.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.ArrayList;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.unipi.riskDeV.DTO.AuthResponseDTO;
 import it.unipi.riskDeV.DTO.RegisterRequestDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
+import it.unipi.riskDeV.event.UserCreatedEvent;
 import it.unipi.riskDeV.DTO.LoginRequestDTO;
 import it.unipi.riskDeV.model.User;
-import it.unipi.riskDeV.model.neo4j.UserNode;
-import it.unipi.riskDeV.repository.UserGraphRepository;
 import it.unipi.riskDeV.repository.UserRepository;
 import it.unipi.riskDeV.security.JwtUtil;
 
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
     
     private final UserRepository userRepository;
-    private final UserGraphRepository userGraphRepository;
+    private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;  
     private final JwtUtil jwtUtil;
 
@@ -45,13 +45,15 @@ public class AuthService {
         }
 
         User user = new User();
-        user.setId(request.getUsername());
+        user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setProjectNames(new ArrayList<>());
 
+        /*
         try {
             userRepository.save(user);
             log.info("User saved in MongoDB: {}", user.getId());
@@ -80,16 +82,32 @@ public class AuthService {
             }
             return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
         }
+        */
 
-        String token = jwtUtil.generateToken(user.getId(), user.getRole());
-        return new Result.Success<>(new AuthResponseDTO(token, user.getId(), user.getEmail()));
+        try {
+            User savedUser = userRepository.save(user);
+            log.info("User saved in MongoDB: {}", savedUser.getId());
+
+            // Publish event for Neo4J 
+            eventPublisher.publishEvent(new UserCreatedEvent(savedUser.getId(), savedUser.getUsername()));
+            String token = jwtUtil.generateToken(user.getId(), user.getRole());
+
+            return new Result.Success<>(new AuthResponseDTO(token, user.getUsername(), user.getEmail()));
+        } catch (org.springframework.dao.DuplicateKeyException ex) {
+            log.warn("Race condition: User/Email already exists.");
+            return new Result.Failure<>(new DomainError.AlreadyExists("User or Email already exists"));
+        } catch (Exception e) {
+            log.error("Failed to save user in Mongo.", e);
+            return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
+        }
+
     }
 
     public Result<AuthResponseDTO> login(LoginRequestDTO request) {
 
         log.info("Authenticating user.");
 
-        var userOpt = userRepository.findById(request.getUsername());
+        var userOpt = userRepository.findByUsername(request.getUsername());
         if (userOpt.isEmpty()) {
             log.warn("User not found: {}", request.getUsername());
             return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
@@ -104,9 +122,10 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getId(), user.getRole());
         log.info("User {} logged in successfully.", user.getId());
 
-        return new Result.Success<>(new AuthResponseDTO(token, user.getId(), user.getEmail()));
+        return new Result.Success<>(new AuthResponseDTO(token, user.getUsername(), user.getEmail()));
     }   
 
+    /*
     public Result<Map<String, String>> deleteAccount(String userId) {
 
         if (!userRepository.existsById(userId)) {
@@ -132,4 +151,5 @@ public class AuthService {
 
         return new Result.Success<>(Map.of("message", "Account deleted successfully"));
     }
+    */
 }

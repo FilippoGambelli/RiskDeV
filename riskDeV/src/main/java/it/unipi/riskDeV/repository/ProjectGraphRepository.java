@@ -2,7 +2,6 @@ package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.neo4j.ProjectNode;
 
-import java.time.Instant;
 import java.util.List;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -12,57 +11,42 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectGraphRepository extends Neo4jRepository<ProjectNode, String> {
 
-    @Query("""
-        MATCH (u:User {id: $userId})-[r:OWNS]->(p:Project {id: $projectId})
-        RETURN count(r) > 0
-    """)
-    boolean isUserOwner(@Param("userId") String userId, @Param("projectId") String projectId);
+    @Query("MERGE (p:Project {name: $projectName})")
+    void createProjectNode(@Param("projectName") String projectName);
 
     @Query("""
-        MATCH (u:User {id: $userId})-[:OWNS|WORKS_ON]->(p:Project)
-        RETURN DISTINCT p.id AS id
+        MATCH (p:Project {name: $projectName})
+        MERGE (u:User {mongoId: $userId}) 
+        MERGE (u)-[:OWNS]->(p)
     """)
-    List<String> findProjectIdsByUserId(@Param("userId") String userId);
+    void setProjectOwner(@Param("projectName") String projectName, @Param("userId") String userId);
+
+    @Query("MATCH (p:Project {name: $projectName}) DETACH DELETE p")
+    void deleteProjectByName(@Param("projectName") String projectName);
 
     @Query("""
-        MATCH (p:Project {id: $projectId})
-        MERGE (u:User {id: $collaboratorId})
-        MERGE (u)-[:WORKS_ON]->(p)
-    """)
-    void addCollaborator(@Param("projectId") String projectId, @Param("collaboratorId") String collaboratorId);
-
-    @Query("""
-        MATCH (u:User {id: $collaboratorId})-[r:WORKS_ON]->(p:Project {id: $projectId})
+        MATCH (p:Project {name: $projectName})
+        OPTIONAL MATCH (p)-[r:USES]->(:Version)
         DELETE r
-    """)
-    void removeCollaborator(@Param("projectId") String projectId, @Param("collaboratorId") String collaboratorId);
-
-    @Query("""
-        MATCH (u:User)-[:WORKS_ON]->(p:Project {id: $projectId})
-        RETURN u.id
-    """)
-    List<String> findCollaboratorsByProjectId(@Param("projectId") String projectId);
-
-    @Query("""
-        MATCH (p:Project {id: $projectId})-[r:USES]->(v:Version)
-        WHERE v.id IN $packageNames
-        DELETE r
-    """)
-    void removeDependenciesByName(@Param("projectId") String projectId, @Param("packageNames") List<String> packageNames);
-
-    @Query("""
-        MATCH (p:Project {id: $projectId})
-        SET p.lastUpdate = $newDate
-    """)
-    void updateLastUpdateTimestamp(@Param("projectId") String projectId, @Param("newDate") Instant newDate);
-
-    @Query("""
-        MATCH (p:Project {id: $projectId})
-        UNWIND $versionIds AS vid
-        MERGE (v:Version {id: vid}) 
+        WITH p
+        UNWIND $packageIds as pkgId
+        MERGE (v:Version {id: pkgId})
         MERGE (p)-[:USES]->(v)
     """)
-    void addDependenciesToProject(@Param("projectId") String projectId, @Param("versionIds") List<String> versionIds);
+    void replaceAllDependencies(@Param("projectName") String projectName, @Param("packageIds") List<String> packageIds);
+
+    @Query("""
+        MATCH (p:Project {name: $projectName})
+        MERGE (u:User {mongoId: $userId})
+        MERGE (u)-[:WORKS_ON]->(p)
+    """)
+    void addCollaboratorRelation(@Param("projectName") String projectName, @Param("userId") String userId);
+
+    @Query("""
+        MATCH (u:User {mongoId: $userId})-[r:WORKS_ON]->(p:Project {name: $projectName})
+        DELETE r
+    """)
+    void removeCollaboratorRelation(@Param("projectName") String projectName, @Param("userId") String userId);
 
 }
     

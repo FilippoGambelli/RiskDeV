@@ -9,15 +9,22 @@ import java.util.List;
 
 public interface VersionGraphRepository extends Neo4jRepository<PackageVersionNode, String> {
 
-    @Query("MATCH (start:Version {id: $id}) " +
-           "MATCH (start)-[:DEPENDS_ON*]->(v:Version) " +
-           "WITH DISTINCT v " +
-           "WITH v.name AS pkgName, v " +
-           "ORDER BY v.major DESC, v.minor DESC, v.patch DESC " +
-           "WITH pkgName, head(collect(v)) AS maxVersion " +
+    @Query("MATCH (start:Version {package_name: $package_name, version: $version}) " +
+           "MATCH (start)-[:DEPENDS_ON*]->(dep:Version) " +
+           "WITH DISTINCT dep " +
+           // Ordina usando l'array di interi per precisione (es. 1.10 > 1.2)
+           "ORDER BY dep.version_array DESC " +
+           // Raggruppa per pacchetto e prende solo la versione più alta trovata nel grafo delle dipendenze
+           "WITH dep.package_name AS pkgName, head(collect(dep)) AS maxVersion " +
            "MATCH (maxVersion)-[:AFFECTED_BY]->(vuln:Vulnerability) " +
-           "RETURN vuln.id AS vulnerabilityId, " +
+           "RETURN vuln.cve_id AS vulnerabilityId, " +
                   "pkgName AS affectedPackage, " +
-                  "maxVersion.version AS affectedVersion")
-    List<VulnerabilityReportDTO> findRecursiveVulnerabilities(@Param("id") String id);
+                  "maxVersion.version AS affectedVersion, " +
+                  "vuln.description AS description, " +
+                  "vuln.exploitabilityScore AS exploitabilityScore, " +
+                  "vuln.baseScore AS baseScore")
+    List<VulnerabilityReportDTO> findRecursiveVulnerabilities(
+            @Param("package_name") String packageName, 
+            @Param("version") String packageVersion
+    );
 }

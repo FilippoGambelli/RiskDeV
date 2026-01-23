@@ -13,10 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDTO {
-    
-    @Schema(description = "Unique identifier of the project", accessMode = Schema.AccessMode.READ_ONLY)
-    private String id;
-
     @Schema(description = "Name of the project", example = "Data Analysis Project")
     @NotBlank(message = "Project name is required")
     private String name;
@@ -32,6 +28,12 @@ public class ProjectDTO {
     @NotBlank(message = "Python version is required")
     private String pythonVersion;
 
+    @Schema(description = "Administrator ID of the project", example = "609e129e8a1b2c0015b8f123")
+    private String adminId;
+
     @Schema(description = "List of packages associated with the project")
     private List<InstalledPackageDTO> packages;
+
+    @Schema(description = "List of collaborators in the project")
+    private List<CollaboratorDTO> collaborators;
 }

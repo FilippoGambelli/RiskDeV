@@ -91,6 +91,7 @@ public class AuthController {
         return restResponseMapper.map(authService.login(request), HttpStatus.OK);
     }
 
+    /*
     @DeleteMapping("/account")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Delete account", description = "Deletes the authenticated user's account")
@@ -115,5 +116,6 @@ public class AuthController {
         log.info("Deleting account for user: {}", userId);
         return restResponseMapper.map(authService.deleteAccount(userId), HttpStatus.OK);
     }
+    */
 
 }

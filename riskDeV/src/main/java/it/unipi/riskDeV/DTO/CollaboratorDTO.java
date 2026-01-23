@@ -9,4 +9,8 @@ public class CollaboratorDTO {
     @NotBlank(message = "Username cannot be empty")
     @Schema(description = "Username of the collaborator to add/remove", example = "mario.rossi")
     private String username;
+
+    @NotBlank(message = "Email cannot be empty")
+    @Schema(description = "Email of the collaborator to add/remove", example = "mario.rossi@example.com")
+    private String email;
 }
