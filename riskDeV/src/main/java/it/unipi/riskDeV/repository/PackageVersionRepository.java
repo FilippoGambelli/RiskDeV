@@ -2,7 +2,6 @@ package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.Vulnerability;
-import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

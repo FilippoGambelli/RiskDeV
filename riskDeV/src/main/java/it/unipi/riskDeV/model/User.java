@@ -3,11 +3,13 @@ package it.unipi.riskDeV.model;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @Document(collection = "user")
@@ -15,7 +17,8 @@ public class User {
     @Id
     private String id;
 
-    @Schema(description = "username", example = "emily.ferrari")
+    @Indexed(unique = true) 
+    @Field("username")
     private String username;
 
     @Schema(description = "First name of the user", example = "John")
@@ -34,7 +37,8 @@ public class User {
 
     @Schema(description = "Role of the user",  example = "ROLE_USER")
     private String role;
-
+    
+    @Schema(description = "List of project names associated with the user")
     @Field("project_names")
     private List<String> projectNames;
 }
