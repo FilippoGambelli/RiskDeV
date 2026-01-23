@@ -7,5 +7,5 @@ import java.util.List;
 public interface FailedEventRepository extends MongoRepository<FailedEvent, String> {
     
     // Retrieve failed events that are not resolved and have retry count less than maxRetries
-    List<FailedEvent> findByResolvedFalseAndRetryCountLessThan(int maxRetries);
+    List<FailedEvent> findByResolvedAtIsNullAndRetryCountLessThan(int maxRetries);
 }

@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.util.List;
 
 @Data
 @Document(collection = "user")

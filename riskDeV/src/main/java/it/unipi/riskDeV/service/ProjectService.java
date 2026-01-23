@@ -69,7 +69,7 @@ public class ProjectService {
             );
             eventPublisher.publishEvent(event);
 
-            return new Result.Success<>();
+            return new Result.Success<>(null);
         } catch (Exception e) {
             log.error("Error creating project", e);
             return new Result.Failure<>(new DomainError.SystemError("Creation failed", e));
@@ -169,7 +169,7 @@ public class ProjectService {
             }
 
             if (!changed) {
-                return new Result.Success<>();
+                return new Result.Success<>(null);
             }
 
             project.setLastUpdate(LocalDateTime.now());
@@ -182,7 +182,7 @@ public class ProjectService {
 
             eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(projectId, remainingPackageIds));
 
-            return new Result.Success<>();
+            return new Result.Success<>(null);
 
         } catch (Exception e) {
             log.error("Failed to remove packages from project {}", projectId, e);

@@ -116,7 +116,7 @@ public class UserService {
         try {
             userRepository.deleteById(id); 
             eventPublisher.publishEvent(new UserDeletedEvent(id));
-            return new Result.Success<>();
+            return new Result.Success<>(null);
 
         } catch (Exception e) {
             log.error("Error deleting user {}: {}", id, e.getMessage());

@@ -34,7 +34,7 @@ public class GraphSyncListener {
 
     // Async listener to handle UserDeletedEvent after mongo transaction commit
     @Async 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT) 
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true) 
     public void handleUserDeleted(UserDeletedEvent event) {
         try {
             graphService.deleteUserNode(event.username());
@@ -46,7 +46,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleUserCreated(UserCreatedEvent event) {
         try {            
             graphService.createUserNode(event.userId(), event.username());
@@ -58,7 +58,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleUserUpdated(UserUpdatedEvent event) {
         try {
             graphService.updateUsername(event.userId(), event.newUsername());
@@ -70,7 +70,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleProjectCreated(ProjectCreatedEvent event) {
         try {
             log.debug("Neo4j: Creating project {}", event.projectName());
@@ -86,7 +86,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleProjectDeleted(ProjectDeletedEvent event) {
         try {
             log.debug("Neo4j: Deleting project {}", event.projectName());
@@ -98,7 +98,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handlePackagesUpdated(ProjectPackagesUpdatedEvent event) {
         try {
             log.debug("Neo4j: Syncing packages for project {}", event.projectName());
@@ -110,7 +110,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleCollaboratorAdded(CollaboratorAddedEvent event) {
         try {
             log.debug("Neo4j: Adding collaborator {} to {}", event.userId(), event.projectName());
@@ -122,7 +122,7 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleCollaboratorRemoved(CollaboratorRemovedEvent event) {
         try {
             log.debug("Neo4j: Removing collaborator {} from {}", event.userId(), event.projectName());

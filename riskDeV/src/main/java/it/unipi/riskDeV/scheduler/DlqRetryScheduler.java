@@ -27,7 +27,7 @@ public class DlqRetryScheduler {
     public void retryFailedEvents() {
         
         // Seach for failed events that are not resolved and have retryCount < maxRetries
-        List<FailedEvent> events = failedEventRepository.findByResolvedFalseAndRetryCountLessThan(5);
+        List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(5);
 
         if (events.isEmpty()) return;
 

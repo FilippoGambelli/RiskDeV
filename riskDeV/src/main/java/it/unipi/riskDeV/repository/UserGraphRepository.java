@@ -2,8 +2,8 @@ package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.neo4j.UserNode;
 
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserGraphRepository extends Neo4jRepository<UserNode, String> {
