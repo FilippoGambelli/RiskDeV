@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,6 +19,9 @@ public class PackageVersion {
     private String packageName;
 
     private String version;
+
+    @Field("version_array")  // it's only used to sort versions during queries
+    private List<Integer> versionArray = new ArrayList<>();
 
     private String author;
 
@@ -36,7 +40,7 @@ public class PackageVersion {
     private String uploadTime;
 
     @Field("requires_dist")
-    private List<String> dependencies;
+    private List<String> dependencies = new ArrayList<>();
 
     @Field("requires_python")
     private String requiresPython;
@@ -44,7 +48,7 @@ public class PackageVersion {
     @Field("risk_score")
     private Double riskScore;
 
-    private List<EmbeddedVulnerability> vulnerabilities;
+    private List<EmbeddedVulnerability> vulnerabilities = new ArrayList<>();
 
     @Data
     public static class EmbeddedVulnerability {

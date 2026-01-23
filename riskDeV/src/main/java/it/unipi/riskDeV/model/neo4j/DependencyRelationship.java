@@ -17,5 +17,5 @@ public class DependencyRelationship {
     private String constraint;
 
     @TargetNode
-    private PackageNode targetPackage;
+    private PackageVersionNode targetVersion;
 }
