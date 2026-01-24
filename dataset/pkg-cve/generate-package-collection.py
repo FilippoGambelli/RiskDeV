@@ -19,8 +19,47 @@ VERSION_WEIGHTS = {
     'post': 1, 'pl': 1,  # Patch level / post release
 }
 
+# --- Dependency Parsing ---
+VERSION_PATTERNS = {
+    "version_gte": r">=\s*([0-9a-zA-Z\.\-_]+)",
+    "version_lte": r"<=\s*([0-9a-zA-Z\.\-_]+)",
+    "version_gt": r">\s*([0-9a-zA-Z\.\-_]+)",
+    "version_lt": r"<\s*([0-9a-zA-Z\.\-_]+)",
+    "version_eq": r"==\s*([0-9a-zA-Z\.\-_]+)",
+    "version_neq": r"!=\s*([0-9a-zA-Z\.\-_]+)"
+}
+
+def parse_dependency(dep_string):
+    result = {
+        "name": None,
+        "version_gte": None,
+        "version_lte": None,
+        "version_gt": None,
+        "version_lt": None,
+        "version_eq": None,
+        "version_neq": None
+    }
+    if not dep_string:
+        return result
+
+    # Prendi solo la parte prima del punto e virgola
+    main_part = dep_string.split(";", 1)[0].strip()
+
+    # Estrai il nome del pacchetto
+    name_match = re.match(r"^([a-zA-Z0-9\-_\.]+)", main_part)
+    if name_match:
+        result["name"] = name_match.group(1)
+
+    # Estrai le versioni
+    for field, pattern in VERSION_PATTERNS.items():
+        match = re.search(pattern, main_part)
+        if match:
+            result[field] = match.group(1)
+
+    return result
+
+# --- JSON Utilities ---
 def load_json(filename):
-    """Load a JSON file safely."""
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             return json.load(f)
@@ -32,29 +71,18 @@ def load_json(filename):
         return None
 
 def save_json(data, filename):
-    """Save data as JSON."""
     try:
         with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
+            json.dump(data, f, indent=4, ensure_ascii=False)
         print(f"Success: Created '{filename}' with {len(data)} entries.")
     except Exception as e:
         print(f"Error saving {filename}: {e}")
 
+# --- Version Normalization ---
 def normalize_version(version_str):
-    """
-    Convert a version string into a fixed-length array of integers.
-    Handles versions like: 4.1a1, 2.0.1, 1.0rc1, etc.
-    
-    Example logic (MAX_VERSION_LEN=6):
-    '2.0'     -> [2, 0, 0, 0, 0, 0]
-    '2.0.1'   -> [2, 0, 1, 0, 0, 0]
-    '4.1a1'   -> [4, 1, 0, -3, 1, 0]  ('a' becomes -3)
-    '1.0rc2'  -> [1, 0, 0, -1, 2, 0]  ('rc' becomes -1)
-    """
     if not version_str:
         return [0] * MAX_VERSION_LEN
 
-    # Split version into numbers and letters
     v = str(version_str).lower()
     parts = re.findall(r'(\d+|[a-z]+)', v)
     
@@ -64,17 +92,15 @@ def normalize_version(version_str):
         if part.isdigit():
             normalized.append(int(part))
         else:
-            # Convert text part using weights, default -5 if unknown
             weight = VERSION_WEIGHTS.get(part, -5)
             normalized.append(weight)
     
-    # Pad with zeros to fixed length
     while len(normalized) < MAX_VERSION_LEN:
         normalized.append(0)
         
-    # Truncate if longer than MAX_VERSION_LEN
     return normalized[:MAX_VERSION_LEN]
 
+# --- Main Processing ---
 def main():
     raw_packages = load_json(INPUT_FILE)
     vuln_db = load_json(VULN_DB_FILE)
@@ -113,20 +139,23 @@ def main():
 
             # --- VERSION NORMALIZATION ---
             version_str = ver.get("version")
-            # Convert version string to fixed-length array
             version_array = normalize_version(version_str)
+
+            # --- DEPENDENCY PARSING ---
+            requires = ver.get("requires_dist") or []
+            structured_requires = [parse_dependency(dep) for dep in requires]
 
             entry = {
                 "package_name": package_id,
                 "version": version_str,
-                "version_array": version_array,  # Array for sorting
+                "version_array": version_array,
                 "author": pkg.get("author"),
                 "author_email": pkg.get("author_email"),
                 "description": pkg.get("description"),
                 "package_url": pkg.get("package_url"),
                 "documentation": pkg.get("Documentation"),
                 "upload_time": ver.get("upload_time"),
-                "requires_dist": ver.get("requires_dist"),
+                "requires_dist": structured_requires,
                 "requires_python": ver.get("requires_python"),
                 "vulnerabilities": raw_vulns,
                 "risk_score": max_risk_score

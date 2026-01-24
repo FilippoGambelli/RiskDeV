@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.UpdatePackageVersionDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.PackageService;
 import it.unipi.riskDeV.service.PackageIngestionService;
@@ -85,9 +86,11 @@ public class PackageController {
     })
     public ResponseEntity<?> getReverseDependencies(
             @Parameter(description = "The package name", example = "numpy") 
-            @PathVariable String packageName) {
-
-        return restResponseMapper.map(packageService.getPackagesDependingOn(packageName), HttpStatus.OK);
+            @PathVariable String packageName,
+            @Parameter(description = "The package version", example = "2.0") 
+            @PathVariable String version
+        ) {
+        return restResponseMapper.map(packageService.getPackagesDependingOn(packageName, version), HttpStatus.OK);
     }
 
     @GetMapping("/{packageName}/safe")
@@ -167,7 +170,7 @@ public class PackageController {
     public ResponseEntity<?> updatePackageVersion(
             @PathVariable String packageName,
             @PathVariable String packageVersion,
-            @Valid @RequestBody PackageVersionDTO updateDTO) {
+            @Valid @RequestBody UpdatePackageVersionDTO updateDTO) {
         
         return restResponseMapper.map(packageService.updatePackageVersion(packageName, packageVersion, updateDTO), HttpStatus.OK);
     }

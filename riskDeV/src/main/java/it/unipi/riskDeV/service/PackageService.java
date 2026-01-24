@@ -1,12 +1,14 @@
 package it.unipi.riskDeV.service;
 
-import it.unipi.riskDeV.DTO.DependencyDTO;
 import it.unipi.riskDeV.DTO.GeneralPackageDTO;
 import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.PackageVersionGraphDTO;
+import it.unipi.riskDeV.DTO.UpdatePackageVersionDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.PackageVersion.Constraints;
 import it.unipi.riskDeV.model.neo4j.PackageNode;
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.repository.PackageGraphRepository;
@@ -14,7 +16,6 @@ import it.unipi.riskDeV.repository.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
 import it.unipi.riskDeV.APIClient.PyPiApiClient;
 import it.unipi.riskDeV.APIClient.OsvApiClient;
-import it.unipi.riskDeV.APIClient.PyPiMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -24,9 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -40,14 +39,26 @@ public class PackageService {
     private final PackageVersionRepository packageVersionRepository;
     private final PackageGraphRepository packageGraphRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
-    private final MongoTemplate mongoTemplate;
     private final PyPiApiClient pyPiApiClient;
     private final OsvApiClient osvApiClient;
-    private static final Pattern DEP_PATTERN = Pattern.compile("^([a-zA-Z0-9_\\-.]+)\\s*([<>=!~]+)?\\s*(.*)$");
     @Lazy
     private final PackageIngestionService packageIngestionService;
 
+    private static final Map<String, Integer> VERSION_WEIGHTS = Map.of(
+        "dev", -4, "alpha", -3, "a", -3, "beta", -2, "b", -2, 
+        "rc", -1, "c", -1, "pre", -1, "post", 1, "pl", 1
+    );
+
     // Get a package by its name (returns metadata from the latest version)
+    public Result<PackageVersionDTO> getPackageByName(String packageName) {
+        var pkgOpt = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
+
+        if (pkgOpt.isPresent()) {
+            return new Result.Success<>(new PackageVersionDTO(pkgOpt.get()));
+        }
+        return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+    }
+    /*
     public Result<PackageVersionDTO> getPackageByName(String packageName) {
         try {
             var pkgOpt = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
@@ -75,16 +86,28 @@ public class PackageService {
                 packageIngestionService.enqueuePackage(packageName);
                 return new Result.Success<>(newVersionDTO);
             }
-            */
+            
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
 
         } catch (Exception e) {
             log.error("Error fetching package {}", packageName, e);
             return new Result.Failure<>(new DomainError.SystemError("Database error while fetching package", e));
         }
-    }
+    }*/
 
     // Get information about a specific version of a package
+    // Get information about a specific version of a package
+    public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
+        var pkgVerOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
+            
+        if (pkgVerOpt.isPresent()) {
+            return new Result.Success<>(new PackageVersionDTO(pkgVerOpt.get()));
+        }
+
+        return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
+    }
+
+    /*
     public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
         try {
             var pkgVerOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
@@ -119,83 +142,70 @@ public class PackageService {
 
                 return new Result.Success<>(newVersionDTO);
             }
-            */
+            
             return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
 
         } catch (Exception e) {
             log.error("Error fetching version {} of package {}", packageVersion, packageName, e);
             return new Result.Failure<>(new DomainError.SystemError("Error while fetching version", e));
         }
-    }
+    }*/
 
-    // TODO: Get all the packages depending on a specific package version
-    public Result<List<String>> getPackagesDependingOn(String packageName) {
+    // Retrieves all packages that directly depend on the specified package version.
+    public Result<List<PackageVersionGraphDTO>> getPackagesDependingOn(String packageName, String version) {
         log.info("Searching for packages depending on: {}", packageName);
 
-        try {
-            // Checking if the package exists on neo4j
-            if (!packageGraphRepository.existsById(packageName)) {
-                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
-            }
-
-            var dependents = packageVersionGraphRepository.findReverseDependencies(packageName);
-            var ids = dependents.stream().map(PackageVersionNode::getId).toList();
-            return new Result.Success<>(ids);
-
-        } catch (Exception e) {
-            log.error("Neo4j error fetching dependents for {}", packageName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Neo4j error fetching dependents", e));
+        if (!packageVersionGraphRepository.existsByPackageNameAndVersion(packageName, version)) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
         }
+
+        var optionalDependents = packageVersionGraphRepository.findReverseDependencies(packageName, version);
+        
+        List<PackageVersionGraphDTO> ListDTO = optionalDependents.orElse(List.of()).stream().map(PackageVersionGraphDTO::new).toList();
+
+        return new Result.Success<>(ListDTO);
     }
 
     // Get all the dependencies of a specific package
-    public Result<List<String>> getDirectDependencies(String packageName, String version) {
-        try {
-            // Find the document
-            var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
+    public Result<List<Constraints>> getDirectDependencies(String packageName, String version) {
+        
+        var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
 
-            if (versionDocOpt.isEmpty()) {
-                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " version " + version + " not found in database."));
-            }
-
-            // Extract list of depencencies
-            List<String> rawDependencies = versionDocOpt.get().getDependencies();
-
-            // If null it's an empty list
-            if (rawDependencies == null) {
-                rawDependencies = new ArrayList<>();
-            }
-
-            return new Result.Success<>(rawDependencies);
-
-        } catch (Exception e) {
-            log.error("Database error fetching dependencies for {} {}", packageName, version, e);
-            return new Result.Failure<>(new DomainError.SystemError("Error reading dependencies from database", e));
+        if (versionDocOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " version " + version + " not found in database."));
         }
+
+        List<Constraints> rawDependencies = versionDocOpt.get().getDependencies();
+
+        if (rawDependencies == null) {
+            rawDependencies = new ArrayList<>();
+        }
+
+        return new Result.Success<>(rawDependencies);
     }
 
     // Get versions without CVEs of a specific package
     public Result<List<PackageVersionDTO>> getSafeVersions(String packageName) {
         log.info("Searching for safe versions of package: {}", packageName);
 
-        try {
-            if (!packageVersionRepository.existsByPackageName(packageName)) {
-                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
-            }
-
-            List<PackageVersion> safeVersions = packageVersionRepository.findSafeVersions(packageName);
-            var versions = safeVersions.stream().map(PackageVersionDTO::new).toList();
-            return new Result.Success<>(versions);
-
-        } catch (Exception e) {
-            log.error("Error fetching safe versions for {}", packageName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database error fetching safe versions", e));
+        if (!packageVersionRepository.existsByPackageName(packageName)) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
         }
+
+        var optionalSafeVersions = packageVersionRepository.findTop5ByPackageNameAndRiskScoreOrderByVersionArrayDesc(packageName, 0);
+        
+        var safeVersions = optionalSafeVersions.orElse(List.of()).stream().map(PackageVersionDTO::new).toList();
+        
+        return new Result.Success<>(safeVersions);
     }
 
-    // TODO: Add a new version of a package
 
-    public Result<Void> addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
+    public Result<String> addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
+        
+        if(!packageName.equals(newVersionDTO.getPackageName())) {
+            return new Result.Failure<>(new DomainError.InvalidOperation("The package name in the URL does not match the package name in the request body"));
+        }
+        
         String version = newVersionDTO.getVersion();
         log.info("Publishing version {} for package {}", version, packageName);
 
@@ -204,37 +214,8 @@ public class PackageService {
         }
 
         // Document preparation
-        PackageVersion versionDoc = new PackageVersion();
-        versionDoc.setPackageName(packageName);
-        versionDoc.setVersion(version);
+        PackageVersion versionDoc = new PackageVersion(newVersionDTO);
         versionDoc.setVersionArray(generateVersionArray(version)); 
-        versionDoc.setUploadTime(Instant.now().toString());
-        versionDoc.setRequiresPython(newVersionDTO.getRequiresPython());
-        versionDoc.setDependencies(newVersionDTO.getDependencies() != null ? newVersionDTO.getDependencies() : new ArrayList<>());
-        versionDoc.setVulnerabilities(newVersionDTO.getVulnerabilities() != null ? newVersionDTO.getVulnerabilities() : new ArrayList<>());
-        
-        // Metadata
-        versionDoc.setAuthor(newVersionDTO.getAuthor());
-        versionDoc.setAuthorEmail(newVersionDTO.getAuthorEmail());
-        versionDoc.setDescription(newVersionDTO.getDescription());
-        versionDoc.setPackageURL(newVersionDTO.getPackageURL());
-        versionDoc.setDocumentationURL(newVersionDTO.getDocumentationURL());
-
-        // Fallback Metadata
-        try {
-            if (versionDoc.getAuthor() == null || versionDoc.getDescription() == null) {
-                var prevOpt = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
-                if (prevOpt.isPresent()) {
-                    PackageVersion prev = prevOpt.get();
-                    if (versionDoc.getAuthor() == null) versionDoc.setAuthor(prev.getAuthor());
-                    if (versionDoc.getAuthorEmail() == null) versionDoc.setAuthorEmail(prev.getAuthorEmail());
-                    if (versionDoc.getDescription() == null) versionDoc.setDescription(prev.getDescription());
-                    if (versionDoc.getPackageURL() == null) versionDoc.setPackageURL(prev.getPackageURL());
-                }
-            }
-        } catch (Exception e) {
-            log.warn("Failed to fetch previous version metadata, proceeding without fallback", e);
-        }
 
         // Save on MongoDB
         try {
@@ -245,45 +226,60 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.SystemError("Error while saving version. Please try again.", e));
         }
 
-        // Write on Neo4j
-        String neo4jVersionId = packageName + " " + version;
         try {
-            if (!packageGraphRepository.existsById(packageName)) {
+            if (!packageGraphRepository.existsByPackageName(packageName)) {
                 PackageNode newPkg = new PackageNode();
-                newPkg.setId(packageName);
+                newPkg.setPackageName(packageName);
                 packageGraphRepository.save(newPkg);
-                log.info("Auto-created missing parent package node: {}", packageName);
             }
 
-            PackageVersionNode versionNode = new PackageVersionNode();
-            versionNode.setId(neo4jVersionId);
-            versionNode.setVersion(version);
-            versionNode.setIsStub(false);
-
-            try {
-                List<Integer> vArray = versionDoc.getVersionArray();
-                if (vArray.size() >= 1) versionNode.setMajor(vArray.get(0));
-                if (vArray.size() >= 2) versionNode.setMinor(vArray.get(1));
-                if (vArray.size() >= 3) versionNode.setPatch(vArray.get(2));
-            } catch (Exception e) {
-                log.warn("Complex version number, skipping major/minor mapping for Neo4j: {}", version);
-            }
+            PackageVersionNode versionNode = new PackageVersionNode(versionDoc);
 
             packageVersionGraphRepository.save(versionNode);
-            packageGraphRepository.addVersionToPackage(packageName, neo4jVersionId);
 
-            if (!versionDoc.getVulnerabilities().isEmpty()) {
-                List<String> cveIds = versionDoc.getVulnerabilities().stream()
-                    .map(EmbeddedVulnerability::getCveId)
-                    .toList();
-                packageVersionGraphRepository.attachVulnerabilities(neo4jVersionId, cveIds);
+            packageGraphRepository.addVersionToPackage(packageName, versionNode.getVersion());
+
+            List<EmbeddedVulnerability> vulnerabilityList = versionDoc.getVulnerabilities();
+            for (int i = 0; i < vulnerabilityList.size(); i++) {
+                packageVersionGraphRepository.attachVulnerability(packageName, version, vulnerabilityList.get(i).getCveId());
             }
 
-            if (!versionDoc.getDependencies().isEmpty()) {
-                List<Map<String, String>> parsedDeps = versionDoc.getDependencies().stream()
-                    .map(this::parseDependencyForGraph) 
-                    .toList();
-                packageVersionGraphRepository.attachDependenciesWithStubs(neo4jVersionId, parsedDeps);
+            List<Constraints> dependecesList = versionDoc.getDependencies();
+            addDependeciesGraph(versionNode.getPackageName(), versionNode.getVersion(), dependecesList);
+
+            Criteria dependencyCriteria = Criteria.where("requires_dist").elemMatch(
+            Criteria.where("name").is(versionNode.getPackageName())
+                    .orOperator(
+                        Criteria.where("version_gte").lte(versionNode.getVersion()),
+                        Criteria.where("version_gte").is(null)
+                    )
+                    .orOperator(
+                        Criteria.where("version_lte").gte(versionNode.getVersion()),
+                        Criteria.where("version_lte").is(null)
+                    )
+                    .orOperator(
+                        Criteria.where("version_gt").lt(versionNode.getVersion()),
+                        Criteria.where("version_gt").is(null)
+                    )
+                    .orOperator(
+                        Criteria.where("version_lt").gt(versionNode.getVersion()),
+                        Criteria.where("version_lt").is(null)
+                    )
+                    .orOperator(
+                        Criteria.where("version_eq").is(versionNode.getVersion()),
+                        Criteria.where("version_eq").is(null)
+                    )
+                    .orOperator(
+                        Criteria.where("version_neq").ne(versionNode.getVersion()),
+                        Criteria.where("version_neq").is(null)
+                    )
+            );
+
+            Query query = new Query(dependencyCriteria);
+            List<PackageVersion> dependents = packageVersionRepository.find(query).get();
+
+            for(int i = 0; i < dependents.size(); i++) {
+                packageVersionGraphRepository.attachDependency(dependents.get(i).getPackageName(), dependents.get(i).getVersion(), packageName, version);
             }
 
         } catch (Exception e) {
@@ -297,165 +293,97 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to publish version on Graph DB", e));
         }
 
-        return new Result.Success<>(null);
-    }
+    return new Result.Success<>("Package created successfully");    
+}
 
     // Update package's metadata (propagates to all versions)
-    public Result<GeneralPackageDTO> updatePackageMetadata(String packageName, GeneralPackageDTO updateData) {
+    public Result<String> updatePackageMetadata(String packageName, GeneralPackageDTO updateData) {
         log.info("Updating metadata for ALL versions of package: {}", packageName);
-
-        try {
-            if (!packageVersionRepository.existsByPackageName(packageName)) {
-                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
-            }
-
-            Query query = new Query(Criteria.where("package_name").is(packageName));
-            Update update = new Update()
-                    .set("author", updateData.getAuthor())
-                    .set("author_email", updateData.getAuthorEmail())
-                    .set("description", updateData.getDescription())
-                    .set("package_url", updateData.getPackageURL())
-                    .set("documentation", updateData.getDocumentationURL());
-
-            // Update all the versions
-            var updateResult = mongoTemplate.updateMulti(query, update, PackageVersion.class);
-            log.info("Metadata updated for {} versions of package {}", updateResult.getModifiedCount(), packageName);
-            
-            return new Result.Success<>(updateData);
-
-        } catch (Exception e) {
-            log.error("Error updating metadata for {}", packageName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database error during update", e));
+        
+        if (!packageVersionRepository.existsByPackageName(packageName)) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
         }
+
+        Query query = new Query(Criteria.where("package_name").is(packageName));
+        Update update = new Update()
+                .set("author", updateData.getAuthor())
+                .set("author_email", updateData.getAuthorEmail())
+                .set("description", updateData.getDescription())
+                .set("package_url", updateData.getPackageURL())
+                .set("documentation", updateData.getDocumentationURL());
+
+        packageVersionRepository.updateMulti(query, update);
+
+        packageVersionGraphRepository.updateDocumentation(packageName, updateData.getDocumentationURL());
+
+        log.info("Metadata updated for {}", packageName);
+        
+        return new Result.Success<>("Update executed successfully");
     }
 
-    // TODO: Update a version of a package
-
-    public Result<PackageVersionDTO> updatePackageVersion(String packageName, String version, PackageVersionDTO updateDTO) {
+    // Update a version of a package
+    public Result<String> updatePackageVersion(String packageName, String version, UpdatePackageVersionDTO updateVersionDTO) {
+        
         log.info("Updating specific version details for: {} {}", packageName, version);
 
-        try {
-            var existingOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
-            if (existingOpt.isEmpty()) {
-                return new Result.Failure<>(new DomainError.NotFound("Version " + version + " not found."));
-            }
-            PackageVersion doc = existingOpt.get();
-
-            doc.setRequiresPython(updateDTO.getRequiresPython());
-            doc.setRiskScore(updateDTO.getRiskScore());
-            doc.setDependencies(updateDTO.getDependencies() != null ? updateDTO.getDependencies() : new ArrayList<>());
-            doc.setVulnerabilities(updateDTO.getVulnerabilities() != null ? updateDTO.getVulnerabilities() : new ArrayList<>());
-
-            packageVersionRepository.save(doc); // Mongo Save
-
-            // Neo4j Sync
-            String neo4jId = packageName + " " + version;
-            try {
-                if (doc.getDependencies() != null) {
-                    packageVersionGraphRepository.deleteDependencies(neo4jId);
-                    List<Map<String, String>> parsedDeps = doc.getDependencies().stream()
-                            .map(this::parseDependencyForGraph)
-                            .toList();
-                    if (!parsedDeps.isEmpty()) {
-                        packageVersionGraphRepository.attachDependenciesWithStubs(neo4jId, parsedDeps);
-                    }
-                }
-
-                if (doc.getVulnerabilities() != null) {
-                    packageVersionGraphRepository.deleteVulnerabilities(neo4jId);
-                    List<String> cveIds = doc.getVulnerabilities().stream()
-                            .map(EmbeddedVulnerability::getCveId)
-                            .toList();
-                    if (!cveIds.isEmpty()) {
-                        packageVersionGraphRepository.attachVulnerabilities(neo4jId, cveIds);
-                    }
-                }
-            } catch (Exception e) {  
-                log.error("Neo4j alignment failed for updated version {}", neo4jId, e);
-                return new Result.Failure<>(new DomainError.SystemError("Update saved on DB but Graph sync failed.", e));
-            }
-
-            return new Result.Success<>(new PackageVersionDTO(doc));
-
-        } catch (Exception e) {
-            log.error("Error updating version document for {} {}", packageName, version, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database error during version update", e));
+        var existingOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
+        if (existingOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " " + version + " not found."));
         }
+        
+        PackageVersion updateVersion  = existingOpt.get();
+
+        if(updateVersionDTO.getRequiresPython() != null) {
+            updateVersion.setRequiresPython(updateVersionDTO.getRequiresPython());
+        }
+
+        if(updateVersionDTO.getUploadTime() != null) {
+            updateVersion.setUploadTime(updateVersionDTO.getUploadTime());
+        }
+
+        if(updateVersionDTO.getDependencies() != null) {
+            updateVersion.setDependencies(updateVersionDTO.getDependencies());
+        }
+
+        if(updateVersionDTO.getVulnerabilities() != null) {
+            updateVersion.setVulnerabilities(updateVersionDTO.getVulnerabilities());
+        }
+
+        try {
+            packageVersionRepository.save(updateVersion);
+        } catch (Exception e) {
+            return new Result.Failure<>(new DomainError.SystemError("Failed to update the package on MongoDB", e));
+        }
+        
+        if(updateVersionDTO.getDependencies() != null) {
+            updateVersion.setDependencies(updateVersionDTO.getDependencies());
+            packageVersionGraphRepository.deleteDependencies(packageName, version);
+            addDependeciesGraph(packageName, version, updateVersionDTO.getDependencies());
+        }
+
+        if(updateVersionDTO.getVulnerabilities() != null) {
+            updateVersion.setVulnerabilities(updateVersionDTO.getVulnerabilities());
+            packageVersionGraphRepository.deleteVulnerabilities(packageName, version);
+
+            List<EmbeddedVulnerability> vulnerabilityList = updateVersionDTO.getVulnerabilities();
+            for (int i = 0; i < vulnerabilityList.size(); i++) {
+                packageVersionGraphRepository.attachVulnerability(packageName, version, vulnerabilityList.get(i).getCveId());
+            }
+        }
+
+        return new Result.Success<>("Package updated successfully");
     }
 
-    // TODO: Delete a specific version of a package
-
-    public Result<Void> deletePackageVersion(String packageName, String version) {
-        String neo4jVersionId = packageName + " " + version;
+    // Delete a specific version of a package
+    public Result<String> deletePackageVersion(String packageName, String version) {
         log.info("Deleting version {} of package {}", version, packageName);
 
-        try {
-            var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
-            if (versionDocOpt.isEmpty()) {
-                return new Result.Failure<>(new DomainError.NotFound("Version not found."));
-            }
-            PackageVersion versionDoc = versionDocOpt.get();
+        packageVersionRepository.deleteByPackageNameAndVersion(packageName, version);
 
-            packageVersionRepository.delete(versionDoc);
+        packageVersionGraphRepository.deleteByPackageNameAndVersion(packageName, version);
 
-            try {
-                if (packageVersionGraphRepository.existsById(neo4jVersionId)) {
-                    packageVersionGraphRepository.deleteById(neo4jVersionId);
-                }
-            } catch (Exception e) {
-                log.error("Neo4j delete failed! Restoring data on Mongo...", e);
-                try {
-                    packageVersionRepository.save(versionDoc); 
-                } catch (Exception restoreEx) {
-                    log.error("CRITICAL: Failed to restore MongoDB data after Neo4j delete failure", restoreEx);
-                }
-                return new Result.Failure<>(new DomainError.SystemError("Failed to delete from Graph DB.", e));
-            }
-
-            return new Result.Success<>(null);
-
-        } catch (Exception e) {
-            log.error("Error deleting version {} {}", packageName, version, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database error during deletion", e));
-        }
+        return new Result.Success<>("Package deleted successfully");
     }
-
-    // PRIVATE METHODS
-
-    private Map<String, String> parseDependencyForGraph(String rawDep) {
-        Matcher matcher = DEP_PATTERN.matcher(rawDep.trim());
-        Map<String, String> result = new HashMap<>();
-
-        if (matcher.find()) {
-            String pkgName = matcher.group(1);
-            String operator = matcher.group(2); 
-            String version = matcher.group(3); 
-
-            if (version == null || version.isEmpty()) {
-                version = "latest"; 
-                operator = "ANY"; 
-            } else if (operator == null) {
-                operator = "=="; 
-            }
-
-            result.put("pkgName", pkgName);
-            result.put("version", version);
-            result.put("operator", operator);
-            
-            result.put("targetId", pkgName + " " + version);
-        } else {
-            result.put("pkgName", rawDep);
-            result.put("version", "unknown");
-            result.put("operator", "unknown");
-            result.put("targetId", rawDep + " unknown");
-        }
-        return result;
-    }
-
-    private static final Map<String, Integer> VERSION_WEIGHTS = Map.of(
-        "dev", -4, "alpha", -3, "a", -3, "beta", -2, "b", -2, 
-        "rc", -1, "c", -1, "pre", -1, "post", 1, "pl", 1
-    );
 
     private List<Integer> generateVersionArray(String versionStr) {
         List<Integer> normalized = new ArrayList<>();
@@ -477,5 +405,41 @@ public class PackageService {
         }
         
         return normalized.subList(0, 6);
+    }
+
+    private void addDependeciesGraph(String packageName, String version, List<Constraints> dependecesList) {
+        for (int i = 0; i < dependecesList.size(); i++) {
+            Constraints constraint = dependecesList.get(i);
+            
+            Criteria criteria = Criteria.where("package_name").is(constraint.getName());
+
+            if (constraint.getVersion_gte() != null) {
+                criteria = criteria.and("version_array").gte(generateVersionArray(constraint.getVersion_gte()));
+            }
+            if (constraint.getVersion_lte() != null) {
+                criteria = criteria.and("version_array").lte(generateVersionArray(constraint.getVersion_lte()));
+            }
+            if (constraint.getVersion_gt() != null) {
+                criteria = criteria.and("version_array").gt(generateVersionArray(constraint.getVersion_gt()));
+            }
+            if (constraint.getVersion_lt() != null) {
+                criteria = criteria.and("version_array").lt(generateVersionArray(constraint.getVersion_lt()));
+            }
+            if (constraint.getVersion_eq() != null) {
+                criteria = criteria.and("version_array").is(generateVersionArray(constraint.getVersion_eq()));
+            }
+            if (constraint.getVersion_neq() != null) {
+                criteria = criteria.and("version_array").ne(generateVersionArray(constraint.getVersion_neq()));
+            }
+
+            Query query = new Query(criteria);
+
+            List<PackageVersion> packageList = packageVersionRepository.find(query).get();
+
+            for (int j = 0; j < packageList.size(); j++) {
+                packageVersionGraphRepository.attachDependency(packageName, version, packageList.get(j).getPackageName(), packageList.get(j).getVersion());
+            }
+
+        }
     }
 }

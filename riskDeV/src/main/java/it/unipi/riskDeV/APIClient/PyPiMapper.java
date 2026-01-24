@@ -16,7 +16,7 @@ public class PyPiMapper {
         dto.setDescription(info.getSummary());
         dto.setRequiresPython(info.getRequiresPython());
         
-        dto.setDependencies(info.getRequiresDist() != null ? info.getRequiresDist() : new ArrayList<>());
+        // dto.setDependencies(info.getRequiresDist() != null ? info.getRequiresDist() : new ArrayList<>());
         
         // URL
         if (info.getProjectUrls() != null) {

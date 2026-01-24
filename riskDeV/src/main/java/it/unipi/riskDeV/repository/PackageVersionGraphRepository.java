@@ -8,16 +8,18 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 // Extend <..., Long> because the new script uses @Id Long id (internal id)
-public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVersionNode, Long> {
+public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVersionNode, String> {
+
+    Boolean existsByPackageNameAndVersion(String packageName, String version);
 
     // Find packages that depend on THIS package version
-    @Query("MATCH (target:Version {package_name: $pkgName, version: $verNum}) " +
+    @Query("MATCH (target:Version {package_name: $packageName, version: $version}) " +
            "MATCH (dependent:Version)-[:DEPENDS_ON]->(target) " +
            "RETURN dependent")
-    List<PackageVersionNode> findReverseDependencies(@Param("pkgName") String pkgName, 
-                                                     @Param("verNum") String verNum);
+    Optional<List<PackageVersionNode>> findReverseDependencies(@Param("packageName") String packageName, @Param("version") String version);
 
     // Find direct dependencies of a specific package
     @Query("MATCH (source:Version {package_name: $pkgName, version: $verNum})-[r:DEPENDS_ON]->(target:Version) " +
@@ -26,38 +28,21 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
                                                @Param("verNum") String verNum);
 
     // Attach Vulnerabilities
-    @Query("MATCH (v:Version {package_name: $pkgName, version: $verNum}) " +
-           "UNWIND $cveIds AS cve " +
-           "MERGE (vuln:Vulnerability {cve_id: cve}) " +
-           "MERGE (v)-[:AFFECTED_BY]->(vuln)")
-    void attachVulnerabilities(@Param("pkgName") String pkgName, 
-                               @Param("verNum") String verNum, 
-                               @Param("cveIds") List<String> cveIds);
-
-    // Attach Dependencies, match only if target version exists
     @Query("""
-        MATCH (source:Version {package_name: $srcPkg, version: $srcVer})
-        UNWIND $dependenciesList AS dep
-        
-        // Searching the exact version of the dependency
-        MATCH (target:Version {package_name: dep.pkgName, version: dep.version})
-            
-        // If the target version node exists, they are linked
-        MERGE (source)-[r:DEPENDS_ON]->(target)
-        SET r.constraint = dep.constraint
-    """)
-    void attachDependencies(@Param("srcPkg") String srcPkg, 
-                            @Param("srcVer") String srcVer, 
-                            @Param("dependenciesList") List<Map<String, String>> dependenciesList);
+            MATCH (v:Version {package_name: $packageName, version: $version})
+            MERGE (vuln:Vulnerability {cve_id: $cveId})
+            MERGE (v)-[:AFFECTED_BY]->(vuln)
+            """)
+    void attachVulnerability(@Param("packageName") String packageName, @Param("version") String version, @Param("cveId") String cveIds);
 
-    // Original attachDependency
-    /*
-    @Query("MATCH (v:Version {id: $versionId}) " +
-           "UNWIND $dependencyNames AS depName " +
-           "MERGE (target:Package {id: depName}) " +
-           "MERGE (v)-[:DEPENDS_ON]->(target)")
-    void attachDependencies(@Param("versionId") String versionId, @Param("dependencyNames") List<String> dependencyNames);
-    */
+    // Attach Dependency, match only if target version exists
+    @Query("""
+        MATCH (source:Version {package_name: $sourcePackageName, version: $sourceVersion})
+        MERGE (target:Version {package_name: $targetPackageName, version: $targetVersion})
+        MERGE (source)-[r:DEPENDS_ON]->(target)
+        """)
+    void attachDependency(@Param("sourcePackageName") String sourcePackageName, @Param("sourceVersion") String sourceVersion,
+                          @Param("targetPackageName") String targetPackageName, @Param("targetVersion") String targetVersion);
 
     // Attach Dependencies with stubs 
     // TODO: maybe it can be deleted we have to think about automatic download, in the doubt there are both versions here
@@ -106,10 +91,18 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
     */
 
     // Delete dependencies of a version node
-    @Query("MATCH (v:Version {package_name: $pkgName, version: $verNum})-[r:DEPENDS_ON]->() DELETE r")
-    void deleteDependencies(@Param("pkgName") String pkgName, @Param("verNum") String verNum);
+    @Query("MATCH (v:Version {package_name: $packageName, version: $version})-[r:DEPENDS_ON]->() DELETE r")
+    void deleteDependencies(@Param("packageName") String packageName, @Param("version") String version);
 
     // Delete vulnerabilities of a version node
-    @Query("MATCH (v:Version {package_name: $pkgName, version: $verNum})-[r:AFFECTED_BY]->() DELETE r")
-    void deleteVulnerabilities(@Param("pkgName") String pkgName, @Param("verNum") String verNum);
+    @Query("MATCH (v:Version {package_name: $packageName, version: $version})-[r:AFFECTED_BY]->() DELETE r")
+    void deleteVulnerabilities(@Param("packageName") String packageName, @Param("version") String version);
+
+    @Query("""
+        MATCH (v:Version {package_name: $packageName})
+        SET v.documentation = $newDocumentationURL
+        """)
+    void updateDocumentation(@Param("packageName") String packageName, @Param("newDocumentationURL") String newDocumentationURL);
+
+    void deleteByPackageNameAndVersion(String packageName, String version);
 }

@@ -35,17 +35,13 @@ public class AdminService {
         var optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isEmpty()) {
-            return new Result.Failure<>(
-                new DomainError.NotFound("User " + username + " does not exist")
-            );
+            return new Result.Failure<>(new DomainError.NotFound("User " + username + " does not exist"));
         }
 
         var user = optionalUser.get();
 
         if (user.getRole().equals("ROLE_ADMIN")) {
-            return new Result.Failure<>(
-                new DomainError.AlreadyExists("User " + username + " is already an administrator")
-            );
+            return new Result.Failure<>(new DomainError.AlreadyExists("User " + username + " is already an administrator"));
         }
 
         user.setRole("ROLE_ADMIN");
@@ -55,7 +51,7 @@ public class AdminService {
             log.info("Administrator {} was successfully added", username);
         } catch (Exception e) {
             log.warn("Failed to save administrator with username {}", username);
-            // TODO: handle persistence error properly
+            return new Result.Failure<>(new DomainError.SystemError("Failed to save administrator", e));
         }
 
         return new Result.Success<>("Administrator was successfully added");
@@ -66,17 +62,13 @@ public class AdminService {
         var optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isEmpty()) {
-            return new Result.Failure<>(
-                new DomainError.NotFound("User " + username + " does not exist")
-            );
+            return new Result.Failure<>(new DomainError.NotFound("User " + username + " does not exist"));
         }
 
         var user = optionalUser.get();
         
         if (user.getRole().equals("ROLE_USER")) {
-            return new Result.Failure<>(
-                new DomainError.AlreadyExists("User " + username + " is already a standard user")
-            );
+            return new Result.Failure<>(new DomainError.AlreadyExists("User " + username + " is already a standard user"));
         }
 
         user.setRole("ROLE_USER");
@@ -86,9 +78,9 @@ public class AdminService {
             log.info("Administrator {} was successfully removed", username);
         } catch (Exception e) {
             log.warn("Failed to remove administrator with username {}", username);
-            // TODO: handle persistence error properly
+            return new Result.Failure<>(new DomainError.SystemError("Failed to remove administrator", e));
         }
 
-        return new Result.Success<>("Administrator was successfully removed");
+        return new Result.Success<>("Administrator successfully removed");
     }
 }

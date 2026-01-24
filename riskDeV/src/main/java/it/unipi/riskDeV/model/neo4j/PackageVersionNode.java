@@ -5,27 +5,24 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
+
+import it.unipi.riskDeV.model.PackageVersion;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
 
 @Data
 @Node("Version")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PackageVersionNode {
 
     @Id 
     @GeneratedValue
-    private Long id;
+    private String id;
 
     @Property("package_name")
-    @EqualsAndHashCode.Include    // In neo4j the version node is identify by packageName e version
     private String packageName;
 
-    @EqualsAndHashCode.Include    // Second part of the key
     private String version;
 
     @Property("version_array")
@@ -45,6 +42,13 @@ public class PackageVersionNode {
 
     // Relationship (:Version)-[:AFFECTED_BY]->(:Vulnerability)
     @Relationship(type = "AFFECTED_BY", direction = Relationship.Direction.OUTGOING)
-    @ToString.Exclude
     private Set<VulnerabilityNode> vulnerabilities;
+
+    public PackageVersionNode(PackageVersion packageVersion) {
+        this.packageName = packageVersion.getPackageName();
+        this.version = packageVersion.getVersion();
+        this.versionArray = packageVersion.getVersionArray();
+        this.requiresPython = packageVersion.getRequiresPython();
+        this.documentation = packageVersion.getDocumentationURL();
+    }
 }

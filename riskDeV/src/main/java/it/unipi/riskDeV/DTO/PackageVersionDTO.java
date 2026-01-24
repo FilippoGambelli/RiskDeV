@@ -2,6 +2,7 @@ package it.unipi.riskDeV.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.PackageVersion;
+import it.unipi.riskDeV.model.PackageVersion.Constraints;
 import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -55,10 +56,7 @@ public class PackageVersionDTO {
     private String requiresPython;
 
     @Schema(description = "List of package dependencies (raw strings)", example = "[\"pandas >= 1.0\", \"scipy\"]")
-    private List<String> dependencies;
-
-    @Schema(description = "Total number of vulnerabilities found", accessMode = Schema.AccessMode.READ_ONLY)
-    private int vulnerabilityCount;
+    private List<Constraints> dependencies;
 
     @Schema(description = "Calculated risk score based on vulnerabilities", example = "7.5", accessMode = Schema.AccessMode.READ_ONLY)
     private Double riskScore;
@@ -74,7 +72,6 @@ public class PackageVersionDTO {
         this.vulnerabilities = model.getVulnerabilities();
         this.requiresPython = model.getRequiresPython();
         this.dependencies = model.getDependencies(); 
-        this.vulnerabilityCount = (model.getVulnerabilities() != null) ? model.getVulnerabilities().size() : 0;
         this.author = model.getAuthor();
         this.authorEmail = model.getAuthorEmail();
         this.description = model.getDescription();

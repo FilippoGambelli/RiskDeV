@@ -1,15 +1,18 @@
 package it.unipi.riskDeV.model;
 
 import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import it.unipi.riskDeV.DTO.PackageVersionDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document(collection = "package")
+@Document(collection = "package2")
 public class PackageVersion {
 
     @Id
@@ -40,7 +43,7 @@ public class PackageVersion {
     private String uploadTime;
 
     @Field("requires_dist")
-    private List<String> dependencies = new ArrayList<>();
+    private List<Constraints> dependencies = new ArrayList<>();
 
     @Field("requires_python")
     private String requiresPython;
@@ -52,7 +55,7 @@ public class PackageVersion {
 
     // Personalized getters to avoid null problems with lists
     // If mongo gives requires_dist == null, we have an empty list
-    public List<String> getDependencies() {
+    public List<Constraints> getDependencies() {
         if (dependencies == null) {
             return new ArrayList<>();
         }
@@ -87,5 +90,34 @@ public class PackageVersion {
         private List<String> fixedIn;
         
         private String link;
+    }
+
+    @Data
+    public static class Constraints {
+
+        private String name;
+
+        private String version_gte;
+        private String version_lte;
+        private String version_gt;
+        private String version_lt;
+        private String version_eq;
+        private String version_neq;
+    }
+
+    public PackageVersion(PackageVersionDTO dto) {
+        this.packageName = dto.getPackageName();
+        this.version = dto.getVersion();
+        this.author = dto.getAuthor();
+        this.authorEmail = dto.getAuthorEmail();
+        this.description = dto.getDescription();
+        this.packageURL = dto.getPackageURL();
+        this.documentationURL = dto.getDocumentationURL();
+        this.uploadTime = dto.getUploadTime();
+        this.requiresPython = dto.getRequiresPython();
+        this.riskScore = dto.getRiskScore();
+        this.dependencies = dto.getDependencies() != null ? new ArrayList<>(dto.getDependencies()) : new ArrayList<>();
+        this.vulnerabilities = dto.getVulnerabilities() != null ? dto.getVulnerabilities() : new ArrayList<>();
+        this.versionArray = new ArrayList<>();
     }
 }
