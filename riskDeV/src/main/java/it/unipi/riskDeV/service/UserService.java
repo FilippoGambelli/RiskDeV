@@ -33,7 +33,7 @@ public class UserService {
     public Result<UserDTO> getProfile(String id) {
         log.info("Get user profile");
         
-        var optUser = userRepository.findById(id);
+        var optUser = userRepository.findByUsername(id);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -57,7 +57,7 @@ public class UserService {
     public Result<List<String>> getUserProjectNames(String userId) {
         log.info("Get user projects");
 
-        var optUser = userRepository.findById(userId);
+        var optUser = userRepository.findByUsername(userId);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -71,7 +71,7 @@ public class UserService {
     public Result<UserDTO> updateProfile(String userId, UpdateProfileDTO request) {
         log.info("Updating use profile");
 
-        var userOpt = userRepository.findById(userId);
+        var userOpt = userRepository.findByUsername(userId);
         if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -131,12 +131,12 @@ public class UserService {
 
     public Result<String> deleteUser(String id) {
         log.info("Deleting user profile");
-        if (!userRepository.existsById(id)) {
+        if (!userRepository.existsByUsername(id)) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
 
         try {
-            userRepository.deleteById(id);
+            userRepository.deleteByUsername(id);
             log.info("User profile deleted");
 
             eventPublisher.publishEvent(new UserEvent.UserDeletedEvent(id));

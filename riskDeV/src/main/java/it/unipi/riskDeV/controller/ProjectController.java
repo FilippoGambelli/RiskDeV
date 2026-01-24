@@ -65,7 +65,24 @@ public class ProjectController {
             schema = @Schema(implementation = String.class, description = "The ID of the created project")))
     })
     public ResponseEntity<?> insertProject(@Valid @RequestBody ProjectCreationDTO projectCreationDTO) {
-        return restResponseMapper.map(projectService.insertProject(projectCreationDTO), HttpStatus.CREATED);
+        return restResponseMapper.map(projectService.addProject(projectCreationDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{projectName}")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Get project details",
+            description = "Fetches the details of a project for the current user.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Project details retrieved successfully",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = String.class, description = "Project details"))),
+        @ApiResponse(responseCode = "404", description = "Project not found",
+            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Access Denied",
+            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    public ResponseEntity<?> getProjectDetails(@PathVariable String projectName) {
+        return restResponseMapper.map(projectService.getProject(projectName), HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectName}")

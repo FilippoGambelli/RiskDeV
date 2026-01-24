@@ -5,27 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
-import it.unipi.riskDeV.DTO.PackageRiskMetricsDTO;
-import it.unipi.riskDeV.DTO.PackageVersionDTO;
-import it.unipi.riskDeV.DTO.UserDTO;
 import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
 import it.unipi.riskDeV.DTO.project.ProjectDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.event.ProjectEvents;
+import it.unipi.riskDeV.event.ProjectEvents.CalculateRiskMetricsEvent;
 import it.unipi.riskDeV.event.ProjectEvents.CollaboratorAddedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.CollaboratorRemovedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectDeletedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectPackagesUpdatedEvent;
 import it.unipi.riskDeV.mapper.ProjectMapper;
 import it.unipi.riskDeV.repository.ProjectRepository;
+import it.unipi.riskDeV.repository.UserRepository;
 import it.unipi.riskDeV.model.Project;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,20 +34,36 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
-    //TODO: Event Driven Pattern
-    private final UserService userService;
-    //TODO: Event Driven Pattern
-    private final PackageService packageService;
+    private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ProjectMapper projectMapper;
+
+    public Result<ProjectDTO> getProject(String projectName) {
+        var projectOpt = projectRepository.findByName(projectName);
+        if (projectOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        }
+
+        Project project = projectOpt.get();
+        String username = getCurrentUsername();
+        boolean isOwner = project.getAdmin().getUsername().equals(username);
+        boolean isCollaborator = project.getCollaborators().stream()
+                .anyMatch(c -> c.getUsername().equals(username));
+
+        if (!isOwner && !isCollaborator) {
+            return new Result.Failure<>(new DomainError.AccessDenied("You are not authorized to view this project."));
+        }
+
+        return new Result.Success<>(projectMapper.toDto(project));
+    }
 
     @Transactional
-    public Result<ProjectDTO> insertProject(ProjectCreationDTO projectCreationDTO) {
+    public Result<ProjectDTO> addProject(ProjectCreationDTO projectCreationDTO) {
         log.info("Starting insert transaction for user: {}", getCurrentUsername());
 
         try {
             Project project = projectMapper.toEntity(projectCreationDTO);
-            Project.Collaborator admin = getAuthenticatedCollaborator();
+            Project.Collaborator admin = getCollaboratorInfo(getCurrentUsername());
             List<Project.Collaborator> collaborators = new ArrayList<>();
             collaborators.add(admin);
 
@@ -57,30 +71,30 @@ public class ProjectService {
             project.setCollaborators(collaborators);
             project.setLastUpdate(Instant.now());
 
-            if (project.getPackages() != null) {
-                project.getPackages().forEach(pkg -> {
-                    var metrics = fetchPackageRiskMetrics(pkg.getName(), pkg.getVersion());
-                    pkg.setRiskScore(metrics.riskScore());
-                    pkg.setVulnerabilitiesCount(metrics.vulnerabilitiesCount());
-                });
-            }
-
             Project savedProject = projectRepository.save(project);
-            // Add project to admin's project list, use UserService method to manage concurrency
-            userService.addProjectToUser(savedProject.getAdmin().getUsername(), savedProject.getName());
             log.info("Project {} saved successfully in Mongo.", savedProject.getName());
 
-            List<String> pkgsForGraph = (project.getPackages() != null) ? project.getPackages().stream()
-                .map(p -> p.getName() + ":" + p.getVersion())
-                .toList() : List.of();
+            List<Project.ProjectPackage> packages = savedProject.getPackages();
+            
+            // Publish event to evaluate risk metrics
+            CalculateRiskMetricsEvent calculateRiskMetricsEvent = new CalculateRiskMetricsEvent(
+                savedProject.getName(),
+                packages.stream()
+                    .map(p -> new InstalledPackageDTO(p.getName(), p.getVersion()))
+                    .toList()
+            );
+            eventPublisher.publishEvent(calculateRiskMetricsEvent);
 
+            // Package list for event
+            List<String> pkgsForGraph = packages.stream()
+                .map(p -> p.getName() + ":" + p.getVersion())
+                .toList();
+
+            // Publish project created event to create project node in graph and sincrhonize admin user
             var event = new ProjectEvents.ProjectCreatedEvent(savedProject.getName(), savedProject.getAdmin().getUsername(), pkgsForGraph);
             eventPublisher.publishEvent(event);
 
             return new Result.Success<>(projectMapper.toDto(savedProject));
-        } catch (IllegalArgumentException e) {
-            log.error("Validation error during project creation", e);
-            return new Result.Failure<>(new DomainError.ValidationFailed("Invalid project data: " + e.getMessage()));
         } catch (Exception e) {
             log.error("Error creating project", e);
             return new Result.Failure<>(new DomainError.SystemError("Creation failed", e));
@@ -101,14 +115,16 @@ public class ProjectService {
         }
 
         try {
-            //Remove project from users' project lists, use UserService method to manage concurrency
-            for (Project.Collaborator collaborator : project.getCollaborators()) {
-                userService.removeProjectFromUser(collaborator.getUsername(), projectName);
-            }
-
             projectRepository.delete(project);
             log.info("Project {} deleted successfully from Mongo.", projectName);
-            eventPublisher.publishEvent(new ProjectDeletedEvent(projectName));
+
+            // Publish project deleted event to remove project node and sinchronize collaborators
+            eventPublisher.publishEvent(new ProjectDeletedEvent(
+                projectName, 
+                project.getCollaborators().stream()
+                    .map(Project.Collaborator::getUsername)
+                    .toList()
+            ));
             
             return new Result.Success<>(projectName);
         } catch (Exception e) {
@@ -142,31 +158,35 @@ public class ProjectService {
                     project.setPackages(new ArrayList<>());
                 }
 
-                project.getPackages().removeIf(p -> p.getName().equals(dto.getName()));
+                //TODO: Consider versioning strategy (multiple versions of same package?)
+                //project.getPackages().removeIf(p -> p.getName().equals(dto.getName()));
 
+                // Initialization of score and vuln count to 0, will be updated after fetching metrics
                 Project.ProjectPackage pkg = new Project.ProjectPackage();
                 pkg.setName(dto.getName());
                 pkg.setVersion(dto.getVersion());
-
-                var metrics = fetchPackageRiskMetrics(dto.getName(), dto.getVersion());
-                pkg.setRiskScore(metrics.riskScore());
-                pkg.setVulnerabilitiesCount(metrics.vulnerabilitiesCount());
+                pkg.setRiskScore(0.0);
+                pkg.setVulnerabilitiesCount(0);
 
                 project.getPackages().add(pkg);
             }
 
             project.setLastUpdate(Instant.now());
-            projectRepository.save(project);
+            Project savedProject = projectRepository.save(project);
             log.info("Project {} packages updated successfully in Mongo.", projectName);
 
+            List<InstalledPackageDTO> packages = savedProject.getPackages().stream()
+                .map(p -> new InstalledPackageDTO(p.getName(), p.getVersion()))
+                .toList();
             List<String> allPackageIds = project.getPackages().stream()
                 .map(p -> p.getName() + " " + p.getVersion())
                 .toList();
             eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(projectName, allPackageIds));
+            eventPublisher.publishEvent(new CalculateRiskMetricsEvent(projectName, packages));
 
             return new Result.Success<>(projectName);
 
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             log.error("Error updating packages for project {}", projectName, e);
             return new Result.Failure<>(new DomainError.SystemError("Failed to update project packages.", e));
         }
@@ -233,29 +253,19 @@ public class ProjectService {
         }
 
         if (project.getAdmin().getUsername().equals(collaboratorUsername)) {
-             return new Result.Failure<>(new DomainError.InvalidOperation("User is already owner"));
-        }
-
-        Result<UserDTO> userResult = userService.getProfileByUsername(collaboratorUsername);
-        if (userResult instanceof Result.Failure<UserDTO> failure) {
-            return new Result.Failure<>(failure.error());
-        }
-        UserDTO user = ((Result.Success<UserDTO>) userResult).data();
-
-        if (project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(collaboratorUsername))) {
-             return new Result.Failure<>(new DomainError.InvalidOperation("User already is a collaborator"));
+             return new Result.Failure<>(new DomainError.InvalidOperation("User is already the owner"));
         }
 
         try {
-            var newCollab = new Project.Collaborator();
-            newCollab.setUsername(user.username());
-            newCollab.setEmail(user.email());
-            project.getCollaborators().add(newCollab);
+            var newCollabInfo = getCollaboratorInfo(collaboratorUsername);
+            if (project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(collaboratorUsername))) {
+                return new Result.Failure<>(new DomainError.InvalidOperation("User already is a collaborator"));
+            }
+
+            project.getCollaborators().add(newCollabInfo);
             project.setLastUpdate(Instant.now());
 
             projectRepository.save(project);
-            // Add project to collaborator's project list, use UserService method to manage concurrency
-            userService.addProjectToUser(collaboratorUsername, projectName);
             log.info("Added collaborator {} to project {} on Mongo.", collaboratorUsername, projectName);
             eventPublisher.publishEvent(new CollaboratorAddedEvent(projectName, collaboratorUsername));
 
@@ -316,8 +326,6 @@ public class ProjectService {
 
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
-            // Remove project from collaborator's project list, use UserService method to manage concurrency
-            userService.removeProjectFromUser(collaboratorUsername, projectName);
             eventPublisher.publishEvent(new CollaboratorRemovedEvent(projectName, collaboratorUsername));
 
             log.info("Removed collaborator {} from project {} on Mongo.", collaboratorUsername, projectName);
@@ -329,7 +337,7 @@ public class ProjectService {
         }
     }
 
-    // Utility methods
+    /* Utility methods */
     private boolean canEdit(String username, Project project) {
         return project.getAdmin().getUsername().equals(username) || 
                project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(username));
@@ -343,36 +351,15 @@ public class ProjectService {
         return auth.getName();
     }
 
-    private Project.Collaborator getAuthenticatedCollaborator() {
-        String username = getCurrentUsername();
-
-        Result<UserDTO> userResult = userService.getProfileByUsername(username);
-        if (userResult instanceof Result.Success<UserDTO> success) {
-            UserDTO user = success.data();
-            Project.Collaborator collaborator = new Project.Collaborator();
-            collaborator.setUsername(user.username());
-            collaborator.setEmail(user.email());
-            return collaborator;
-        }
-
-        throw new IllegalStateException("Authenticated user not found in DB");
-    }
-
-    private PackageRiskMetricsDTO fetchPackageRiskMetrics(String packageName, String packageVersion) {
-        Result<PackageVersionDTO> pkgVersion = packageService.getPackageByNameVersion(packageName, packageVersion);
-
-        if (pkgVersion instanceof Result.Success<PackageVersionDTO> success) {
-
-            PackageVersionDTO dto = success.data(); 
-
-            //TODO: Could we have null risk score or vulnerabilities list?
-            Double riskScore = (dto.getRiskScore() != null) ? dto.getRiskScore() : 0.0;
-            Integer vulnCount = (dto.getVulnerabilities() != null) ? dto.getVulnerabilities().size() : 0;
-
-            return new PackageRiskMetricsDTO(riskScore, vulnCount);
-        }
-
-        return new PackageRiskMetricsDTO(0.0, 0);
+    private Project.Collaborator getCollaboratorInfo(String username) {
+        return userRepository.findByUsername(username)
+            .map(user -> {
+                Project.Collaborator collaborator = new Project.Collaborator();
+                collaborator.setUsername(user.getUsername());
+                collaborator.setEmail(user.getEmail());
+                return collaborator;
+            })
+            .orElseThrow(() -> new IllegalStateException("User " + username + " not found."));
     }
 
 }
