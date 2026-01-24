@@ -1,6 +1,6 @@
 package it.unipi.riskDeV.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -14,15 +14,16 @@ import lombok.Data;
 public class Project {
     
     @Id
+    private String id;
+
     private String name;
 
     private String description;
 
-    @Field("admin_id")
-    private String adminId;
+    private Collaborator admin;
 
     @Field("last_update")
-    private LocalDateTime lastUpdate;
+    private Instant lastUpdate;
 
     @Field("python_version")
     private String pythonVersion;
@@ -48,8 +49,6 @@ public class Project {
 
     @Data 
     public static class Collaborator {
-
-        private String id;
 
         private String username;
 
