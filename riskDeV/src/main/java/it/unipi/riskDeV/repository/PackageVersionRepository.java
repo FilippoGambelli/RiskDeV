@@ -3,8 +3,6 @@ package it.unipi.riskDeV.repository;
 import it.unipi.riskDeV.model.PackageVersion;
 import it.unipi.riskDeV.model.Vulnerability;
 
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -60,10 +58,6 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
 
     // Find safe versions of a package
     Optional<List<PackageVersion>> findTop5ByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
-
-    Optional<List<PackageVersion>> find(Query query);
-
-    void updateMulti(Query query, Update update);
 
     void deleteByPackageNameAndVersion(String packageName, String version);
 }

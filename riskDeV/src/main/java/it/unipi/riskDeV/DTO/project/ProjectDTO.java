@@ -1,37 +1,74 @@
 package it.unipi.riskDeV.DTO.project;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.DTO.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
-import jakarta.validation.constraints.NotBlank;
+import it.unipi.riskDeV.model.Project;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
-public record ProjectDTO (
-    @Schema(description = "Name of the project", example = "Data Analysis Project")
-    @NotBlank(message = "Project name is required")
-    String name,
+public class ProjectDTO {
 
-    @Schema(description = "Description of the project", example = "A project for data analysis")
-    @NotBlank(message = "Project description is required")
-    String description,
+    private String name;
+    private String description;
+    private Instant lastUpdate;
+    private String pythonVersion;
+    private CollaboratorDTO admin;
+    private List<InstalledPackageDTO> packages;
+    private List<CollaboratorDTO> collaborators;
 
-    @Schema(description = "Date of the last update", example = "2026-05-15T10:15_30Z")
-    Instant lastUpdate,
+    // Costruttore principale
+    public ProjectDTO(String name, String description, Instant lastUpdate,
+                      String pythonVersion, CollaboratorDTO admin,
+                      List<InstalledPackageDTO> packages,
+                      List<CollaboratorDTO> collaborators) {
+        this.name = name;
+        this.description = description;
+        this.lastUpdate = lastUpdate;
+        this.pythonVersion = pythonVersion;
+        this.admin = admin;
+        this.packages = packages;
+        this.collaborators = collaborators;
+    }
 
-    @Schema(description = "Version of Python used in the project", example = "3.8")
-    @NotBlank(message = "Python version is required")
-    String pythonVersion,
+    // Costruttore di conversione da Project
+    public ProjectDTO(Project project) {
+        this.name = project.getName();
+        this.description = project.getDescription();
+        this.lastUpdate = project.getLastUpdate();
+        this.pythonVersion = project.getPythonVersion();
+        this.admin = project.getAdmin() != null ? new CollaboratorDTO(project.getAdmin()) : null;
 
-    @Schema(description = "Administrator of the project")
-    CollaboratorDTO admin,
+        // mapping delle liste
+        this.packages = new ArrayList<>();
+        if (project.getPackages() != null) {
+            for (Project.ProjectPackage p : project.getPackages()) {
+                this.packages.add(new InstalledPackageDTO(p));
+            }
+        }
 
-    @Schema(description = "List of packages associated with the project")
-    List<InstalledPackageDTO> packages,
+        this.collaborators = new ArrayList<>();
+        if (project.getCollaborators() != null) {
+            for (Project.Collaborator c : project.getCollaborators()) {
+                this.collaborators.add(new CollaboratorDTO(c));
+            }
+        }
+    }
 
-    @Schema(description = "List of collaborators in the project")
-    List<CollaboratorDTO> collaborators
-) {
-
+    // Getters e Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public Instant getLastUpdate() { return lastUpdate; }
+    public void setLastUpdate(Instant lastUpdate) { this.lastUpdate = lastUpdate; }
+    public String getPythonVersion() { return pythonVersion; }
+    public void setPythonVersion(String pythonVersion) { this.pythonVersion = pythonVersion; }
+    public CollaboratorDTO getAdmin() { return admin; }
+    public void setAdmin(CollaboratorDTO admin) { this.admin = admin; }
+    public List<InstalledPackageDTO> getPackages() { return packages; }
+    public void setPackages(List<InstalledPackageDTO> packages) { this.packages = packages; }
+    public List<CollaboratorDTO> getCollaborators() { return collaborators; }
+    public void setCollaborators(List<CollaboratorDTO> collaborators) { this.collaborators = collaborators; }
 }

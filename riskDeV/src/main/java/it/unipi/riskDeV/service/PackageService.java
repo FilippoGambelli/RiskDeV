@@ -14,8 +14,8 @@ import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.repository.PackageGraphRepository;
 import it.unipi.riskDeV.repository.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.PackageVersionRepository;
-import it.unipi.riskDeV.APIClient.PyPiApiClient;
-import it.unipi.riskDeV.APIClient.OsvApiClient;
+// import it.unipi.riskDeV.APIClient.PyPiApiClient;
+// import it.unipi.riskDeV.APIClient.OsvApiClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -39,10 +39,11 @@ public class PackageService {
     private final PackageVersionRepository packageVersionRepository;
     private final PackageGraphRepository packageGraphRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
-    private final PyPiApiClient pyPiApiClient;
-    private final OsvApiClient osvApiClient;
+    // private final PyPiApiClient pyPiApiClient;
+    // private final OsvApiClient osvApiClient;
     @Lazy
     private final PackageIngestionService packageIngestionService;
+    private final MongoTemplate mongoTemplate;
 
     private static final Map<String, Integer> VERSION_WEIGHTS = Map.of(
         "dev", -4, "alpha", -3, "a", -3, "beta", -2, "b", -2, 
@@ -276,7 +277,7 @@ public class PackageService {
             );
 
             Query query = new Query(dependencyCriteria);
-            List<PackageVersion> dependents = packageVersionRepository.find(query).get();
+            List<PackageVersion> dependents = mongoTemplate.find(query, PackageVersion.class);
 
             for(int i = 0; i < dependents.size(); i++) {
                 packageVersionGraphRepository.attachDependency(dependents.get(i).getPackageName(), dependents.get(i).getVersion(), packageName, version);
@@ -312,7 +313,7 @@ public class PackageService {
                 .set("package_url", updateData.getPackageURL())
                 .set("documentation", updateData.getDocumentationURL());
 
-        packageVersionRepository.updateMulti(query, update);
+        mongoTemplate.updateMulti(query, update, PackageVersion.class);
 
         packageVersionGraphRepository.updateDocumentation(packageName, updateData.getDocumentationURL());
 
@@ -434,7 +435,7 @@ public class PackageService {
 
             Query query = new Query(criteria);
 
-            List<PackageVersion> packageList = packageVersionRepository.find(query).get();
+            List<PackageVersion> packageList = mongoTemplate.find(query, PackageVersion.class);
 
             for (int j = 0; j < packageList.size(); j++) {
                 packageVersionGraphRepository.attachDependency(packageName, version, packageList.get(j).getPackageName(), packageList.get(j).getVersion());

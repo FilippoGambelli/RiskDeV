@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.unipi.riskDeV.model.Project;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -13,4 +14,11 @@ public class CollaboratorDTO {
     @NotBlank(message = "Email cannot be empty")
     @Schema(description = "Email of the collaborator to add/remove", example = "mario.rossi@example.com")
     private String email;
+
+    public CollaboratorDTO(Project.Collaborator collaborator) {
+        if (collaborator != null) {
+            this.username = collaborator.getUsername();
+            this.email = collaborator.getEmail();
+        }
+    }
 }

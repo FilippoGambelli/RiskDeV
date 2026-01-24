@@ -7,6 +7,9 @@ import it.unipi.riskDeV.event.ProjectEvents.CollaboratorRemovedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectCreatedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectDeletedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectPackagesUpdatedEvent;
+import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityCreatedEvent;
+import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityDeleteEvent;
+import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityUpdateEvent;
 import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.model.FailedEvent;
 import it.unipi.riskDeV.repository.FailedEventRepository;
@@ -126,6 +129,42 @@ public class GraphSyncListener {
             graphService.removeCollaborator(event.projectName(), event.collaboratorUsername());
         } catch (Exception e) {
             log.error("Neo4j Sync Failed: Remove Collaborator", e);
+            saveToDLQ(event, e);
+        }
+    }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    public void handleVulnerabilityCreated(VulnerabilityCreatedEvent event) {
+        try {
+            log.debug("Neo4j: Adding vulnerability {}", event.cveId());
+            graphService.addVulnerability(event.cveId(), event.description(), event.baseScore());
+        } catch (Exception e) {
+            log.error("Neo4j Sync Failed: Add vulnerability", e);
+            saveToDLQ(event, e);
+        }
+    }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    public void handleVulnerabilityUpdated(VulnerabilityUpdateEvent event) {
+        try {
+            log.debug("Neo4j: Updating vulnerability {}", event.cveId());
+            graphService.updateVulnerability(event.cveId(), event.description(), event.baseScore());
+        } catch (Exception e) {
+            log.error("Neo4j Sync Failed: Update vulnerability", e);
+            saveToDLQ(event, e);
+        }
+    }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    public void handleVulnerabilityDeteled(VulnerabilityDeleteEvent event) {
+        try {
+            log.debug("Neo4j: Deleting vulnerability {}", event.cveId());
+            graphService.deleteVulnerability(event.cveId());
+        } catch (Exception e) {
+            log.error("Neo4j Sync Failed: Delete vulnerability", e);
             saveToDLQ(event, e);
         }
     }

@@ -21,7 +21,6 @@ import it.unipi.riskDeV.event.ProjectEvents.CollaboratorAddedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.CollaboratorRemovedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectDeletedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectPackagesUpdatedEvent;
-import it.unipi.riskDeV.mapper.ProjectMapper;
 import it.unipi.riskDeV.repository.ProjectRepository;
 import it.unipi.riskDeV.repository.UserRepository;
 import it.unipi.riskDeV.model.Project;
@@ -36,7 +35,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final ProjectMapper projectMapper;
 
     public Result<ProjectDTO> getProject(String projectName) {
         var projectOpt = projectRepository.findByName(projectName);
@@ -54,7 +52,7 @@ public class ProjectService {
             return new Result.Failure<>(new DomainError.AccessDenied("You are not authorized to view this project."));
         }
 
-        return new Result.Success<>(projectMapper.toDto(project));
+        return new Result.Success<>(new ProjectDTO(project));
     }
 
     @Transactional
@@ -62,7 +60,7 @@ public class ProjectService {
         log.info("Starting insert transaction for user: {}", getCurrentUsername());
 
         try {
-            Project project = projectMapper.toEntity(projectCreationDTO);
+            Project project = new Project(projectCreationDTO);
             Project.Collaborator admin = getCollaboratorInfo(getCurrentUsername());
             List<Project.Collaborator> collaborators = new ArrayList<>();
             collaborators.add(admin);
@@ -94,7 +92,7 @@ public class ProjectService {
             var event = new ProjectEvents.ProjectCreatedEvent(savedProject.getName(), savedProject.getAdmin().getUsername(), pkgsForGraph);
             eventPublisher.publishEvent(event);
 
-            return new Result.Success<>(projectMapper.toDto(savedProject));
+            return new Result.Success<>(new ProjectDTO(savedProject));
         } catch (Exception e) {
             log.error("Error creating project", e);
             return new Result.Failure<>(new DomainError.SystemError("Creation failed", e));

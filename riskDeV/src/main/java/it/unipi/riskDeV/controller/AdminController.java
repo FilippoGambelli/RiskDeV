@@ -11,8 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
+import it.unipi.riskDeV.DTO.AggreagationPackageDTO;
 import it.unipi.riskDeV.DTO.CentralityResultDTO;
+import it.unipi.riskDeV.DTO.ContributorCountDTO;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.AdminService;
@@ -151,5 +152,168 @@ public class AdminController {
     ) {
         log.info("Removing administrator: {}", username);
         return restResponseMapper.map(adminService.removeAdmin(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/mostUsedPackages/{limit}")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = AggreagationPackageDTO.class))
+        )
+    })
+    public ResponseEntity<?> getMostUsedPackages(
+        @Parameter(
+            description = "Limit the number of results",
+            example = "10",
+            required = true,
+            schema = @Schema(type = "int")
+        )
+        @PathVariable int limit
+    ) {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getMostUsedPackages(limit), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/mostUsedPackagesLastMonth/{limit}")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = AggreagationPackageDTO.class))
+        )
+    })
+    public ResponseEntity<?> getMostUsedPackagesLastMonth(
+        @Parameter(
+            description = "Limit the number of results",
+            example = "10",
+            required = true,
+            schema = @Schema(type = "int")
+        )
+        @PathVariable int limit
+    ) {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getMostUsedPackagesLastMonth(limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/topContributorLastMonth/{limit}")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
+        )
+    })
+    public ResponseEntity<?> getTopContributorLastMonth(
+        @Parameter(
+            description = "Limit the number of results",
+            example = "10",
+            required = true,
+            schema = @Schema(type = "int")
+        )
+        @PathVariable int limit
+    ) {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getTopContributorsLastMonth(limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/packagesWithNegativeRiskTrend/{limit}")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
+        )
+    })
+    public ResponseEntity<?> getPackagesWithNegativeRiskTrend(
+        @Parameter(
+            description = "Limit the number of results",
+            example = "10",
+            required = true,
+            schema = @Schema(type = "int")
+        )
+        @PathVariable int limit
+    ) {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getPackagesWithNegativeRiskTrend(limit), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/trendVulnerabilityLastYear")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
+        )
+    })
+    public ResponseEntity<?> getTrendVulnerabilityLastYear() {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getTrendVulnerabilityLastYear(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/severityDistributionLastYear")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
+        )
+    })
+    public ResponseEntity<?> getSeverityDistributionLastYear() {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getSeverityDistributionLastYear(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/perfectStormVulnerabilities/{limit}")
+    @Operation(
+        summary = "",
+        description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved the top packages by degree centrality",
+            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
+        )
+    })
+    public ResponseEntity<?> getPerfectStormVulnerabilities(
+        @Parameter(
+            description = "Limit the number of results",
+            example = "10",
+            required = true,
+            schema = @Schema(type = "int")
+        )
+        @PathVariable int limit
+    ) {
+        log.info("Retrieving top packages by degree centrality");
+        return restResponseMapper.map(adminService.getPerfectStormVulnerabilities(limit), HttpStatus.OK);
     }
 }

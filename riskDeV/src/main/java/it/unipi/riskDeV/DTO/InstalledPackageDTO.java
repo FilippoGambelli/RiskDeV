@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.unipi.riskDeV.model.Project;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,4 +18,11 @@ public class InstalledPackageDTO {
     @Schema(description = "Version of the package", example = "1.21.0")
     @NotBlank(message = "Package version must not be blank")
     private String version;
+
+    public InstalledPackageDTO(Project.ProjectPackage projectPackage) {
+        if (projectPackage != null) {
+            this.name = projectPackage.getName();
+            this.version = projectPackage.getVersion();
+        }
+    }
 }
