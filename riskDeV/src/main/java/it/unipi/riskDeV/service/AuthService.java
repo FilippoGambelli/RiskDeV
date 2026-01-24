@@ -53,7 +53,7 @@ public class AuthService {
 
             // Publish event for Neo4J 
             eventPublisher.publishEvent(new UserEvent.UserCreatedEvent(savedUser.getUsername()));
-            String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getRole());
+            String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
 
             return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class AuthService {
             return new Result.Failure<>(new DomainError.InvalidCredentials("Invalid username or password"));
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getRole());
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         log.info("User {} logged in successfully.", user.getId());
 
         return new Result.Success<>(new AuthResponseDTO(token, user.getUsername(), user.getEmail()));

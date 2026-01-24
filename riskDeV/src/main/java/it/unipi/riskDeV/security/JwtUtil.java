@@ -25,13 +25,14 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String userId, String role) {
+    public String generateToken(String userId, String username,String role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
             .subject(userId)
             .claim("role", role)
+            .claim("username", username)
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith((SecretKey) getSigningKey(), Jwts.SIG.HS256)
@@ -39,21 +40,15 @@ public class JwtUtil {
     }
 
     public String getUserIdFromToken(String token) {
-        Claims claims = Jwts.parser()
-            .verifyWith((SecretKey) getSigningKey()) 
-            .build()
-            .parseSignedClaims(token) 
-            .getPayload();
-        return claims.getSubject();
+        return extractPayload(token).getSubject();
     }
 
     public String getUserRoleFromToken(String token) {
-        Claims claims = Jwts.parser()
-            .verifyWith((SecretKey) getSigningKey()) 
-            .build()
-            .parseSignedClaims(token) 
-            .getPayload();
-        return claims.get("role", String.class);
+        return extractPayload(token).get("role", String.class);
+    }
+
+    public String getUsernameFromToken(String token) {
+        return extractPayload(token).get("username", String.class);
     }
     
     public boolean validateToken(String token) {
@@ -66,6 +61,14 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private Claims extractPayload(String token) {
+        return Jwts.parser()
+            .verifyWith((SecretKey) getSigningKey()) 
+            .build()
+            .parseSignedClaims(token) 
+            .getPayload();
     }
 
 }

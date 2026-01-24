@@ -73,7 +73,7 @@ public class GraphSyncListener {
             log.debug("Neo4j: Creating project {}", event.projectName());
             graphService.createProjectStructure(
                 event.projectName(), 
-                event.adminId(), 
+                event.adminUsername(), 
                 event.packageIds()
             );
         } catch (Exception e) {
@@ -110,8 +110,8 @@ public class GraphSyncListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleCollaboratorAdded(CollaboratorAddedEvent event) {
         try {
-            log.debug("Neo4j: Adding collaborator {} to {}", event.userId(), event.projectName());
-            graphService.addCollaborator(event.projectName(), event.userId());
+            log.debug("Neo4j: Adding collaborator {} to {}", event.collaboratorUsername(), event.projectName());
+            graphService.addCollaborator(event.projectName(), event.collaboratorUsername());
         } catch (Exception e) {
             log.error("Neo4j Sync Failed: Add Collaborator", e);
             saveToDLQ(event, e);
@@ -122,8 +122,8 @@ public class GraphSyncListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleCollaboratorRemoved(CollaboratorRemovedEvent event) {
         try {
-            log.debug("Neo4j: Removing collaborator {} from {}", event.userId(), event.projectName());
-            graphService.removeCollaborator(event.projectName(), event.userId());
+            log.debug("Neo4j: Removing collaborator {} from {}", event.collaboratorUsername(), event.projectName());
+            graphService.removeCollaborator(event.projectName(), event.collaboratorUsername());
         } catch (Exception e) {
             log.error("Neo4j Sync Failed: Remove Collaborator", e);
             saveToDLQ(event, e);
