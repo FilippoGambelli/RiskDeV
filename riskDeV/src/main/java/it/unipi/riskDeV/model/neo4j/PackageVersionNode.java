@@ -1,30 +1,43 @@
 package it.unipi.riskDeV.model.neo4j;
 
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Node("Version")
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PackageVersionNode {
 
-    @Id
-    private String id; // Corresponds to "package_name version"
+    @Id 
+    @GeneratedValue
+    private Long id;
 
+    @Property("package_name")
+    @EqualsAndHashCode.Include    // In neo4j the version node is identify by packageName e version
+    private String packageName;
+
+    @EqualsAndHashCode.Include    // Second part of the key
     private String version;
 
-    private Boolean isStub;
+    @Property("version_array")
+    private List<Integer> versionArray;
+    
+    @Property("risk_score")
+    private Double riskScore;
+    
+    @Property("requires_python")
+    private String requiresPython;
 
-    // Essential for queries comparing package versions
-    private Integer major;
-    private Integer minor;
-    private Integer patch;
+    private String documentation;
 
     // Relationship (:Version)-[:DEPENDS_ON]->(:Version)
     @Relationship(type = "DEPENDS_ON", direction = Relationship.Direction.OUTGOING)

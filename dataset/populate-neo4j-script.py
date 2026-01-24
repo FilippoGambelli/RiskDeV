@@ -85,7 +85,6 @@ PROPERTY_MAPPING = {
     "Vulnerability": {
         "cve_id": "cve_id",
         "description": "description",
-        "exploitabilityScore": "metrics.exploitabilityScore",
         "baseScore": "metrics.baseScore"
     },
     "Project": {

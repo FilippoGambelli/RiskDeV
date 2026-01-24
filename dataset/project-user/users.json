@@ -1,6 +1,5 @@
 [
   {
-    "_id": "358ea861-638a-48cd-86ba-8cdf911a5966",
     "username": "emily.ferrari",
     "first_name": "Emily",
     "last_name": "Ferrari",
@@ -10,7 +9,6 @@
     "project_names": []
   },
   {
-    "_id": "f0c01cd0-7d20-40d2-9beb-70f78bcbb583",
     "username": "david.russo",
     "first_name": "David",
     "last_name": "Russo",
@@ -23,7 +21,6 @@
     ]
   },
   {
-    "_id": "a4be69f8-c92a-41de-96e1-826d901196f2",
     "username": "chris.smith",
     "first_name": "Chris",
     "last_name": "Smith",
@@ -36,7 +33,6 @@
     ]
   },
   {
-    "_id": "1fd38300-c8b7-4ff1-a0e4-220416616a06",
     "username": "alice.smith",
     "first_name": "Alice",
     "last_name": "Smith",
@@ -48,7 +44,6 @@
     ]
   },
   {
-    "_id": "946ce434-ab67-4144-8bfd-ec5e14078a91",
     "username": "luca.ferrari",
     "first_name": "Luca",
     "last_name": "Ferrari",
@@ -63,7 +58,6 @@
     ]
   },
   {
-    "_id": "47a2bea0-f1c9-454f-8c19-a64899de639a",
     "username": "jane.bianchi",
     "first_name": "Jane",
     "last_name": "Bianchi",
@@ -76,7 +70,6 @@
     ]
   },
   {
-    "_id": "22537f1f-371a-4c71-845f-ea3584235c4e",
     "username": "michael.moore",
     "first_name": "Michael",
     "last_name": "Moore",
@@ -90,7 +83,6 @@
     ]
   },
   {
-    "_id": "8edec5c1-e9c4-40d5-b46e-dc34a6272dad",
     "username": "chris.anderson",
     "first_name": "Chris",
     "last_name": "Anderson",
@@ -104,7 +96,6 @@
     ]
   },
   {
-    "_id": "326fd586-aac9-4bb1-a9a0-651e7d6a30b7",
     "username": "alice.martin",
     "first_name": "Alice",
     "last_name": "Martin",
@@ -118,7 +109,6 @@
     ]
   },
   {
-    "_id": "b3ffef20-0edc-458a-95c9-18e9f6e91074",
     "username": "tom.miller",
     "first_name": "Tom",
     "last_name": "Miller",
@@ -130,7 +120,6 @@
     ]
   },
   {
-    "_id": "ef520466-d0de-40df-ae6b-a8dbc4523f69",
     "username": "chris.rossi",
     "first_name": "Chris",
     "last_name": "Rossi",
@@ -145,7 +134,6 @@
     ]
   },
   {
-    "_id": "005baf09-dc78-40fd-91c5-3f8f7d2fd691",
     "username": "giulia.russo",
     "first_name": "Giulia",
     "last_name": "Russo",
@@ -155,7 +143,6 @@
     "project_names": []
   },
   {
-    "_id": "6ea768f3-49bb-4276-8f98-566862974cff",
     "username": "tom.wilson",
     "first_name": "Tom",
     "last_name": "Wilson",
@@ -167,7 +154,6 @@
     ]
   },
   {
-    "_id": "3698b795-c7b7-4915-9a53-98a27dcba037",
     "username": "laura.bianchi",
     "first_name": "Laura",
     "last_name": "Bianchi",
@@ -179,7 +165,6 @@
     ]
   },
   {
-    "_id": "e56662e8-cb1d-447b-96d7-86cc17a1c9d3",
     "username": "marco.smith",
     "first_name": "Marco",
     "last_name": "Smith",
@@ -192,7 +177,6 @@
     ]
   },
   {
-    "_id": "1c762916-10a9-405b-ab48-33da105cc6cf",
     "username": "sophia.bianchi",
     "first_name": "Sophia",
     "last_name": "Bianchi",
@@ -205,7 +189,6 @@
     ]
   },
   {
-    "_id": "8e311e33-6ccc-439c-a235-cbd357a42287",
     "username": "michael.johnson",
     "first_name": "Michael",
     "last_name": "Johnson",
@@ -218,7 +201,6 @@
     ]
   },
   {
-    "_id": "288895ea-bc57-434e-82ee-2a83f2d0812c",
     "username": "michael.johnson1",
     "first_name": "Michael",
     "last_name": "Johnson",
@@ -231,7 +213,6 @@
     ]
   },
   {
-    "_id": "7f3b7ccc-9ba1-4469-821e-fa17492f4353",
     "username": "michael.bianchi",
     "first_name": "Michael",
     "last_name": "Bianchi",
@@ -245,7 +226,6 @@
     ]
   },
   {
-    "_id": "80dd5136-e944-4fc7-a5a8-0c9c0bc2a772",
     "username": "alice.rossi",
     "first_name": "Alice",
     "last_name": "Rossi",
@@ -257,7 +237,6 @@
     ]
   },
   {
-    "_id": "63c3869e-61e5-424d-bfd0-8c4dfdc1dcb5",
     "username": "sophia.moore",
     "first_name": "Sophia",
     "last_name": "Moore",
@@ -270,7 +249,6 @@
     ]
   },
   {
-    "_id": "5cc57b01-2e45-4240-b2f2-4469e383581e",
     "username": "alice.miller",
     "first_name": "Alice",
     "last_name": "Miller",
@@ -282,7 +260,6 @@
     ]
   },
   {
-    "_id": "aae6b5cb-faf3-4abd-b22c-469a8116b729",
     "username": "emily.taylor",
     "first_name": "Emily",
     "last_name": "Taylor",
@@ -295,7 +272,6 @@
     ]
   },
   {
-    "_id": "0f11bf85-0ed0-4f0b-8a55-bbc18c38669c",
     "username": "luca.miller",
     "first_name": "Luca",
     "last_name": "Miller",
@@ -310,7 +286,6 @@
     ]
   },
   {
-    "_id": "180cffa5-afbc-43e7-899b-3186e9392065",
     "username": "paolo.johnson",
     "first_name": "Paolo",
     "last_name": "Johnson",
@@ -324,7 +299,6 @@
     ]
   },
   {
-    "_id": "d3f457b5-ce6f-4f84-b2ba-65720d16c950",
     "username": "jane.conti",
     "first_name": "Jane",
     "last_name": "Conti",
@@ -334,7 +308,6 @@
     "project_names": []
   },
   {
-    "_id": "7b89a830-8ebf-41af-82a3-a3320c0217c9",
     "username": "emily.bianchi",
     "first_name": "Emily",
     "last_name": "Bianchi",
@@ -348,7 +321,6 @@
     ]
   },
   {
-    "_id": "951ec900-7f34-4e74-aaaf-ef43047a5e72",
     "username": "robert.wilson",
     "first_name": "Robert",
     "last_name": "Wilson",
@@ -360,7 +332,6 @@
     ]
   },
   {
-    "_id": "260d1eec-8d9c-4681-a1d0-ffaff4ade27d",
     "username": "francesca.martin",
     "first_name": "Francesca",
     "last_name": "Martin",
@@ -374,7 +345,6 @@
     ]
   },
   {
-    "_id": "167dc8e4-2852-4dcb-a906-e763f094103f",
     "username": "paolo.bianchi",
     "first_name": "Paolo",
     "last_name": "Bianchi",
@@ -386,7 +356,6 @@
     ]
   },
   {
-    "_id": "5d121f71-7199-4730-93ae-1c4fcfddfe79",
     "username": "paolo.taylor",
     "first_name": "Paolo",
     "last_name": "Taylor",
@@ -398,7 +367,6 @@
     ]
   },
   {
-    "_id": "a3a94c1e-ef52-456f-8109-571e5ccc8670",
     "username": "chris.smith1",
     "first_name": "Chris",
     "last_name": "Smith",
@@ -411,7 +379,6 @@
     ]
   },
   {
-    "_id": "2899fa75-178c-4772-8ebc-f0b9a395915d",
     "username": "laura.martin",
     "first_name": "Laura",
     "last_name": "Martin",
@@ -425,7 +392,6 @@
     ]
   },
   {
-    "_id": "4ce94b97-180e-4252-b420-f687e97edb2e",
     "username": "alice.moore",
     "first_name": "Alice",
     "last_name": "Moore",
@@ -439,7 +405,6 @@
     ]
   },
   {
-    "_id": "b2a14f1e-c850-44ff-86c7-f97620581a01",
     "username": "giulia.johnson",
     "first_name": "Giulia",
     "last_name": "Johnson",
@@ -452,7 +417,6 @@
     ]
   },
   {
-    "_id": "e45a53ac-a1b8-491f-9dc2-6e5d6e9b8574",
     "username": "giulia.smith",
     "first_name": "Giulia",
     "last_name": "Smith",
@@ -465,7 +429,6 @@
     ]
   },
   {
-    "_id": "4b90f171-9f08-49ca-9781-06631d52116f",
     "username": "daniel.wilson",
     "first_name": "Daniel",
     "last_name": "Wilson",
@@ -479,7 +442,6 @@
     ]
   },
   {
-    "_id": "bc49282e-c6f5-4a53-a5e2-a1c7f321d1bb",
     "username": "francesca.moore",
     "first_name": "Francesca",
     "last_name": "Moore",
@@ -493,7 +455,6 @@
     ]
   },
   {
-    "_id": "67220812-a538-436b-a4b4-921792d7d6f8",
     "username": "robert.ferrari",
     "first_name": "Robert",
     "last_name": "Ferrari",
@@ -503,7 +464,6 @@
     "project_names": []
   },
   {
-    "_id": "5621b305-1091-45be-8e6f-d07ddb26b602",
     "username": "jane.johnson",
     "first_name": "Jane",
     "last_name": "Johnson",
@@ -517,7 +477,6 @@
     ]
   },
   {
-    "_id": "f5639566-426a-44af-be94-27d537305649",
     "username": "jane.johnson1",
     "first_name": "Jane",
     "last_name": "Johnson",
@@ -527,7 +486,6 @@
     "project_names": []
   },
   {
-    "_id": "9d98c9c1-85ba-41c4-93ef-39f6ae416e72",
     "username": "tom.martin",
     "first_name": "Tom",
     "last_name": "Martin",
@@ -542,7 +500,6 @@
     ]
   },
   {
-    "_id": "cb1a5177-f0ec-4d8c-b23b-a46403d20c1b",
     "username": "tom.brown",
     "first_name": "Tom",
     "last_name": "Brown",
@@ -554,7 +511,6 @@
     ]
   },
   {
-    "_id": "9bbf17b4-7ebd-4358-9c31-7c13732e9e65",
     "username": "michael.brown",
     "first_name": "Michael",
     "last_name": "Brown",
@@ -568,7 +524,6 @@
     ]
   },
   {
-    "_id": "7af8b010-be39-4f59-9d89-aa4e0a86cf52",
     "username": "giulia.taylor",
     "first_name": "Giulia",
     "last_name": "Taylor",
@@ -578,7 +533,6 @@
     "project_names": []
   },
   {
-    "_id": "8beb4867-3bc0-4c24-affe-b98e3e9fd589",
     "username": "sophia.johnson",
     "first_name": "Sophia",
     "last_name": "Johnson",
@@ -591,7 +545,6 @@
     ]
   },
   {
-    "_id": "d67b50e4-b86a-40d8-91d2-b154c8cd2567",
     "username": "francesca.esposito",
     "first_name": "Francesca",
     "last_name": "Esposito",
@@ -605,7 +558,6 @@
     ]
   },
   {
-    "_id": "3d4cd725-55d8-486b-9e40-ffdb7dafe85c",
     "username": "robert.esposito",
     "first_name": "Robert",
     "last_name": "Esposito",
@@ -617,7 +569,6 @@
     ]
   },
   {
-    "_id": "a38d4194-f32e-470d-8dfd-695a4e20639a",
     "username": "daniel.conti",
     "first_name": "Daniel",
     "last_name": "Conti",
@@ -631,7 +582,6 @@
     ]
   },
   {
-    "_id": "5f0750d4-4174-42cf-a277-f96cdf22f928",
     "username": "anna.wilson",
     "first_name": "Anna",
     "last_name": "Wilson",
