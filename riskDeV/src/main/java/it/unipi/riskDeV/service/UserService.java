@@ -3,6 +3,10 @@ package it.unipi.riskDeV.service;
 import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +28,24 @@ public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
+    private final MongoTemplate mongoTemplate;
 
     public Result<UserDTO> getProfile(String id) {
         log.info("Get user profile");
         
         var optUser = userRepository.findById(id);
+        if (optUser.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("User not found"));
+        }
+
+        User user = optUser.get();
+        return new Result.Success<>(UserDTO.fromEntity(user));
+    }
+
+    public Result<UserDTO> getProfileByUsername(String username) {
+        log.info("Get user profile by username");
+
+        var optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -129,6 +146,25 @@ public class UserService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to delete user from database", e));
         }
 
+    }
+
+    public void addProjectToUser(String username, String projectName) {
+        log.info("Adding project '{}' to user '{}'", projectName, username);
+        
+        Query query = Query.query(Criteria.where("username").is(username));
+        
+        Update update = new Update().addToSet("project_names", projectName);
+    
+        mongoTemplate.updateFirst(query, update, User.class);
+    }
+    
+    public void removeProjectFromUser(String username, String projectName) {
+        log.info("Removing project '{}' from user '{}'", projectName, username);
+        
+        Query query = Query.query(Criteria.where("username").is(username));
+        Update update = new Update().pull("project_names", projectName);
+        
+        mongoTemplate.updateFirst(query, update, User.class);
     }
 
 }

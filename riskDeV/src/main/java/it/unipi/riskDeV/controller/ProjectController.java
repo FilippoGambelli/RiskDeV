@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
-import it.unipi.riskDeV.DTO.ProjectDTO;
+import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.ProjectService;
 import jakarta.validation.Valid;
@@ -24,13 +24,15 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+
+
+// TODO: Review and refine API documentation for each endpoint
 
 @RestController
 @RequestMapping("/api/projects")
@@ -62,11 +64,11 @@ public class ProjectController {
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = String.class, description = "The ID of the created project")))
     })
-    public ResponseEntity<?> insertProject(@AuthenticationPrincipal String userId, @Valid @RequestBody ProjectDTO projectDTO) {
-        return restResponseMapper.map(projectService.insertProject(userId, projectDTO), HttpStatus.CREATED);
+    public ResponseEntity<?> insertProject(@Valid @RequestBody ProjectCreationDTO projectCreationDTO) {
+        return restResponseMapper.map(projectService.insertProject(projectCreationDTO), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{projectId}")
+    @DeleteMapping("/{projectName}")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Delete a project",
             description = "Deletes a project for the current user.")
@@ -78,11 +80,11 @@ public class ProjectController {
         @ApiResponse(responseCode = "403", description = "Access Denied",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> deleteProject(@AuthenticationPrincipal String userId, @PathVariable String projectId) {
-        return restResponseMapper.map(projectService.deleteProject(userId, projectId), HttpStatus.OK);
+    public ResponseEntity<?> deleteProject(@PathVariable String projectName) {
+        return restResponseMapper.map(projectService.deleteProject(projectName), HttpStatus.OK);
     }
 
-    @PutMapping("/{projectId}/packages")
+    @PutMapping("/{projectName}/packages")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Update project packages",
             description = "Updates the packages of a project for the current user.")
@@ -96,11 +98,11 @@ public class ProjectController {
         @ApiResponse(responseCode = "400", description = "Invalid package data",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> updateProjectPackages(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        return restResponseMapper.map(projectService.updateProjectPackages(userId, projectId, packages), HttpStatus.OK);
+    public ResponseEntity<?> updateProjectPackages(@PathVariable String projectName, @Valid @RequestBody List<InstalledPackageDTO> packages) {
+        return restResponseMapper.map(projectService.updateProjectPackages(projectName, packages), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{projectId}/packages")
+    @DeleteMapping("/{projectName}/packages")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Remove packages from project",    
             description = "Removes packages from a project for the current user.")
@@ -112,11 +114,11 @@ public class ProjectController {
         @ApiResponse(responseCode = "403", description = "Access Denied",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> removePackagesFromProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        return restResponseMapper.map(projectService.removePackagesFromProject(userId, projectId, packages), HttpStatus.OK);
+    public ResponseEntity<?> removePackagesFromProject(@PathVariable String projectName, @Valid @RequestBody List<InstalledPackageDTO> packages) {
+        return restResponseMapper.map(projectService.removePackagesFromProject(projectName, packages), HttpStatus.OK);
     }
 
-    @PutMapping("/{projectId}/users")
+    @PutMapping("/{projectName}/users")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Add collaborator to project",
             description = "Adds a collaborator to a project for the current user.")
@@ -130,11 +132,11 @@ public class ProjectController {
         @ApiResponse(responseCode = "400", description = "Invalid Operation",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> addCollaboratorToProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody CollaboratorDTO collaborator) {
-        return restResponseMapper.map(projectService.addCollaboratorToProject(userId, projectId, collaborator.getUsername()), HttpStatus.OK);
+    public ResponseEntity<?> addCollaboratorToProject(@PathVariable String projectName, @Valid @RequestBody CollaboratorDTO collaborator) {
+        return restResponseMapper.map(projectService.addCollaboratorToProject(projectName, collaborator.getUsername()), HttpStatus.OK);
     }
 
-    @GetMapping("/{projectId}/users")
+    @GetMapping("/{projectName}/users")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Get collaborators of project",
             description = "Fetches the list of collaborators of a project for the current user.")
@@ -146,11 +148,11 @@ public class ProjectController {
         @ApiResponse(responseCode = "403", description = "Access Denied",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getCollaboratorsOfProject(@AuthenticationPrincipal String userId, @PathVariable String projectId) {
-        return restResponseMapper.map(projectService.getProjectCollaborators(userId, projectId), HttpStatus.OK);
+    public ResponseEntity<?> getCollaboratorsOfProject(@PathVariable String projectName) {
+        return restResponseMapper.map(projectService.getProjectCollaborators(projectName), HttpStatus.OK);
     }   
     
-    @DeleteMapping("/{projectId}/users")
+    @DeleteMapping("/{projectName}/users")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Remove collaborator from project",
             description = "Removes a collaborator from a project for the current user.")
@@ -162,8 +164,8 @@ public class ProjectController {
         @ApiResponse(responseCode = "403", description = "Access Denied",
             content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> removeCollaboratorFromProject(@AuthenticationPrincipal String userId, @PathVariable String projectId, @Valid @RequestBody CollaboratorDTO collaborator) {
-        return restResponseMapper.map(projectService.removeCollaboratorFromProject(userId, projectId, collaborator.getUsername()), HttpStatus.OK);
+    public ResponseEntity<?> removeCollaboratorFromProject(@PathVariable String projectName, @Valid @RequestBody CollaboratorDTO collaborator) {
+        return restResponseMapper.map(projectService.removeCollaboratorFromProject(projectName, collaborator.getUsername()), HttpStatus.OK);
     }
     
 }

@@ -11,6 +11,6 @@ public interface UserGraphRepository extends Neo4jRepository<UserNode, String> {
     @Query("MERGE (u:User {username: $username}) RETURN u")
     void createUserNode(@Param("username") String username);
 
-    // TODO: @Query("MATCH (u:User {mongoId: $mongoId}) SET u.username = $newUsername")
+    @Query("MATCH (u:User {username: $oldUsername}) SET u.username = $newUsername")
     void updateUsername(@Param("oldUsername") String oldUsername, @Param("newUsername") String newUsername);
 }

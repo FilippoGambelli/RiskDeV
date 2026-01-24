@@ -1,5 +1,6 @@
 package it.unipi.riskDeV.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -10,8 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.DTO.RegisterRequestDTO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "user")
 public class User {
     @Id
@@ -48,7 +51,6 @@ public class User {
         this.lastName = registerRequestDTO.getLastName();
         this.email = registerRequestDTO.getEmail();
         this.password = null;
-        this.username = null;
-        this.projectNames = null;
+        this.projectNames = new ArrayList<>();
     }
 }
