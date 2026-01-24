@@ -4,23 +4,21 @@ import shutil
 import sys
 import json
 import random
-import uuid
 import hashlib
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, Any, List
 
-# --- CONFIGURATION ---
+
 OUTPUT_PROJECTS = "projects.json"
 OUTPUT_USERS = "users.json"
 
-PROJECT_COUNT = 20  # Keep in mind: generating virtual envs takes time.
-USER_COUNT = 50
-ADMIN_COUNT = 5
+PROJECT_COUNT = 20  # Number of projects to generate
+USER_COUNT = 50     # Number of users to generate
+ADMIN_COUNT = 5     # Number of users to assign admin roles
 
-PASSWORD_SALT = "static_salt_for_demo_purposes"
+PASSWORD_SALT = "static_salt_for_demo_purposes"  # Salt for password hashing
 
-# --- DATA CONSTANTS ---
 
 PACKAGE_VERSIONS = {
     "requests": ["2.31.0"],
@@ -31,12 +29,12 @@ PACKAGE_VERSIONS = {
 }
 
 PROJECT_NAME_PREFIXES = [
-    "Alpha", "Beta", "Gamma", "Delta", "Echo", "Atlas", "Nimbus", 
+    "Alpha", "Beta", "Gamma", "Delta", "Echo", "Atlas", "Nimbus",
     "Vector", "Orbit", "Zenith", "Vertex", "Aperture", "Pulse", "Lighthouse"
 ]
 
 PROJECT_NAME_SUFFIXES = [
-    "Pipeline", "Service", "Lab", "Engine", "Toolkit", "Dashboard", 
+    "Pipeline", "Service", "Lab", "Engine", "Toolkit", "Dashboard",
     "Collector", "Studio", "Analyzer", "Core", "Manager", "Gateway"
 ]
 
@@ -54,23 +52,26 @@ LAST_NAMES = [
 
 EMAIL_DOMAINS = ["example.com", "mail.com", "company.io", "test.org"]
 
-# --- UTILITY FUNCTIONS ---
 
 def hash_password(plain_password: str) -> str:
-    """Create SHA256 hash with salt."""
+    """
+    Return SHA256 hash of a password with a static salt.
+    """
     salted = f"{PASSWORD_SALT}{plain_password}"
     return hashlib.sha256(salted.encode("utf-8")).hexdigest()
 
 def random_iso_datetime(start: datetime, end: datetime) -> str:
-    """Return a random ISO 8601 datetime string."""
+    """
+    Generate a random ISO 8601 datetime string between start and end.
+    """
     seconds_range = int((end - start).total_seconds())
     offset = random.randint(0, seconds_range)
     return (start + timedelta(seconds=offset)).isoformat(timespec="seconds")
 
-def get_pip_list(packages: list[dict[str, str]]) -> list[dict[str, str]]:
+def get_pip_list(packages: List[Dict[str, str]]) -> List[Dict[str, str]]:
     """
-    Creates a temporary venv, installs packages, and returns 'pip list' output via JSON.
-    This ensures realistic vulnerability scanning simulation.
+    Create a temporary virtual environment, install packages, and return
+    the 'pip list' output as a JSON-like list of dicts.
     """
     temp_dir = Path(tempfile.mkdtemp())
     venv_dir = temp_dir / "venv"
@@ -78,110 +79,110 @@ def get_pip_list(packages: list[dict[str, str]]) -> list[dict[str, str]]:
     try:
         # Create virtual environment
         subprocess.run([sys.executable, "-m", "venv", str(venv_dir)], check=True)
-        
-        # Determine pip path based on OS
-        pip = venv_dir / ("Scripts/pip.exe" if sys.platform == "win32" else "bin/pip")
 
-        # Install requested packages
+        # Determine pip path
+        pip_path = venv_dir / ("Scripts/pip.exe" if sys.platform == "win32" else "bin/pip")
+
+        # Install packages
         for pkg in packages:
             subprocess.run(
-                [str(pip), "install", "--disable-pip-version-check", f"{pkg['name']}=={pkg['version']}"],
+                [str(pip_path), "install", "--disable-pip-version-check", f"{pkg['name']}=={pkg['version']}"],
                 check=True,
                 stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL 
+                stderr=subprocess.DEVNULL
             )
 
         # Get installed packages list in JSON format
         result = subprocess.run(
-            [str(pip), "list", "--format=json"],
+            [str(pip_path), "list", "--format=json"],
             check=True,
             capture_output=True,
-            text=True,
+            text=True
         )
         return json.loads(result.stdout)
+
     except Exception as e:
         print(f"Error generating packages: {e}")
-        return [] 
+        return []
+
     finally:
+        # Clean up temporary virtual environment
         shutil.rmtree(temp_dir, ignore_errors=True)
 
-# --- PROJECT GENERATION ---
 
-def generate_projects(count: int) -> List[Dict]:
+def generate_projects(count: int) -> List[Dict[str, Any]]:
+    """
+    Generate a list of projects with unique names, package info, and metadata.
+    """
     projects = []
     existing_names = set()
-    
-    print(f"--- Generating {count} projects (this may take time due to venv creation) ---")
-    
+
+    print(f"--- Generating {count} projects ---")
+
     for i in range(count):
-        # Generate unique name with HYPHENS instead of spaces
+        # Generate a unique project name
         base_name = f"{random.choice(PROJECT_NAME_PREFIXES)}-{random.choice(PROJECT_NAME_SUFFIXES)}"
         name = base_name
         suffix_num = 1
-        
-        # Ensure uniqueness
         while name in existing_names:
             suffix_num += 1
             name = f"{base_name}-{suffix_num}"
-        
         existing_names.add(name)
 
         # Select random packages
         initial_packages = random.sample(list(PACKAGE_VERSIONS.keys()), k=random.randint(1, 3))
         requested_packages = [{"name": pkg, "version": random.choice(PACKAGE_VERSIONS[pkg])} for pkg in initial_packages]
-        
-        # Get real pip metadata
+
+        # Get realistic pip metadata
         pip_packages = get_pip_list(requested_packages)
 
         description = f"{name} is a Python project using {len(initial_packages)} core libraries."
         last_update = random_iso_datetime(datetime(2020, 1, 1), datetime.now())
 
         projects.append({
-            "_id": str(uuid.uuid4()),
             "name": name,
             "description": description,
             "last_update": last_update,
             "python_version": "3.11.14",
             "packages": pip_packages,
-            "admin": {}, # NEW: Placeholder for admin
-            "collaborators": [] 
+            "admin": {},         # Admin user will be assigned later
+            "collaborators": []  # Collaborators will be assigned later
         })
-        
+
         print(f"Project generated: {name} ({i+1}/{count})")
 
     return projects
 
-# --- USER GENERATION ---
 
-def generate_users(count: int) -> List[Dict]:
+def generate_users(count: int) -> List[Dict[str, Any]]:
+    """
+    Generate a list of users with unique usernames and hashed passwords.
+    """
     users = []
     existing_usernames = set()
-    
+
     print(f"\n--- Generating {count} users ---")
 
     for _ in range(count):
         first = random.choice(FIRST_NAMES)
         last = random.choice(LAST_NAMES)
-        
+
         base_username = f"{first.lower()}.{last.lower()}"
         username = base_username
         counter = 1
-        
-        # Ensure unique username
         while username in existing_usernames:
             username = f"{base_username}{counter}"
             counter += 1
         existing_usernames.add(username)
 
         users.append({
-            "_id": str(uuid.uuid4()),
             "username": username,
             "first_name": first,
             "last_name": last,
             "email": f"{username}@{random.choice(EMAIL_DOMAINS)}",
             "password": hash_password("Password123"),
             "role": "ROLE_USER",
-            "project_names": [] 
+            "project_names": []  # Projects will be linked later
         })
 
     # Assign Admin roles randomly
@@ -192,84 +193,63 @@ def generate_users(count: int) -> List[Dict]:
 
     return users
 
-# --- DATA LINKING LOGIC ---
 
-def link_users_and_projects(users: List[Dict], projects: List[Dict]):
+def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str, Any]]):
     """
-    Assigns projects to users and updates both entities:
-    1. Assigns a CREATOR/ADMIN to every project (who is NOT a collaborator).
-    2. Assigns random collaborators to projects.
+    Link users and projects:
+    1. Assign an admin to each project.
+    2. Assign random collaborators to projects, excluding the admin.
     """
     print("\n--- Linking Users and Projects ---")
-    
-    if not projects or not users:
+    if not users or not projects:
         return
 
-    # 1. Assegnazione dell'ADMIN per ogni progetto
-    # Ogni progetto DEVE avere un admin.
+    # Assign an admin for each project
     for proj in projects:
         admin_user = random.choice(users)
-        
-        # Imposta l'admin nel progetto
         proj['admin'] = {
             "username": admin_user['username'],
             "email": admin_user['email']
         }
-        
-        # Aggiunge il progetto alla lista dei progetti dell'utente admin
-        # (L'admin "possiede" il progetto, quindi deve vederlo nella sua lista)
+
+        # Add project to admin's project list
         if proj['name'] not in admin_user['project_names']:
             admin_user['project_names'].append(proj['name'])
 
-    # 2. Assegnazione dei COLLABORATORI
+    # Assign collaborators
     for user in users:
-        # Assegna da 0 a 3 progetti random a questo utente come collaboratore
         num_projects = random.randint(0, min(3, len(projects)))
-        
-        if num_projects > 0:
-            assigned_projects = random.sample(projects, k=num_projects)
-            
-            for proj in assigned_projects:
-                # --- CONTROLLO CRITICO ---
-                # Se l'utente è l'admin di questo progetto, saltiamo.
-                # L'admin non deve essere nella lista collaboratori.
-                if proj['admin']['username'] == user['username']:
-                    continue
+        if num_projects == 0:
+            continue
+        assigned_projects = random.sample(projects, k=num_projects)
+        for proj in assigned_projects:
+            if proj['admin']['username'] == user['username']:
+                continue  # Admin cannot be a collaborator
+            # Update user's project list
+            if proj['name'] not in user['project_names']:
+                user['project_names'].append(proj['name'])
+            # Update project's collaborator list
+            collaborator_entry = {"username": user['username'], "email": user['email']}
+            if collaborator_entry not in proj['collaborators']:
+                proj['collaborators'].append(collaborator_entry)
 
-                # 1. Update User: Add project name if not present
-                if proj['name'] not in user['project_names']:
-                    user['project_names'].append(proj['name'])
-                
-                # 2. Update Project: Add collaborator info
-                collaborator_entry = {
-                    "username": user['username'],
-                    "email": user['email']
-                }
-                
-                # Avoid duplicates in the project's collaborator list
-                if collaborator_entry not in proj['collaborators']:
-                    proj['collaborators'].append(collaborator_entry)
-
-# --- MAIN EXECUTION ---
 
 def main():
-    random.seed(42)
+    random.seed(42)  # For reproducibility
 
-    # 1. Generate Projects
+    # Generate projects and users
     projects = generate_projects(PROJECT_COUNT)
-
-    # 2. Generate Users
     users = generate_users(USER_COUNT)
 
-    # 3. Link Entities
+    # Link projects with users
     link_users_and_projects(users, projects)
 
-    # 4. Save Projects
+    # Save projects to JSON
     with open(OUTPUT_PROJECTS, "w", encoding="utf-8") as f:
         json.dump(projects, f, indent=2, ensure_ascii=False)
     print(f"Saved {OUTPUT_PROJECTS}")
 
-    # 5. Save Users
+    # Save users to JSON
     with open(OUTPUT_USERS, "w", encoding="utf-8") as f:
         json.dump(users, f, indent=2, ensure_ascii=False)
     print(f"Saved {OUTPUT_USERS}")

@@ -1,1402 +1,1770 @@
 [
-  {
-    "_id": "3cf960bf-f4e7-4c47-8792-6341c104297c",
-    "name": "Vertex-Service",
-    "description": "Vertex-Service is a Python project using 1 core libraries.",
-    "last_update": "2021-11-24T11:47:57",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      }
-    ],
-    "admin": {
-      "username": "daniel.wilson",
-      "email": "daniel.wilson@company.io"
+    {
+        "name": "Vertex-Service",
+        "description": "Vertex-Service is a Python project using 1 core libraries.",
+        "last_update": "2021-11-24T11:47:57",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "daniel.wilson",
+            "email": "daniel.wilson@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "chris.anderson",
+                "email": "chris.anderson@mail.com"
+            },
+            {
+                "username": "chris.rossi",
+                "email": "chris.rossi@company.io"
+            },
+            {
+                "username": "luca.miller",
+                "email": "luca.miller@test.org"
+            },
+            {
+                "username": "paolo.bianchi",
+                "email": "paolo.bianchi@example.com"
+            },
+            {
+                "username": "alice.moore",
+                "email": "alice.moore@mail.com"
+            },
+            {
+                "username": "tom.martin",
+                "email": "tom.martin@example.com"
+            },
+            {
+                "username": "anna.wilson",
+                "email": "anna.wilson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "chris.anderson",
-        "email": "chris.anderson@mail.com"
-      },
-      {
-        "username": "chris.rossi",
-        "email": "chris.rossi@company.io"
-      },
-      {
-        "username": "luca.miller",
-        "email": "luca.miller@test.org"
-      },
-      {
-        "username": "paolo.bianchi",
-        "email": "paolo.bianchi@example.com"
-      },
-      {
-        "username": "alice.moore",
-        "email": "alice.moore@mail.com"
-      },
-      {
-        "username": "tom.martin",
-        "email": "tom.martin@example.com"
-      },
-      {
-        "username": "anna.wilson",
-        "email": "anna.wilson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "3e031e84-1ac1-405e-9b8b-fccde94601bb",
-    "name": "Gamma-Gateway",
-    "description": "Gamma-Gateway is a Python project using 1 core libraries.",
-    "last_update": "2025-01-08T14:18:46",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "asgiref",
-        "version": "3.11.0"
-      },
-      {
-        "name": "Django",
-        "version": "4.2.7"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "sqlparse",
-        "version": "0.5.5"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      }
-    ],
-    "admin": {
-      "username": "michael.moore",
-      "email": "michael.moore@example.com"
+    {
+        "name": "Gamma-Gateway",
+        "description": "Gamma-Gateway is a Python project using 1 core libraries.",
+        "last_update": "2025-01-08T14:18:46",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "michael.moore",
+            "email": "michael.moore@example.com"
+        },
+        "collaborators": [
+            {
+                "username": "chris.anderson",
+                "email": "chris.anderson@mail.com"
+            },
+            {
+                "username": "michael.johnson",
+                "email": "michael.johnson@mail.com"
+            },
+            {
+                "username": "michael.johnson1",
+                "email": "michael.johnson1@company.io"
+            },
+            {
+                "username": "emily.bianchi",
+                "email": "emily.bianchi@mail.com"
+            },
+            {
+                "username": "daniel.wilson",
+                "email": "daniel.wilson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "chris.anderson",
-        "email": "chris.anderson@mail.com"
-      },
-      {
-        "username": "michael.johnson",
-        "email": "michael.johnson@mail.com"
-      },
-      {
-        "username": "michael.johnson1",
-        "email": "michael.johnson1@company.io"
-      },
-      {
-        "username": "emily.bianchi",
-        "email": "emily.bianchi@mail.com"
-      },
-      {
-        "username": "daniel.wilson",
-        "email": "daniel.wilson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "a823cfd9-9f05-475d-a68c-3ee64efbf634",
-    "name": "Nimbus-Pipeline",
-    "description": "Nimbus-Pipeline is a Python project using 1 core libraries.",
-    "last_update": "2021-12-23T20:27:13",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      }
-    ],
-    "admin": {
-      "username": "luca.ferrari",
-      "email": "luca.ferrari@mail.com"
+    {
+        "name": "Nimbus-Pipeline",
+        "description": "Nimbus-Pipeline is a Python project using 1 core libraries.",
+        "last_update": "2021-12-23T20:27:13",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "luca.ferrari",
+            "email": "luca.ferrari@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "michael.moore",
+                "email": "michael.moore@example.com"
+            },
+            {
+                "username": "chris.smith1",
+                "email": "chris.smith1@example.com"
+            },
+            {
+                "username": "michael.brown",
+                "email": "michael.brown@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "michael.moore",
-        "email": "michael.moore@example.com"
-      },
-      {
-        "username": "chris.smith1",
-        "email": "chris.smith1@example.com"
-      },
-      {
-        "username": "michael.brown",
-        "email": "michael.brown@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "1f658567-223f-43f2-b010-6542a1c9b8fa",
-    "name": "Orbit-Core",
-    "description": "Orbit-Core is a Python project using 1 core libraries.",
-    "last_update": "2025-07-12T02:53:44",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "asgiref",
-        "version": "3.11.0"
-      },
-      {
-        "name": "Django",
-        "version": "4.2.7"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "sqlparse",
-        "version": "0.5.5"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      }
-    ],
-    "admin": {
-      "username": "giulia.johnson",
-      "email": "giulia.johnson@mail.com"
+    {
+        "name": "Orbit-Core",
+        "description": "Orbit-Core is a Python project using 1 core libraries.",
+        "last_update": "2025-07-12T02:53:44",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "giulia.johnson",
+            "email": "giulia.johnson@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "david.russo",
+                "email": "david.russo@mail.com"
+            },
+            {
+                "username": "chris.smith",
+                "email": "chris.smith@company.io"
+            },
+            {
+                "username": "chris.rossi",
+                "email": "chris.rossi@company.io"
+            },
+            {
+                "username": "daniel.wilson",
+                "email": "daniel.wilson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "david.russo",
-        "email": "david.russo@mail.com"
-      },
-      {
-        "username": "chris.smith",
-        "email": "chris.smith@company.io"
-      },
-      {
-        "username": "chris.rossi",
-        "email": "chris.rossi@company.io"
-      },
-      {
-        "username": "daniel.wilson",
-        "email": "daniel.wilson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "9b6bd64d-6b94-45de-a28b-94a97dc2326e",
-    "name": "Aperture-Analyzer",
-    "description": "Aperture-Analyzer is a Python project using 2 core libraries.",
-    "last_update": "2021-05-11T01:03:40",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.4"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "laura.bianchi",
-      "email": "laura.bianchi@example.com"
+    {
+        "name": "Aperture-Analyzer",
+        "description": "Aperture-Analyzer is a Python project using 2 core libraries.",
+        "last_update": "2021-05-11T01:03:40",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "laura.bianchi",
+            "email": "laura.bianchi@example.com"
+        },
+        "collaborators": [
+            {
+                "username": "david.russo",
+                "email": "david.russo@mail.com"
+            },
+            {
+                "username": "alice.martin",
+                "email": "alice.martin@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "david.russo",
-        "email": "david.russo@mail.com"
-      },
-      {
-        "username": "alice.martin",
-        "email": "alice.martin@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "8ff57cdc-4ab6-4552-a53d-819d104284f4",
-    "name": "Aperture-Collector",
-    "description": "Aperture-Collector is a Python project using 2 core libraries.",
-    "last_update": "2020-11-13T13:21:02",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "laura.martin",
-      "email": "laura.martin@test.org"
+    {
+        "name": "Aperture-Collector",
+        "description": "Aperture-Collector is a Python project using 2 core libraries.",
+        "last_update": "2020-11-13T13:21:02",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "laura.martin",
+            "email": "laura.martin@test.org"
+        },
+        "collaborators": [
+            {
+                "username": "emily.taylor",
+                "email": "emily.taylor@test.org"
+            },
+            {
+                "username": "luca.miller",
+                "email": "luca.miller@test.org"
+            },
+            {
+                "username": "paolo.johnson",
+                "email": "paolo.johnson@example.com"
+            },
+            {
+                "username": "giulia.smith",
+                "email": "giulia.smith@test.org"
+            },
+            {
+                "username": "daniel.conti",
+                "email": "daniel.conti@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "emily.taylor",
-        "email": "emily.taylor@test.org"
-      },
-      {
-        "username": "luca.miller",
-        "email": "luca.miller@test.org"
-      },
-      {
-        "username": "paolo.johnson",
-        "email": "paolo.johnson@example.com"
-      },
-      {
-        "username": "giulia.smith",
-        "email": "giulia.smith@test.org"
-      },
-      {
-        "username": "daniel.conti",
-        "email": "daniel.conti@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "c79c8b92-be77-47df-8c38-d2b669b96943",
-    "name": "Beta-Collector",
-    "description": "Beta-Collector is a Python project using 1 core libraries.",
-    "last_update": "2025-02-18T17:04:32",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      }
-    ],
-    "admin": {
-      "username": "michael.johnson",
-      "email": "michael.johnson@mail.com"
+    {
+        "name": "Beta-Collector",
+        "description": "Beta-Collector is a Python project using 1 core libraries.",
+        "last_update": "2025-02-18T17:04:32",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "michael.johnson",
+            "email": "michael.johnson@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "luca.ferrari",
+                "email": "luca.ferrari@mail.com"
+            },
+            {
+                "username": "jane.bianchi",
+                "email": "jane.bianchi@example.com"
+            },
+            {
+                "username": "michael.bianchi",
+                "email": "michael.bianchi@company.io"
+            },
+            {
+                "username": "jane.johnson",
+                "email": "jane.johnson@company.io"
+            },
+            {
+                "username": "robert.esposito",
+                "email": "robert.esposito@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "luca.ferrari",
-        "email": "luca.ferrari@mail.com"
-      },
-      {
-        "username": "jane.bianchi",
-        "email": "jane.bianchi@example.com"
-      },
-      {
-        "username": "michael.bianchi",
-        "email": "michael.bianchi@company.io"
-      },
-      {
-        "username": "jane.johnson",
-        "email": "jane.johnson@company.io"
-      },
-      {
-        "username": "robert.esposito",
-        "email": "robert.esposito@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "4ad86bc0-c3ef-4d75-be68-e40840a149e8",
-    "name": "Echo-Pipeline",
-    "description": "Echo-Pipeline is a Python project using 3 core libraries.",
-    "last_update": "2024-11-28T18:29:47",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.4"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "alice.martin",
-      "email": "alice.martin@company.io"
+    {
+        "name": "Echo-Pipeline",
+        "description": "Echo-Pipeline is a Python project using 3 core libraries.",
+        "last_update": "2024-11-28T18:29:47",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "alice.martin",
+            "email": "alice.martin@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "michael.bianchi",
+                "email": "michael.bianchi@company.io"
+            },
+            {
+                "username": "alice.miller",
+                "email": "alice.miller@mail.com"
+            },
+            {
+                "username": "paolo.johnson",
+                "email": "paolo.johnson@example.com"
+            },
+            {
+                "username": "emily.bianchi",
+                "email": "emily.bianchi@mail.com"
+            },
+            {
+                "username": "francesca.martin",
+                "email": "francesca.martin@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "michael.bianchi",
-        "email": "michael.bianchi@company.io"
-      },
-      {
-        "username": "alice.miller",
-        "email": "alice.miller@mail.com"
-      },
-      {
-        "username": "paolo.johnson",
-        "email": "paolo.johnson@example.com"
-      },
-      {
-        "username": "emily.bianchi",
-        "email": "emily.bianchi@mail.com"
-      },
-      {
-        "username": "francesca.martin",
-        "email": "francesca.martin@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "b066725a-27d7-41ed-acde-e0c4feb0529a",
-    "name": "Delta-Gateway",
-    "description": "Delta-Gateway is a Python project using 1 core libraries.",
-    "last_update": "2022-06-18T02:19:48",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      }
-    ],
-    "admin": {
-      "username": "emily.taylor",
-      "email": "emily.taylor@test.org"
+    {
+        "name": "Delta-Gateway",
+        "description": "Delta-Gateway is a Python project using 1 core libraries.",
+        "last_update": "2022-06-18T02:19:48",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "emily.taylor",
+            "email": "emily.taylor@test.org"
+        },
+        "collaborators": [
+            {
+                "username": "alice.smith",
+                "email": "alice.smith@example.com"
+            },
+            {
+                "username": "jane.bianchi",
+                "email": "jane.bianchi@example.com"
+            },
+            {
+                "username": "michael.moore",
+                "email": "michael.moore@example.com"
+            },
+            {
+                "username": "chris.anderson",
+                "email": "chris.anderson@mail.com"
+            },
+            {
+                "username": "alice.martin",
+                "email": "alice.martin@company.io"
+            },
+            {
+                "username": "paolo.johnson",
+                "email": "paolo.johnson@example.com"
+            },
+            {
+                "username": "chris.smith1",
+                "email": "chris.smith1@example.com"
+            },
+            {
+                "username": "jane.johnson",
+                "email": "jane.johnson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "alice.smith",
-        "email": "alice.smith@example.com"
-      },
-      {
-        "username": "jane.bianchi",
-        "email": "jane.bianchi@example.com"
-      },
-      {
-        "username": "michael.moore",
-        "email": "michael.moore@example.com"
-      },
-      {
-        "username": "chris.anderson",
-        "email": "chris.anderson@mail.com"
-      },
-      {
-        "username": "alice.martin",
-        "email": "alice.martin@company.io"
-      },
-      {
-        "username": "paolo.johnson",
-        "email": "paolo.johnson@example.com"
-      },
-      {
-        "username": "chris.smith1",
-        "email": "chris.smith1@example.com"
-      },
-      {
-        "username": "jane.johnson",
-        "email": "jane.johnson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "ea91eaa1-fce7-47b7-ac4c-17bb2fdafcdd",
-    "name": "Beta-Engine",
-    "description": "Beta-Engine is a Python project using 1 core libraries.",
-    "last_update": "2023-11-09T16:43:21",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "numpy",
-        "version": "1.26.4"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      }
-    ],
-    "admin": {
-      "username": "luca.ferrari",
-      "email": "luca.ferrari@mail.com"
+    {
+        "name": "Beta-Engine",
+        "description": "Beta-Engine is a Python project using 1 core libraries.",
+        "last_update": "2023-11-09T16:43:21",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "luca.ferrari",
+            "email": "luca.ferrari@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "francesca.martin",
+                "email": "francesca.martin@company.io"
+            },
+            {
+                "username": "sophia.johnson",
+                "email": "sophia.johnson@example.com"
+            },
+            {
+                "username": "francesca.esposito",
+                "email": "francesca.esposito@company.io"
+            },
+            {
+                "username": "daniel.conti",
+                "email": "daniel.conti@mail.com"
+            },
+            {
+                "username": "anna.wilson",
+                "email": "anna.wilson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "francesca.martin",
-        "email": "francesca.martin@company.io"
-      },
-      {
-        "username": "sophia.johnson",
-        "email": "sophia.johnson@example.com"
-      },
-      {
-        "username": "francesca.esposito",
-        "email": "francesca.esposito@company.io"
-      },
-      {
-        "username": "daniel.conti",
-        "email": "daniel.conti@mail.com"
-      },
-      {
-        "username": "anna.wilson",
-        "email": "anna.wilson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "16a79e4c-c512-427a-a74b-26a41b858df0",
-    "name": "Vertex-Dashboard",
-    "description": "Vertex-Dashboard is a Python project using 1 core libraries.",
-    "last_update": "2021-10-12T21:58:34",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      }
-    ],
-    "admin": {
-      "username": "sophia.bianchi",
-      "email": "sophia.bianchi@example.com"
+    {
+        "name": "Vertex-Dashboard",
+        "description": "Vertex-Dashboard is a Python project using 1 core libraries.",
+        "last_update": "2021-10-12T21:58:34",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "sophia.bianchi",
+            "email": "sophia.bianchi@example.com"
+        },
+        "collaborators": [
+            {
+                "username": "luca.miller",
+                "email": "luca.miller@test.org"
+            },
+            {
+                "username": "alice.moore",
+                "email": "alice.moore@mail.com"
+            },
+            {
+                "username": "francesca.moore",
+                "email": "francesca.moore@mail.com"
+            },
+            {
+                "username": "michael.brown",
+                "email": "michael.brown@mail.com"
+            },
+            {
+                "username": "francesca.esposito",
+                "email": "francesca.esposito@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "luca.miller",
-        "email": "luca.miller@test.org"
-      },
-      {
-        "username": "alice.moore",
-        "email": "alice.moore@mail.com"
-      },
-      {
-        "username": "francesca.moore",
-        "email": "francesca.moore@mail.com"
-      },
-      {
-        "username": "michael.brown",
-        "email": "michael.brown@mail.com"
-      },
-      {
-        "username": "francesca.esposito",
-        "email": "francesca.esposito@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "8c281f9e-4b6f-4919-b2f3-5bff62fa2a74",
-    "name": "Vertex-Toolkit",
-    "description": "Vertex-Toolkit is a Python project using 3 core libraries.",
-    "last_update": "2023-03-24T22:14:55",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "luca.miller",
-      "email": "luca.miller@test.org"
+    {
+        "name": "Vertex-Toolkit",
+        "description": "Vertex-Toolkit is a Python project using 3 core libraries.",
+        "last_update": "2023-03-24T22:14:55",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "luca.miller",
+            "email": "luca.miller@test.org"
+        },
+        "collaborators": [
+            {
+                "username": "michael.johnson1",
+                "email": "michael.johnson1@company.io"
+            },
+            {
+                "username": "laura.martin",
+                "email": "laura.martin@test.org"
+            },
+            {
+                "username": "francesca.moore",
+                "email": "francesca.moore@mail.com"
+            },
+            {
+                "username": "tom.brown",
+                "email": "tom.brown@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "michael.johnson1",
-        "email": "michael.johnson1@company.io"
-      },
-      {
-        "username": "laura.martin",
-        "email": "laura.martin@test.org"
-      },
-      {
-        "username": "francesca.moore",
-        "email": "francesca.moore@mail.com"
-      },
-      {
-        "username": "tom.brown",
-        "email": "tom.brown@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "a0f2fb22-c828-4012-899d-fa16d28909bf",
-    "name": "Echo-Manager",
-    "description": "Echo-Manager is a Python project using 3 core libraries.",
-    "last_update": "2020-04-09T17:34:02",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "asgiref",
-        "version": "3.11.0"
-      },
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Django",
-        "version": "4.2.7"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "sqlparse",
-        "version": "0.5.5"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "michael.bianchi",
-      "email": "michael.bianchi@company.io"
+    {
+        "name": "Echo-Manager",
+        "description": "Echo-Manager is a Python project using 3 core libraries.",
+        "last_update": "2020-04-09T17:34:02",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "michael.bianchi",
+            "email": "michael.bianchi@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "paolo.taylor",
+                "email": "paolo.taylor@example.com"
+            },
+            {
+                "username": "francesca.esposito",
+                "email": "francesca.esposito@company.io"
+            },
+            {
+                "username": "daniel.conti",
+                "email": "daniel.conti@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "paolo.taylor",
-        "email": "paolo.taylor@example.com"
-      },
-      {
-        "username": "francesca.esposito",
-        "email": "francesca.esposito@company.io"
-      },
-      {
-        "username": "daniel.conti",
-        "email": "daniel.conti@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "ffe05cf1-c88d-4bb4-890b-8f7efb3238aa",
-    "name": "Pulse-Dashboard",
-    "description": "Pulse-Dashboard is a Python project using 2 core libraries.",
-    "last_update": "2021-10-22T14:35:02",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      }
-    ],
-    "admin": {
-      "username": "chris.rossi",
-      "email": "chris.rossi@company.io"
+    {
+        "name": "Pulse-Dashboard",
+        "description": "Pulse-Dashboard is a Python project using 2 core libraries.",
+        "last_update": "2021-10-22T14:35:02",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "chris.rossi",
+            "email": "chris.rossi@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "sophia.bianchi",
+                "email": "sophia.bianchi@example.com"
+            },
+            {
+                "username": "sophia.moore",
+                "email": "sophia.moore@mail.com"
+            },
+            {
+                "username": "francesca.moore",
+                "email": "francesca.moore@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "sophia.bianchi",
-        "email": "sophia.bianchi@example.com"
-      },
-      {
-        "username": "sophia.moore",
-        "email": "sophia.moore@mail.com"
-      },
-      {
-        "username": "francesca.moore",
-        "email": "francesca.moore@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "f0cd0788-ec8d-4cea-ae78-a01f8306569b",
-    "name": "Vertex-Studio",
-    "description": "Vertex-Studio is a Python project using 2 core libraries.",
-    "last_update": "2022-02-05T05:52:47",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.4"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "francesca.martin",
-      "email": "francesca.martin@company.io"
+    {
+        "name": "Vertex-Studio",
+        "description": "Vertex-Studio is a Python project using 2 core libraries.",
+        "last_update": "2022-02-05T05:52:47",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "francesca.martin",
+            "email": "francesca.martin@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "tom.miller",
+                "email": "tom.miller@mail.com"
+            },
+            {
+                "username": "robert.wilson",
+                "email": "robert.wilson@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "tom.miller",
-        "email": "tom.miller@mail.com"
-      },
-      {
-        "username": "robert.wilson",
-        "email": "robert.wilson@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "3edc568e-c672-4075-9bb6-cc5cafd0e4d3",
-    "name": "Aperture-Analyzer-2",
-    "description": "Aperture-Analyzer-2 is a Python project using 3 core libraries.",
-    "last_update": "2021-03-05T18:45:44",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "asgiref",
-        "version": "3.11.0"
-      },
-      {
-        "name": "Django",
-        "version": "4.2.7"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "sqlparse",
-        "version": "0.5.5"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      }
-    ],
-    "admin": {
-      "username": "giulia.johnson",
-      "email": "giulia.johnson@mail.com"
+    {
+        "name": "Aperture-Analyzer-2",
+        "description": "Aperture-Analyzer-2 is a Python project using 3 core libraries.",
+        "last_update": "2021-03-05T18:45:44",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "asgiref",
+                "version": "3.11.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Django",
+                "version": "4.2.7",
+                "risk_score": 9.8,
+                "vulnerabilities_count": 42
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "sqlparse",
+                "version": "0.5.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "giulia.johnson",
+            "email": "giulia.johnson@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "emily.bianchi",
+                "email": "emily.bianchi@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "emily.bianchi",
-        "email": "emily.bianchi@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "f8b31de7-f3c8-4593-8cdd-18921622b315",
-    "name": "Orbit-Studio",
-    "description": "Orbit-Studio is a Python project using 1 core libraries.",
-    "last_update": "2021-04-19T20:40:29",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      }
-    ],
-    "admin": {
-      "username": "sophia.johnson",
-      "email": "sophia.johnson@example.com"
+    {
+        "name": "Orbit-Studio",
+        "description": "Orbit-Studio is a Python project using 1 core libraries.",
+        "last_update": "2021-04-19T20:40:29",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "sophia.johnson",
+            "email": "sophia.johnson@example.com"
+        },
+        "collaborators": [
+            {
+                "username": "laura.martin",
+                "email": "laura.martin@test.org"
+            },
+            {
+                "username": "tom.martin",
+                "email": "tom.martin@example.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "laura.martin",
-        "email": "laura.martin@test.org"
-      },
-      {
-        "username": "tom.martin",
-        "email": "tom.martin@example.com"
-      }
-    ]
-  },
-  {
-    "_id": "445f5634-516c-467c-92ee-a720e935b05a",
-    "name": "Vertex-Lab",
-    "description": "Vertex-Lab is a Python project using 3 core libraries.",
-    "last_update": "2024-09-14T19:30:45",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "click",
-        "version": "8.3.1"
-      },
-      {
-        "name": "colorama",
-        "version": "0.4.6"
-      },
-      {
-        "name": "Flask",
-        "version": "2.2.5"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "itsdangerous",
-        "version": "2.2.0"
-      },
-      {
-        "name": "Jinja2",
-        "version": "3.1.6"
-      },
-      {
-        "name": "MarkupSafe",
-        "version": "3.0.3"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.4"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      },
-      {
-        "name": "Werkzeug",
-        "version": "3.1.5"
-      }
-    ],
-    "admin": {
-      "username": "alice.rossi",
-      "email": "alice.rossi@mail.com"
+    {
+        "name": "Vertex-Lab",
+        "description": "Vertex-Lab is a Python project using 3 core libraries.",
+        "last_update": "2024-09-14T19:30:45",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "click",
+                "version": "8.3.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Flask",
+                "version": "2.2.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "itsdangerous",
+                "version": "2.2.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Jinja2",
+                "version": "3.1.6",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "MarkupSafe",
+                "version": "3.0.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "Werkzeug",
+                "version": "3.1.5",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "alice.rossi",
+            "email": "alice.rossi@mail.com"
+        },
+        "collaborators": [
+            {
+                "username": "chris.rossi",
+                "email": "chris.rossi@company.io"
+            },
+            {
+                "username": "tom.wilson",
+                "email": "tom.wilson@example.com"
+            },
+            {
+                "username": "marco.smith",
+                "email": "marco.smith@mail.com"
+            },
+            {
+                "username": "sophia.moore",
+                "email": "sophia.moore@mail.com"
+            },
+            {
+                "username": "alice.moore",
+                "email": "alice.moore@mail.com"
+            },
+            {
+                "username": "tom.martin",
+                "email": "tom.martin@example.com"
+            },
+            {
+                "username": "anna.wilson",
+                "email": "anna.wilson@company.io"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "chris.rossi",
-        "email": "chris.rossi@company.io"
-      },
-      {
-        "username": "tom.wilson",
-        "email": "tom.wilson@example.com"
-      },
-      {
-        "username": "marco.smith",
-        "email": "marco.smith@mail.com"
-      },
-      {
-        "username": "sophia.moore",
-        "email": "sophia.moore@mail.com"
-      },
-      {
-        "username": "alice.moore",
-        "email": "alice.moore@mail.com"
-      },
-      {
-        "username": "tom.martin",
-        "email": "tom.martin@example.com"
-      },
-      {
-        "username": "anna.wilson",
-        "email": "anna.wilson@company.io"
-      }
-    ]
-  },
-  {
-    "_id": "069db780-1ce3-4ae1-9ee4-ac656ab1c315",
-    "name": "Lighthouse-Pipeline",
-    "description": "Lighthouse-Pipeline is a Python project using 3 core libraries.",
-    "last_update": "2023-09-12T18:26:49",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "certifi",
-        "version": "2026.1.4"
-      },
-      {
-        "name": "charset-normalizer",
-        "version": "3.4.4"
-      },
-      {
-        "name": "idna",
-        "version": "3.11"
-      },
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pandas",
-        "version": "2.1.4"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "python-dateutil",
-        "version": "2.9.0.post0"
-      },
-      {
-        "name": "pytz",
-        "version": "2025.2"
-      },
-      {
-        "name": "requests",
-        "version": "2.31.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      },
-      {
-        "name": "six",
-        "version": "1.17.0"
-      },
-      {
-        "name": "tzdata",
-        "version": "2025.3"
-      },
-      {
-        "name": "urllib3",
-        "version": "2.6.3"
-      }
-    ],
-    "admin": {
-      "username": "jane.johnson",
-      "email": "jane.johnson@company.io"
+    {
+        "name": "Lighthouse-Pipeline",
+        "description": "Lighthouse-Pipeline is a Python project using 3 core libraries.",
+        "last_update": "2023-09-12T18:26:49",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "certifi",
+                "version": "2026.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "charset-normalizer",
+                "version": "3.4.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "idna",
+                "version": "3.11",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pandas",
+                "version": "2.1.4",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "python-dateutil",
+                "version": "2.9.0.post0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pytz",
+                "version": "2025.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "requests",
+                "version": "2.31.0",
+                "risk_score": 5.6,
+                "vulnerabilities_count": 2
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "six",
+                "version": "1.17.0",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "tzdata",
+                "version": "2025.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "urllib3",
+                "version": "2.6.3",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "jane.johnson",
+            "email": "jane.johnson@company.io"
+        },
+        "collaborators": [
+            {
+                "username": "marco.smith",
+                "email": "marco.smith@mail.com"
+            },
+            {
+                "username": "giulia.smith",
+                "email": "giulia.smith@test.org"
+            },
+            {
+                "username": "michael.brown",
+                "email": "michael.brown@mail.com"
+            }
+        ]
     },
-    "collaborators": [
-      {
-        "username": "marco.smith",
-        "email": "marco.smith@mail.com"
-      },
-      {
-        "username": "giulia.smith",
-        "email": "giulia.smith@test.org"
-      },
-      {
-        "username": "michael.brown",
-        "email": "michael.brown@mail.com"
-      }
-    ]
-  },
-  {
-    "_id": "cbe16ba7-7f8a-42d4-bdbc-214cd6843028",
-    "name": "Gamma-Studio",
-    "description": "Gamma-Studio is a Python project using 1 core libraries.",
-    "last_update": "2024-04-26T07:29:21",
-    "python_version": "3.11.14",
-    "packages": [
-      {
-        "name": "numpy",
-        "version": "1.26.2"
-      },
-      {
-        "name": "pip",
-        "version": "24.0"
-      },
-      {
-        "name": "setuptools",
-        "version": "79.0.1"
-      }
-    ],
-    "admin": {
-      "username": "tom.martin",
-      "email": "tom.martin@example.com"
-    },
-    "collaborators": [
-      {
-        "username": "chris.smith",
-        "email": "chris.smith@company.io"
-      },
-      {
-        "username": "luca.ferrari",
-        "email": "luca.ferrari@mail.com"
-      }
-    ]
-  }
+    {
+        "name": "Gamma-Studio",
+        "description": "Gamma-Studio is a Python project using 1 core libraries.",
+        "last_update": "2024-04-26T07:29:21",
+        "python_version": "3.11.14",
+        "packages": [
+            {
+                "name": "numpy",
+                "version": "1.26.2",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            },
+            {
+                "name": "pip",
+                "version": "24.0",
+                "risk_score": 5.9,
+                "vulnerabilities_count": 1
+            },
+            {
+                "name": "setuptools",
+                "version": "79.0.1",
+                "risk_score": 0.0,
+                "vulnerabilities_count": 0
+            }
+        ],
+        "admin": {
+            "username": "tom.martin",
+            "email": "tom.martin@example.com"
+        },
+        "collaborators": [
+            {
+                "username": "chris.smith",
+                "email": "chris.smith@company.io"
+            },
+            {
+                "username": "luca.ferrari",
+                "email": "luca.ferrari@mail.com"
+            }
+        ]
+    }
 ]
