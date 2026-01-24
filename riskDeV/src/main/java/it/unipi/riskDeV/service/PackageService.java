@@ -56,37 +56,31 @@ public class PackageService {
                 return new Result.Success<>(new PackageVersionDTO(pkgOpt.get()));
             }
 
-            // Fetching on PyPi
+            // TODO: API CALLS ACTUALLY DISABLED
+            /*
             log.info("Package {} not found locally. Searching on PyPI...", packageName);
             var pypiResponse = pyPiApiClient.getPackageMetadata(packageName);
 
             if (pypiResponse.isPresent()) {
-                // Map the response
                 PackageVersionDTO newVersionDTO = PyPiMapper.toPackageVersionDTO(pypiResponse.get());
 
-                // Get vulnerability list with osv (empty list if osv doesn't work)
-                List<EmbeddedVulnerability> vulns = osvApiClient.getVulnerabilities(
-                    newVersionDTO.getPackageName(), 
-                    newVersionDTO.getVersion()
-                );
+                List<EmbeddedVulnerability> vulns = osvApiClient.getVulnerabilities(newVersionDTO.getPackageName(),newVersionDTO.getVersion());
                 newVersionDTO.setVulnerabilities(vulns);
-                
-                // Saving on Mongo and Neo4j
-                Result<Void> saveResult = addNewVersion(packageName, newVersionDTO);
 
+                Result<Void> saveResult = addNewVersion(packageName, newVersionDTO);
                 if (saveResult instanceof Result.Failure) {
                     return new Result.Failure<>(((Result.Failure<Void>) saveResult).error());
                 }
-                // Package name added to the queue of missing package
+
                 packageIngestionService.enqueuePackage(packageName);
                 return new Result.Success<>(newVersionDTO);
             }
-
-            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found locally or on PyPI."));
+            */
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
 
         } catch (Exception e) {
-            log.error("Error fetching package {} from MongoDB/PyPI", packageName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database/API error while fetching package", e));
+            log.error("Error fetching package {}", packageName, e);
+            return new Result.Failure<>(new DomainError.SystemError("Database error while fetching package", e));
         }
     }
 
@@ -99,6 +93,8 @@ public class PackageService {
                 return new Result.Success<>(new PackageVersionDTO(pkgVerOpt.get()));
             }
 
+            // TODO: API CALLS ACTUALLY DISABLED
+            /*
             // Fetch on PyPi
             log.info("Version {} of {} not found locally. Searching on PyPI...", packageVersion, packageName);
             var pypiResponse = pyPiApiClient.getPackageVersionMetadata(packageName, packageVersion);
@@ -123,16 +119,16 @@ public class PackageService {
 
                 return new Result.Success<>(newVersionDTO);
             }
-
-            return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found locally or on PyPI."));
+            */
+            return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
 
         } catch (Exception e) {
             log.error("Error fetching version {} of package {}", packageVersion, packageName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Database/API error while fetching version", e));
+            return new Result.Failure<>(new DomainError.SystemError("Error while fetching version", e));
         }
     }
 
-    // Get all the dependencies required by a package
+    // TODO: Get all the packages depending on a specific package version
     public Result<List<String>> getPackagesDependingOn(String packageName) {
         log.info("Searching for packages depending on: {}", packageName);
 
@@ -153,45 +149,28 @@ public class PackageService {
     }
 
     // Get all the dependencies of a specific package
-    public Result<List<DependencyDTO>> getDirectDependencies(String packageName, String version) {
-        String versionId = packageName + " " + version;
-        log.info("Searching for direct dependencies of: {}", versionId);
-
+    public Result<List<String>> getDirectDependencies(String packageName, String version) {
         try {
-            // Search in the graph
-            if (packageVersionGraphRepository.existsById(versionId)) {
-                List<DependencyDTO> dependencies = packageVersionGraphRepository.findDirectDependencies(versionId);
-                return new Result.Success<>(dependencies);
+            // Find the document
+            var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
+
+            if (versionDocOpt.isEmpty()) {
+                return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " version " + version + " not found in database."));
             }
 
-            // Calling Pypi api
-            log.info("Dependencies for {} not found locally. Searching on PyPI...", versionId);
-            var pypiResponse = pyPiApiClient.getPackageVersionMetadata(packageName, version);
+            // Extract list of depencencies
+            List<String> rawDependencies = versionDocOpt.get().getDependencies();
 
-            if (pypiResponse.isPresent()) {
-                // Save in MongoDB and Neo4j
-                PackageVersionDTO newVersionDTO = PyPiMapper.toPackageVersionDTO(pypiResponse.get());
-                List<EmbeddedVulnerability> vulns = osvApiClient.getVulnerabilities(packageName, version);
-                newVersionDTO.setVulnerabilities(vulns);
-                
-                Result<Void> saveResult = addNewVersion(packageName, newVersionDTO);
-
-                if (saveResult instanceof Result.Failure) {
-                    return new Result.Failure<>(((Result.Failure<Void>) saveResult).error());
-                }
-                // Package name added to the queue of missing package
-                packageIngestionService.enqueuePackage(packageName);
-
-                // Calling the query
-                List<DependencyDTO> dependencies = packageVersionGraphRepository.findDirectDependencies(versionId);
-                return new Result.Success<>(dependencies);
+            // If null it's an empty list
+            if (rawDependencies == null) {
+                rawDependencies = new ArrayList<>();
             }
 
-            return new Result.Failure<>(new DomainError.NotFound("Package version " + versionId + " not found locally or on PyPI."));
+            return new Result.Success<>(rawDependencies);
 
         } catch (Exception e) {
-            log.error("Error fetching direct dependencies for {}", versionId, e);
-            return new Result.Failure<>(new DomainError.SystemError("Error fetching dependencies", e));
+            log.error("Database error fetching dependencies for {} {}", packageName, version, e);
+            return new Result.Failure<>(new DomainError.SystemError("Error reading dependencies from database", e));
         }
     }
 
@@ -200,7 +179,6 @@ public class PackageService {
         log.info("Searching for safe versions of package: {}", packageName);
 
         try {
-            // Usa exists di Mongo o Neo4j? Meglio Mongo qui che è la source of truth dei metadati
             if (!packageVersionRepository.existsByPackageName(packageName)) {
                 return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
             }
@@ -215,7 +193,8 @@ public class PackageService {
         }
     }
 
-    // Add a new version of a package
+    // TODO: Add a new version of a package
+
     public Result<Void> addNewVersion(String packageName, PackageVersionDTO newVersionDTO) {
         String version = newVersionDTO.getVersion();
         log.info("Publishing version {} for package {}", version, packageName);
@@ -338,6 +317,7 @@ public class PackageService {
                     .set("package_url", updateData.getPackageURL())
                     .set("documentation", updateData.getDocumentationURL());
 
+            // Update all the versions
             var updateResult = mongoTemplate.updateMulti(query, update, PackageVersion.class);
             log.info("Metadata updated for {} versions of package {}", updateResult.getModifiedCount(), packageName);
             
@@ -349,7 +329,8 @@ public class PackageService {
         }
     }
 
-    // Update a version of a package
+    // TODO: Update a version of a package
+
     public Result<PackageVersionDTO> updatePackageVersion(String packageName, String version, PackageVersionDTO updateDTO) {
         log.info("Updating specific version details for: {} {}", packageName, version);
 
@@ -391,8 +372,6 @@ public class PackageService {
                 }
             } catch (Exception e) {  
                 log.error("Neo4j alignment failed for updated version {}", neo4jId, e);
-                // Note: Partial rollback is hard here without old data backup.
-                // Keeping consistent with team style: Log and Fail.
                 return new Result.Failure<>(new DomainError.SystemError("Update saved on DB but Graph sync failed.", e));
             }
 
@@ -404,7 +383,8 @@ public class PackageService {
         }
     }
 
-    // Delete a specific version of a package
+    // TODO: Delete a specific version of a package
+
     public Result<Void> deletePackageVersion(String packageName, String version) {
         String neo4jVersionId = packageName + " " + version;
         log.info("Deleting version {} of package {}", version, packageName);

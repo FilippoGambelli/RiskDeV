@@ -2,6 +2,7 @@ package it.unipi.riskDeV.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -104,10 +105,15 @@ public class PackageController {
     }
 
     @GetMapping("/{packageName}/{packageVersion}/dependencies")
-    @Operation(summary = "Get direct dependencies",
-            description = "Returns a list of packages that the specified package version directly depends on.")
+    @Operation(summary = "Get direct dependencies of a specific package version",
+            description = "Returns a list of raw dependency strings (e.g. 'numpy >= 1.20', 'django')")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = List.class))),
+        @ApiResponse(responseCode = "200", description = "Success", 
+            content = @Content(
+                mediaType = "application/json",
+                array = @ArraySchema(schema = @Schema(implementation = String.class)) // it's a list of strings
+            )
+        ),
         @ApiResponse(responseCode = "404", description = "Version Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getDirectDependencies(

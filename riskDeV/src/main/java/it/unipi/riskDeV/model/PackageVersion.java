@@ -50,6 +50,31 @@ public class PackageVersion {
 
     private List<EmbeddedVulnerability> vulnerabilities = new ArrayList<>();
 
+    // Personalized getters to avoid null problems with lists
+    // If mongo gives requires_dist == null, we have an empty list
+    public List<String> getDependencies() {
+        if (dependencies == null) {
+            return new ArrayList<>();
+        }
+        return dependencies;
+    }
+
+    // If mongo gives vulnerabilities == null, we have an empty list
+    public List<EmbeddedVulnerability> getVulnerabilities() {
+        if (vulnerabilities == null) {
+            return new ArrayList<>();
+        }
+        return vulnerabilities;
+    }
+    
+    // If versionArray is corrupted (==null) we use an empty array (to avoid crash)
+    public List<Integer> getVersionArray() {
+        if (versionArray == null) {
+            return new ArrayList<>();
+        }
+        return versionArray;
+    }
+
     @Data
     public static class EmbeddedVulnerability {
 
