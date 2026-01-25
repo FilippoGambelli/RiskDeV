@@ -2,6 +2,8 @@ package it.unipi.riskDeV.repository;
 
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.DTO.DependencyDTO;
+import it.unipi.riskDeV.DTO.ReverseDependencyDTO;
+
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,10 +18,13 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
     Boolean existsByPackageNameAndVersion(String packageName, String version);
 
     // Find packages that depend on THIS package version
-    @Query("MATCH (target:Version {package_name: $packageName, version: $version}) " +
-           "MATCH (dependent:Version)-[:DEPENDS_ON]->(target) " +
-           "RETURN dependent")
-    Optional<List<PackageVersionNode>> findReverseDependencies(@Param("packageName") String packageName, @Param("version") String version);
+    @Query(
+    "MATCH (target:Version {package_name: $packageName, version: $version}) " +
+    "MATCH (dependent:Version)-[:DEPENDS_ON]->(target) " +
+    "RETURN dependent.package_name AS packageName, " +
+    "       COLLECT(dependent.version) AS versions"
+    )
+    Optional<List<ReverseDependencyDTO>> findReverseDependencies(@Param("packageName") String packageName, @Param("version") String version);
 
     // Find direct dependencies of a specific package
     @Query("MATCH (source:Version {package_name: $pkgName, version: $verNum})-[r:DEPENDS_ON]->(target:Version) " +

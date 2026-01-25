@@ -1,7 +1,9 @@
 package it.unipi.riskDeV.model.neo4j;
 
 import lombok.Data;
-import org.springframework.data.neo4j.core.schema.RelationshipId;
+
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
@@ -10,11 +12,9 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 @Data
 public class DependencyRelationship {
 
-    @RelationshipId
+    @Id
+    @GeneratedValue
     private Long id;
-
-    // Property stored in the edge of the graph
-    private String constraint;
 
     @TargetNode
     private PackageVersionNode targetVersion;

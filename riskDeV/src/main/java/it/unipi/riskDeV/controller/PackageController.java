@@ -77,7 +77,7 @@ public class PackageController {
         return restResponseMapper.map(packageService.getPackageByNameVersion(packageName, packageVersion), HttpStatus.OK);
     }
 
-    @GetMapping("/{packageName}/dependents")
+    @GetMapping("/{packageName}/{version}/dependents")
     @Operation(summary = "Find reverse dependencies",
             description = "Returns a list of package versions that depend on the specified package.")
     @ApiResponses({
@@ -87,7 +87,7 @@ public class PackageController {
     public ResponseEntity<?> getReverseDependencies(
             @Parameter(description = "The package name", example = "numpy") 
             @PathVariable String packageName,
-            @Parameter(description = "The package version", example = "2.0") 
+            @Parameter(description = "The package version", example = "0.9.6") 
             @PathVariable String version
         ) {
         return restResponseMapper.map(packageService.getPackagesDependingOn(packageName, version), HttpStatus.OK);
@@ -101,7 +101,7 @@ public class PackageController {
         @ApiResponse(responseCode = "404", description = "Package Not Found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getSafeVersions(
-            @Parameter(description = "The package name", example = "django") 
+            @Parameter(description = "The package name", example = "Django") 
             @PathVariable String packageName) {
         
         return restResponseMapper.map(packageService.getSafeVersions(packageName), HttpStatus.OK);
@@ -109,7 +109,7 @@ public class PackageController {
 
     @GetMapping("/{packageName}/{packageVersion}/dependencies")
     @Operation(summary = "Get direct dependencies of a specific package version",
-            description = "Returns a list of raw dependency strings (e.g. 'numpy >= 1.20', 'django')")
+            description = "Returns a list of raw dependency strings (e.g. 'numpy >= 1.20', 'Django')")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Success", 
             content = @Content(

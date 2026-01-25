@@ -1,25 +1,20 @@
 package it.unipi.riskDeV.model.neo4j;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
-import org.springframework.data.neo4j.core.schema.Relationship;
 
-import it.unipi.riskDeV.model.PackageVersion;
+import it.unipi.riskDeV.DTO.PublishedVersionDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Node("Version")
 public class PackageVersionNode {
-
-    @Id 
-    @GeneratedValue
-    private String id;
-
     @Property("package_name")
     private String packageName;
 
@@ -36,19 +31,11 @@ public class PackageVersionNode {
 
     private String documentation;
 
-    // Relationship (:Version)-[:DEPENDS_ON]->(:Version)
-    @Relationship(type = "DEPENDS_ON", direction = Relationship.Direction.OUTGOING)
-    private Set<DependencyRelationship> dependencies;
-
-    // Relationship (:Version)-[:AFFECTED_BY]->(:Vulnerability)
-    @Relationship(type = "AFFECTED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<VulnerabilityNode> vulnerabilities;
-
-    public PackageVersionNode(PackageVersion packageVersion) {
-        this.packageName = packageVersion.getPackageName();
-        this.version = packageVersion.getVersion();
-        this.versionArray = packageVersion.getVersionArray();
-        this.requiresPython = packageVersion.getRequiresPython();
-        this.documentation = packageVersion.getDocumentationURL();
+    public PackageVersionNode(PublishedVersionDTO publishedVersionDTO) {
+        this.packageName = publishedVersionDTO.getPackageName();
+        this.version = publishedVersionDTO.getVersion();
+        this.versionArray = publishedVersionDTO.getVersionArray();
+        this.requiresPython = publishedVersionDTO.getRequiresPython();
+        this.documentation = publishedVersionDTO.getDocumentationURL();
     }
 }

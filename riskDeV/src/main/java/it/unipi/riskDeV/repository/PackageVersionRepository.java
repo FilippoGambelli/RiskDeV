@@ -57,7 +57,7 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
     List<PackageVersion> findByPackageName(String packageName);
 
     // Find safe versions of a package
-    Optional<List<PackageVersion>> findTop5ByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
+    Optional<List<PackageVersion>> findTopByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
 
     void deleteByPackageNameAndVersion(String packageName, String version);
 }
