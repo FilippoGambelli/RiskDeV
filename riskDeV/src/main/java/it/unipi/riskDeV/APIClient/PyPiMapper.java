@@ -1,6 +1,6 @@
 package it.unipi.riskDeV.APIClient;
 
-import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import java.util.ArrayList;
 
 public class PyPiMapper {

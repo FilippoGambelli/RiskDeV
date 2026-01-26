@@ -13,6 +13,4 @@ public interface PackageGraphRepository extends Neo4jRepository<PackageNode, Str
         "MERGE (p)-[:HAS_VERSION]->(v)"
         )
     void addVersionToPackage(@Param("packageName") String packageName, @Param("version") String version);
-
-    Boolean existsByPackageName(String packageName);
 }

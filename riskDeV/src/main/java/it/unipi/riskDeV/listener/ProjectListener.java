@@ -6,7 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.event.ProjectEvents.CalculateRiskMetricsEvent;
 import it.unipi.riskDeV.event.ProjectEvents.CollaboratorAddedEvent;

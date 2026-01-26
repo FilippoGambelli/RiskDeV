@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
-import it.unipi.riskDeV.DTO.CentralityResultDTO;
+import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
 import it.unipi.riskDeV.model.neo4j.PackageNode;
 
 public interface PackageCentralityRepository extends Neo4jRepository<PackageNode, String> {

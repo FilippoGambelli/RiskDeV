@@ -1,4 +1,4 @@
-package it.unipi.riskDeV.DTO;
+package it.unipi.riskDeV.DTO.admin;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

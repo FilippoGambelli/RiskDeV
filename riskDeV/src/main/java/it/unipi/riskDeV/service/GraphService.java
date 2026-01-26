@@ -1,9 +1,9 @@
 package it.unipi.riskDeV.service;
 
-import it.unipi.riskDeV.DTO.PublishedVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
+import it.unipi.riskDeV.DTO.packageVersion.EmbeddedVulnerabilityDTO;
+import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
 import it.unipi.riskDeV.model.PackageVersion;
-import it.unipi.riskDeV.model.PackageVersion.Constraints;
-import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
 import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
 import it.unipi.riskDeV.model.neo4j.VulnerabilityNode;
 import it.unipi.riskDeV.repository.PackageGraphRepository;
@@ -102,13 +102,13 @@ public class GraphService {
         
         packageGraphRepository.addVersionToPackage(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
         
-        List<EmbeddedVulnerability> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
-        for (EmbeddedVulnerability vulnerability : vulnerabilityList) {
+        List<EmbeddedVulnerabilityDTO> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
+        for (EmbeddedVulnerabilityDTO vulnerability : vulnerabilityList) {
             // TODO: qui dovremmo inserire check dell'essitenza della vulnerabilità e se non esite fare richiesta API
             packageVersionGraphRepository.attachVulnerability(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), vulnerability.getCveId());
         }
 
-        List<Constraints> dependecesList = publishedVersionDTO.getDependencies();
+        List<ConstraintsDTO> dependecesList = publishedVersionDTO.getDependencies();
         
         List<PackageVersion> packageVersionList = helper.addDependeciesGraph(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), dependecesList);
         for (PackageVersion packageVersion: packageVersionList) {
@@ -125,7 +125,7 @@ public class GraphService {
         packageVersionGraphRepository.updateDocumentation(packageName, documentationURL);
     }
 
-    public void updatePackageVersion(String packageName, String version, List<Constraints> dependecies, List<EmbeddedVulnerability> vulnerabilities) {
+    public void updatePackageVersion(String packageName, String version, List<ConstraintsDTO> dependecies, List<EmbeddedVulnerabilityDTO> vulnerabilities) {
         if(!dependecies.isEmpty()) {
             packageVersionGraphRepository.deleteDependencies(packageName, version);
             List<PackageVersion> packageVersionList = helper.addDependeciesGraph(packageName, version, dependecies);
@@ -137,8 +137,8 @@ public class GraphService {
         if(!vulnerabilities.isEmpty()) {
             packageVersionGraphRepository.deleteVulnerabilities(packageName, version);
 
-            List<EmbeddedVulnerability> vulnerabilityList = vulnerabilities;
-            for (EmbeddedVulnerability vulnerability : vulnerabilityList) {
+            List<EmbeddedVulnerabilityDTO> vulnerabilityList = vulnerabilities;
+            for (EmbeddedVulnerabilityDTO vulnerability : vulnerabilityList) {
                 packageVersionGraphRepository.attachVulnerability(packageName, version, vulnerability.getCveId());
             }
         }

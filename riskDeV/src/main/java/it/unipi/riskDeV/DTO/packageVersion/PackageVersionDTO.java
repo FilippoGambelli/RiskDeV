@@ -1,9 +1,9 @@
-package it.unipi.riskDeV.DTO;
+package it.unipi.riskDeV.DTO.packageVersion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.PackageVersion;
-import it.unipi.riskDeV.model.PackageVersion.Constraints;
-import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.Constraints;
+import it.unipi.riskDeV.model.EmbeddedVulnerability;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,7 +27,7 @@ public class PackageVersionDTO {
     @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "Package name contains invalid characters")
     private String packageName;
 
-    @Schema(description = "Version of the package (SemVer)", example = "1.21.0", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Version of the package (SemVer)", example = "10.10.0", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Version is required")
     @Size(max = 50, message = "Version string is too long (max 50 chars)")
     @Pattern(regexp = "^[a-zA-Z0-9.\\-+]+$", message = "Version contains invalid characters")
@@ -35,7 +36,7 @@ public class PackageVersionDTO {
     @Schema(description = "Author of the package")
     private String author;
 
-    @Schema(description = "Email of the author")
+    @Schema(description = "Email of the author", example = "test@test.com")
     @Email(message = "Invalid email format")
     private String authorEmail;
 
@@ -56,22 +57,32 @@ public class PackageVersionDTO {
     private String requiresPython;
 
     @Schema(description = "List of package dependencies (raw strings)", example = "[\"pandas >= 1.0\", \"scipy\"]")
-    private List<Constraints> dependencies;
+    private List<String> dependencies;
 
     @Schema(description = "Calculated risk score based on vulnerabilities", example = "7.5", accessMode = Schema.AccessMode.READ_ONLY)
     private Double riskScore;
 
     @Schema(description = "List of known vulnerabilities associated with this version")
     @Valid 
-    private List<EmbeddedVulnerability> vulnerabilities;
+    private List<EmbeddedVulnerabilityDTO> vulnerabilities;
 
     public PackageVersionDTO(PackageVersion model) {
         this.packageName = model.getPackageName();
         this.version = model.getVersion();
         this.uploadTime = model.getUploadTime();
-        this.vulnerabilities = model.getVulnerabilities();
+        this.vulnerabilities = new ArrayList<>();
+        for (EmbeddedVulnerability ev : model.getVulnerabilities()) {
+            this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(ev));
+        }
         this.requiresPython = model.getRequiresPython();
-        this.dependencies = model.getDependencies(); 
+
+        this.dependencies = new ArrayList<>();
+        if(model.getDependencies() != null){
+            for(Constraints dependency: model.getDependencies()) {
+                this.dependencies.add(dependency.getFull());
+            }
+        }
+        
         this.author = model.getAuthor();
         this.authorEmail = model.getAuthorEmail();
         this.description = model.getDescription();

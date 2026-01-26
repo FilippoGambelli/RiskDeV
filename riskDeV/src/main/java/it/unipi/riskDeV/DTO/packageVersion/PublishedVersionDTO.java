@@ -1,14 +1,15 @@
-package it.unipi.riskDeV.DTO;
+package it.unipi.riskDeV.DTO.packageVersion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.PackageVersion;
-import it.unipi.riskDeV.model.PackageVersion.Constraints;
-import it.unipi.riskDeV.model.PackageVersion.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.Constraints;
+import it.unipi.riskDeV.model.EmbeddedVulnerability;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -34,22 +35,28 @@ public class PublishedVersionDTO {
     private String requiresPython;
 
     @Schema(description = "List of package dependencies (raw strings)", example = "[\"pandas >= 1.0\", \"scipy\"]")
-    private List<Constraints> dependencies;
+    private List<ConstraintsDTO> dependencies;
 
     @Schema(description = "Calculated risk score based on vulnerabilities", example = "7.5", accessMode = Schema.AccessMode.READ_ONLY)
     private Double riskScore;
 
     @Schema(description = "List of known vulnerabilities associated with this version")
     @Valid 
-    private List<EmbeddedVulnerability> vulnerabilities;
+    private List<EmbeddedVulnerabilityDTO> vulnerabilities;
 
     public PublishedVersionDTO(PackageVersion model) {
         this.packageName = model.getPackageName();
         this.version = model.getVersion();
         this.versionArray = model.getVersionArray();
-        this.vulnerabilities = model.getVulnerabilities();
+        this.vulnerabilities = new ArrayList<>();
+        for(EmbeddedVulnerability vulnerability: model.getVulnerabilities()) {
+            this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(vulnerability));
+        }
         this.requiresPython = model.getRequiresPython();
-        this.dependencies = model.getDependencies(); 
+        this.dependencies = new ArrayList<>();
+        for(Constraints dependency: model.getDependencies()) {
+            this.dependencies.add(new ConstraintsDTO(dependency));
+        }
         this.description = model.getDescription();
         this.documentationURL = model.getDocumentationURL();
         this.riskScore = model.getRiskScore();

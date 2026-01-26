@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Utility {
     private static final Map<String, Integer> VERSION_WEIGHTS = Map.of(
         "dev", -4, "alpha", -3, "a", -3, "beta", -2, "b", -2, 

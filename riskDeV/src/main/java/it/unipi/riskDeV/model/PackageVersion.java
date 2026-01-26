@@ -8,8 +8,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.AddPackageVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.EmbeddedVulnerabilityDTO;
+import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
+import it.unipi.riskDeV.util.DependencyParser;
+import it.unipi.riskDeV.util.Helper;
+import it.unipi.riskDeV.util.Utility;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,59 +61,7 @@ public class PackageVersion {
     @Field("risk_score")
     private Double riskScore;
 
-    private List<EmbeddedVulnerability> vulnerabilities = new ArrayList<>();
-
-    // Personalized getters to avoid null problems with lists
-    // If mongo gives requires_dist == null, we have an empty list
-    public List<Constraints> getDependencies() {
-        if (dependencies == null) {
-            return new ArrayList<>();
-        }
-        return dependencies;
-    }
-
-    // If mongo gives vulnerabilities == null, we have an empty list
-    public List<EmbeddedVulnerability> getVulnerabilities() {
-        if (vulnerabilities == null) {
-            return new ArrayList<>();
-        }
-        return vulnerabilities;
-    }
-    
-    // If versionArray is corrupted (==null) we use an empty array (to avoid crash)
-    public List<Integer> getVersionArray() {
-        if (versionArray == null) {
-            return new ArrayList<>();
-        }
-        return versionArray;
-    }
-
-    @Data
-    public static class EmbeddedVulnerability {
-
-        @Field("cve_id")
-        private String cveId;
-
-        private String details;
-
-        @Field("fixed_in")
-        private List<String> fixedIn;
-        
-        private String link;
-    }
-
-    @Data
-    public static class Constraints {
-
-        private String name;
-
-        private String version_gte;
-        private String version_lte;
-        private String version_gt;
-        private String version_lt;
-        private String version_eq;
-        private String version_neq;
-    }
+    private List<EmbeddedVulnerability> vulnerabilities = new ArrayList<>();    
 
     public PackageVersion(PackageVersionDTO dto) {
         this.packageName = dto.getPackageName();
@@ -120,8 +74,47 @@ public class PackageVersion {
         this.uploadTime = dto.getUploadTime();
         this.requiresPython = dto.getRequiresPython();
         this.riskScore = dto.getRiskScore();
-        this.dependencies = dto.getDependencies() != null ? new ArrayList<>(dto.getDependencies()) : new ArrayList<>();
-        this.vulnerabilities = dto.getVulnerabilities() != null ? dto.getVulnerabilities() : new ArrayList<>();
         this.versionArray = new ArrayList<>();
+
+        this.dependencies = new ArrayList<>();
+        if (dto.getDependencies() != null) {
+            for (String dep : dto.getDependencies()) {
+                this.dependencies.add(DependencyParser.parseFullString(dep));
+            }
+        }
+
+        this.vulnerabilities = new ArrayList<>();
+        for(EmbeddedVulnerabilityDTO tmp: dto.getVulnerabilities()) {
+            this.vulnerabilities.add(new EmbeddedVulnerability(tmp));
+        }
+    }
+
+    public PackageVersion(AddPackageVersionDTO dto, Helper helper, Utility util) {
+        this.packageName = dto.getPackageName();
+        this.version = dto.getVersion();
+        this.author = dto.getAuthor();
+        this.authorEmail = dto.getAuthorEmail();
+        this.description = dto.getDescription();
+        this.packageURL = dto.getPackageURL();
+        this.documentationURL = dto.getDocumentationURL();
+        this.uploadTime = Instant.now().toString();
+        this.requiresPython = dto.getRequiresPython();
+        this.versionArray = util.generateVersionArray(dto.getVersion());
+        
+        this.dependencies = new ArrayList<>();
+        if (dto.getDependencies() != null) {
+            for (String dep : dto.getDependencies()) {
+                this.dependencies.add(DependencyParser.parseFullString(dep));
+            }
+        }
+        
+        List<String> cveIds = new ArrayList<>();
+        for (var vuln : this.vulnerabilities) {
+            if (vuln.getCveId() != null) {
+                cveIds.add(vuln.getCveId());
+            }
+        }
+
+        this.riskScore = helper.getMaxBaseScore(cveIds);
     }
 }

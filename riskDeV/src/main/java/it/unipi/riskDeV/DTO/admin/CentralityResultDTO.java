@@ -1,4 +1,4 @@
-package it.unipi.riskDeV.DTO;
+package it.unipi.riskDeV.DTO.admin;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

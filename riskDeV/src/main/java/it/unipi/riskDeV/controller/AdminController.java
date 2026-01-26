@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import it.unipi.riskDeV.DTO.AggreagationPackageDTO;
-import it.unipi.riskDeV.DTO.CentralityResultDTO;
-import it.unipi.riskDeV.DTO.ContributorCountDTO;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
+import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
+import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.AdminService;
 

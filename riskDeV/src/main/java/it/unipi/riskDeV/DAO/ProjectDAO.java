@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Sort;
 
-import it.unipi.riskDeV.DTO.AggreagationPackageDTO;
-import it.unipi.riskDeV.DTO.ContributorCountDTO;
+import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
+import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
 
 @Repository
 public class ProjectDAO {

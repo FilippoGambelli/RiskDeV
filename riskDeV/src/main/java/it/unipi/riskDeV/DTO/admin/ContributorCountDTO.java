@@ -1,4 +1,4 @@
-package it.unipi.riskDeV.DTO;
+package it.unipi.riskDeV.DTO.admin;
 
 public record ContributorCountDTO (
     String username,
