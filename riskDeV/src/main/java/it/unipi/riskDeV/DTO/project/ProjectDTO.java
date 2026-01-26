@@ -1,8 +1,5 @@
 package it.unipi.riskDeV.DTO.project;
 
-import it.unipi.riskDeV.DTO.CollaboratorDTO;
-import it.unipi.riskDeV.DTO.InstalledPackageDTO;
-import it.unipi.riskDeV.model.Project;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.unipi.riskDeV.model.documentDB.Project;
 
 @Data
 @Builder

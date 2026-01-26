@@ -1,9 +1,9 @@
 package it.unipi.riskDeV.DTO.packageVersion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.PackageVersion;
-import it.unipi.riskDeV.model.Constraints;
-import it.unipi.riskDeV.model.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.documentDB.Constraints;
+import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;

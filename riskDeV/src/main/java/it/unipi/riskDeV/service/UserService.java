@@ -7,13 +7,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import it.unipi.riskDeV.DTO.UpdateProfileDTO;
-import it.unipi.riskDeV.DTO.UserDTO;
-import it.unipi.riskDeV.common.DomainError;
-import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.event.UserEvent;
-import it.unipi.riskDeV.model.User;
-import it.unipi.riskDeV.repository.UserRepository;
+import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
+import it.unipi.riskDeV.DTO.user.UserDTO;
+import it.unipi.riskDeV.async.events.UserEvents;
+import it.unipi.riskDeV.model.documentDB.User;
+import it.unipi.riskDeV.repository.documentDB.UserRepository;
+import it.unipi.riskDeV.results.DomainError;
+import it.unipi.riskDeV.results.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,7 +111,7 @@ public class UserService {
 
                 // If username changed, publish event
                 if (usernameChanged) {
-                    eventPublisher.publishEvent(new UserEvent.UserUpdatedEvent(oldUsername, savedUser.getUsername()));
+                    eventPublisher.publishEvent(new UserEvents.UserUpdatedEvent(oldUsername, savedUser.getUsername()));
                 }
 
                 log.info("User profile updated");
@@ -137,7 +137,7 @@ public class UserService {
             userRepository.deleteByUsername(username);
             log.info("User profile deleted");
 
-            eventPublisher.publishEvent(new UserEvent.UserDeletedEvent(username));
+            eventPublisher.publishEvent(new UserEvents.UserDeletedEvent(username));
             return new Result.Success<>("User profile deleted");
 
         } catch (Exception e) {

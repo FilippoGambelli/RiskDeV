@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import it.unipi.riskDeV.DTO.AuthResponseDTO;
-import it.unipi.riskDeV.DTO.RegisterRequestDTO;
-import it.unipi.riskDeV.common.DomainError;
-import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.event.UserEvent;
-import it.unipi.riskDeV.DTO.LoginRequestDTO;
-import it.unipi.riskDeV.model.User;
-import it.unipi.riskDeV.repository.UserRepository;
+import it.unipi.riskDeV.DTO.user.AuthResponseDTO;
+import it.unipi.riskDeV.DTO.user.LoginRequestDTO;
+import it.unipi.riskDeV.DTO.user.RegisterRequestDTO;
+import it.unipi.riskDeV.async.events.UserEvents;
+import it.unipi.riskDeV.model.documentDB.User;
+import it.unipi.riskDeV.repository.documentDB.UserRepository;
+import it.unipi.riskDeV.results.DomainError;
+import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.security.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class AuthService {
             log.info("User saved in MongoDB: {}", savedUser.getUsername());
 
             // Publish event for Neo4J 
-            eventPublisher.publishEvent(new UserEvent.UserCreatedEvent(savedUser.getUsername()));
+            eventPublisher.publishEvent(new UserEvents.UserCreatedEvent(savedUser.getUsername()));
             String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
 
             return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));

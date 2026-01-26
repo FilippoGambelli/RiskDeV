@@ -2,7 +2,7 @@ package it.unipi.riskDeV.DTO.packageVersion;
 
 import lombok.Data;
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.Constraints;
+import it.unipi.riskDeV.model.documentDB.Constraints;
 
 @Data
 @Schema(name = "ConstraintsDTO", description = "DTO representing version constraints for a package")

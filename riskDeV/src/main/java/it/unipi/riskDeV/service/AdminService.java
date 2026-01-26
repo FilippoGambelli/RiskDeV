@@ -1,13 +1,13 @@
 package it.unipi.riskDeV.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import it.unipi.riskDeV.repository.PackageCentralityRepository;
-import it.unipi.riskDeV.repository.UserRepository;
+import it.unipi.riskDeV.repository.documentDB.UserRepository;
+import it.unipi.riskDeV.repository.graphDB.PackageGraphRepository;
+import it.unipi.riskDeV.results.DomainError;
+import it.unipi.riskDeV.results.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import it.unipi.riskDeV.DAO.PackageDAO;
@@ -16,33 +16,19 @@ import it.unipi.riskDeV.DAO.VulnerabilityDAO;
 import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
 import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
 import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
-import it.unipi.riskDeV.DTO.admin.PackageRiskTrendDTO;
 import it.unipi.riskDeV.DTO.admin.PerfectStormVulnerabilityDTO;
-import it.unipi.riskDeV.DTO.admin.SeverityDistributionDTO;
+import it.unipi.riskDeV.DTO.admin.RiskAggregationDTO;
 import it.unipi.riskDeV.DTO.admin.VulnerabilityTrendDTO;
-import it.unipi.riskDeV.common.DomainError;
-import it.unipi.riskDeV.common.Result;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AdminService {
     private final UserRepository userRepository;
-    private final PackageCentralityRepository packageCentralityRepository;
+    private final PackageGraphRepository PackageGraphRepository;
     private final ProjectDAO projectDAO;
     private final PackageDAO packageDAO;
     private final VulnerabilityDAO vulnerabilityDAO;
-
-    public Result<List<CentralityResultDTO>> getTopByDegree() {
-        var results = packageCentralityRepository.topByDegree();
-        return new Result.Success<>(results);
-    }
-
-    public Result<List<CentralityResultDTO>> getTopByPageRank() {
-        var results = packageCentralityRepository.topByPageRank();
-        return new Result.Success<>(results);
-    }
-
 
     public Result<String> addNewAdmin(String username) {
         
@@ -68,7 +54,7 @@ public class AdminService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to save administrator", e));
         }
 
-        return new Result.Success<>("Administrator was successfully added");
+        return new Result.Success<>("Administrator added successfully");
     }
 
     public Result<String> removeAdmin(String username) {
@@ -95,7 +81,17 @@ public class AdminService {
             return new Result.Failure<>(new DomainError.SystemError("Failed to remove administrator", e));
         }
 
-        return new Result.Success<>("Administrator successfully removed");
+        return new Result.Success<>("Administrator removed successfully");
+    }
+
+    public Result<List<CentralityResultDTO>> getTopByDegree() {
+        var results = PackageGraphRepository.topByDegree();
+        return new Result.Success<>(results);
+    }
+
+    public Result<List<CentralityResultDTO>> getTopByPageRank() {
+        var results = PackageGraphRepository.topByPageRank();
+        return new Result.Success<>(results);
     }
 
     public Result<List<AggreagationPackageDTO>> getMostUsedPackages(int limit) {
@@ -106,51 +102,20 @@ public class AdminService {
         return new Result.Success<>(projectDAO.mostUsedPackagesLastMonth(limit));    
     }
 
-
     public Result<List<ContributorCountDTO>> getTopContributorsLastMonth(int limit) {
-        List<ContributorCountDTO> admins = projectDAO.getTopAdminsLastMonth();
         List<ContributorCountDTO> collaborators = projectDAO.getTopCollaboratorsLastMonth();
-
-        Map<String, Integer> contributorMap = new HashMap<>();
-
-        if (admins != null) {
-            admins.forEach(c -> contributorMap.merge(
-                                            c.username(),
-                                            c.count(),
-                                            (oldVal, newVal) -> oldVal + newVal
-                                ));
-        }
-
-        if (collaborators != null) {
-            collaborators.forEach(c -> contributorMap.merge(
-                                            c.username(),
-                                            c.count(),
-                                            (oldVal, newVal) -> oldVal + newVal
-                                ));
-        }
-
-        List<ContributorCountDTO> result = contributorMap.entrySet().stream()
-                                        .map(e -> new ContributorCountDTO(e.getKey(), e.getValue()))
-                                        .sorted((a, b) -> Integer.compare(b.count(), a.count()))
-                                        .limit(limit)
-                                        .toList();
-
-        return new Result.Success<>(result);
+        return new Result.Success<>(collaborators);
     }
 
-    public Result<List<PackageRiskTrendDTO>> getPackagesWithNegativeRiskTrend(int limit) {
-        return new Result.Success<>(packageDAO.getPackagesWithNegativeRiskTrend(limit));    
+    public Result<RiskAggregationDTO> getAggregateRiskBuckets() {
+        return new Result.Success<>(packageDAO.aggregateRiskBuckets());    
     }
 
     public Result<List<VulnerabilityTrendDTO>> getTrendVulnerabilityLastYear() {
         return new Result.Success<>(vulnerabilityDAO.getVulnerabilityTrendLastYear());
     }
 
-    public Result<List<SeverityDistributionDTO>> getSeverityDistributionLastYear() {
-        return new Result.Success<>(vulnerabilityDAO.getSeverityDistributionLastYear());
-    }
-
-    public Result<List<PerfectStormVulnerabilityDTO>> getPerfectStormVulnerabilities(int limit) {
-        return new Result.Success<>(vulnerabilityDAO.getPerfectStormVulnerabilities(limit));
+    public Result<List<PerfectStormVulnerabilityDTO>> getMostDangerousVulnerabilities(int limit) {
+        return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
     }
 }

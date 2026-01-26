@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 
 import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
-import it.unipi.riskDeV.model.PackageVersion;
+import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class Helper {
-    private final Utility util;
+    private final VersionParser util;
     private final MongoTemplate mongoTemplate;
 
     public List<PackageVersion> addDependeciesGraph(String packageName, String version, List<ConstraintsDTO> dependenciesList) {

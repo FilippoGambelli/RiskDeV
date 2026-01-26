@@ -3,11 +3,10 @@ package it.unipi.riskDeV.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import it.unipi.riskDeV.model.Constraints;
+import it.unipi.riskDeV.model.documentDB.Constraints;
 
 public class DependencyParser {
 
-    // Pattern per versioni
     private static final Pattern VERSION_GTE = Pattern.compile(">=[ ]*([0-9a-zA-Z\\._-]+)");
     private static final Pattern VERSION_LTE = Pattern.compile("<=[ ]*([0-9a-zA-Z\\._-]+)");
     private static final Pattern VERSION_GT  = Pattern.compile(">[ ]*([0-9a-zA-Z\\._-]+)");
@@ -25,7 +24,6 @@ public class DependencyParser {
             return constraint;
         }
 
-        // Separiamo la parte principale da eventuali condizioni (dopo ;)
         String mainPart;
         if (full.contains(";")) {
             String[] parts = full.split(";", 2);
@@ -34,13 +32,11 @@ public class DependencyParser {
             mainPart = full.trim();
         }
 
-        // Nome pacchetto
         Matcher nameMatcher = NAME_PATTERN.matcher(mainPart);
         if (nameMatcher.find()) {
             constraint.setName(nameMatcher.group(1));
         }
 
-        // Versioni
         constraint.setVersionGte(findLastMatch(VERSION_GTE, mainPart));
         constraint.setVersionLte(findLastMatch(VERSION_LTE, mainPart));
         constraint.setVersionGt(findLastMatch(VERSION_GT, mainPart));

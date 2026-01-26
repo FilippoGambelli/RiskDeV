@@ -39,10 +39,6 @@ public class JwtUtil {
             .compact();
     }
 
-    public String getUserIdFromToken(String token) {
-        return extractPayload(token).getSubject();
-    }
-
     public String getUserRoleFromToken(String token) {
         return extractPayload(token).get("role", String.class);
     }

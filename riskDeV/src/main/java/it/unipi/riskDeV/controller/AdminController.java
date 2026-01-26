@@ -15,11 +15,12 @@ import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
 import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
 import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
-import it.unipi.riskDeV.controller.util.RestResponseMapper;
+import it.unipi.riskDeV.DTO.admin.PerfectStormVulnerabilityDTO;
+import it.unipi.riskDeV.DTO.admin.RiskAggregationDTO;
+import it.unipi.riskDeV.results.RestResponseMapper;
 import it.unipi.riskDeV.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +36,11 @@ import org.springframework.web.bind.annotation.PathVariable;
     description = "APIs for managing administrator actions and retrieving package centrality information"
 )
 @RequiredArgsConstructor
-@Slf4j
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "500",
         description = "Internal server error",
-        content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
     )
 })
 public class AdminController {
@@ -55,19 +55,9 @@ public class AdminController {
         description = "Returns the list of packages that are depended on by the largest number of other packages (Degree Centrality). This helps identify core packages in the ecosystem."
     )
     @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = CentralityResultDTO.class))
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "No packages found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the top packages by degree centrality", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CentralityResultDTO.class)))    
     })
     public ResponseEntity<?> getTopByDegree() {
-        log.info("Retrieving top packages by degree centrality");
         return restResponseMapper.map(adminService.getTopByDegree(), HttpStatus.OK);
     }
 
@@ -77,19 +67,9 @@ public class AdminController {
         description = "Returns the list of packages ranked by PageRank score, representing their global influence across the dependency network. Packages with higher scores impact a larger portion of the ecosystem."
     )
     @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by PageRank",
-            content = @Content(schema = @Schema(implementation = CentralityResultDTO.class))
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "No packages found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the top packages by PageRank", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CentralityResultDTO.class)))
     })
     public ResponseEntity<?> getTopByPageRank() {
-        log.info("Retrieving top packages by PageRank centrality");
         return restResponseMapper.map(adminService.getTopByPageRank(), HttpStatus.OK);
     }
 
@@ -101,26 +81,12 @@ public class AdminController {
         description = "Promotes an existing user to have administrator privileges."
     )
     @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "User successfully promoted to administrator"
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "User not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
+        @ApiResponse(responseCode = "200", description = "User successfully promoted to administrator", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string", example = "Administrator added successfully"))),
+        @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> addNewAdmin(
-        @Parameter(
-            description = "The username of the user to be promoted to administrator",
-            example = "david.russo",
-            required = true,
-            schema = @Schema(type = "string")
-        )
-        @PathVariable String username
+        @Parameter(description = "The username of the user to be promoted to administrator", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
     ) {
-        log.info("Adding new administrator: {}", username);
         return restResponseMapper.map(adminService.addNewAdmin(username), HttpStatus.OK);
     }
 
@@ -131,189 +97,94 @@ public class AdminController {
         description = "Revokes administrator privileges from an existing administrator."
     )
     @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Administrator successfully removed"
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Administrator not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
+        @ApiResponse(responseCode = "200", description = "Administrator successfully removed", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string", example = "Administrator removed successfully"))),
+        @ApiResponse(responseCode = "404", description = "Administrator not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removeAdmin(
-        @Parameter(
-            description = "The username of the administrator to be removed",
-            example = "david.russo",
-            required = true,
-            schema = @Schema(type = "string")
-        )
-        @PathVariable String username
+        @Parameter(description = "The username of the administrator to be removed", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
     ) {
-        log.info("Removing administrator: {}", username);
         return restResponseMapper.map(adminService.removeAdmin(username), HttpStatus.OK);
     }
 
     @GetMapping("/mostUsedPackages/{limit}")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get the most used packages",
+        description = "Returns the list of packages that are used as dependencies by the highest number of other packages across the entire ecosystem. This helps identify widely adopted and critical packages."
     )
     @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = AggreagationPackageDTO.class))
-        )
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the most used packages", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AggreagationPackageDTO.class)))
     })
     public ResponseEntity<?> getMostUsedPackages(
-        @Parameter(
-            description = "Limit the number of results",
-            example = "10",
-            required = true,
-            schema = @Schema(type = "int")
-        )
-        @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        log.info("Retrieving top packages by degree centrality");
         return restResponseMapper.map(adminService.getMostUsedPackages(limit), HttpStatus.OK);
     }
 
 
     @GetMapping("/mostUsedPackagesLastMonth/{limit}")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get the most used packages in the last month",
+        description = "Returns the list of packages that were most frequently used as dependencies during the last month, highlighting recent trends in package adoption."
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = AggreagationPackageDTO.class))
-        )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the most used packages from the last month", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AggreagationPackageDTO.class)))
     })
     public ResponseEntity<?> getMostUsedPackagesLastMonth(
-        @Parameter(
-            description = "Limit the number of results",
-            example = "10",
-            required = true,
-            schema = @Schema(type = "int")
-        )
-        @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        log.info("Retrieving top packages by degree centrality");
         return restResponseMapper.map(adminService.getMostUsedPackagesLastMonth(limit), HttpStatus.OK);
     }
 
     @GetMapping("/topContributorLastMonth/{limit}")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get the top contributors in the last month",
+        description = "Returns the list of contributors who made the highest number of contributions during the last month, helping identify the most active maintainers in the ecosystem."
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
-        )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the top contributors from the last month", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContributorCountDTO.class)))
     })
     public ResponseEntity<?> getTopContributorLastMonth(
-        @Parameter(
-            description = "Limit the number of results",
-            example = "10",
-            required = true,
-            schema = @Schema(type = "int")
-        )
-        @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        log.info("Retrieving top packages by degree centrality");
         return restResponseMapper.map(adminService.getTopContributorsLastMonth(limit), HttpStatus.OK);
     }
 
-    @GetMapping("/packagesWithNegativeRiskTrend/{limit}")
+    @GetMapping("/packagesRiskBuckets")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get packages aggregated by risk score buckets",
+        description = "Returns packages grouped by their risk score into risk intervals (0-2, 2-4, 4-6, 6-8, 8-10), providing an overview of the risk distribution across the entire package ecosystem."
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
-        )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved packages aggregated by risk buckets", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RiskAggregationDTO.class)))
     })
-    public ResponseEntity<?> getPackagesWithNegativeRiskTrend(
-        @Parameter(
-            description = "Limit the number of results",
-            example = "10",
-            required = true,
-            schema = @Schema(type = "int")
-        )
-        @PathVariable int limit
-    ) {
-        log.info("Retrieving top packages by degree centrality");
-        return restResponseMapper.map(adminService.getPackagesWithNegativeRiskTrend(limit), HttpStatus.OK);
+    public ResponseEntity<?> getPackagesRiskBuckets() {
+        return restResponseMapper.map(adminService.getAggregateRiskBuckets(), HttpStatus.OK);
     }
 
 
     @GetMapping("/trendVulnerabilityLastYear")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get vulnerability trend over the last year",
+        description = "Returns the trend of reported vulnerabilities over the past year, providing insights into how the overall security landscape is evolving."
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
-        )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the vulnerability trend over the last year", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContributorCountDTO.class)))
     })
     public ResponseEntity<?> getTrendVulnerabilityLastYear() {
-        log.info("Retrieving top packages by degree centrality");
         return restResponseMapper.map(adminService.getTrendVulnerabilityLastYear(), HttpStatus.OK);
     }
 
-
-    @GetMapping("/severityDistributionLastYear")
+    @GetMapping("/mostDangerousVulnerabilities/{limit}")
     @Operation(
-        summary = "",
-        description = ""
+        summary = "Get the most critical vulnerabilities (Perfect Storm)",
+        description = "Returns the list of vulnerabilities that are network-accessible (no authentication required), have low complexity to exploit, and have high or critical severity. These represent the most dangerous threats due to their ease of exploitation combined with severe impact."
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
-        )
-    })
-    public ResponseEntity<?> getSeverityDistributionLastYear() {
-        log.info("Retrieving top packages by degree centrality");
-        return restResponseMapper.map(adminService.getSeverityDistributionLastYear(), HttpStatus.OK);
-    }
-
-
-    @GetMapping("/perfectStormVulnerabilities/{limit}")
-    @Operation(
-        summary = "",
-        description = ""
-    )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Successfully retrieved the top packages by degree centrality",
-            content = @Content(schema = @Schema(implementation = ContributorCountDTO.class))
-        )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the most critical perfect storm vulnerabilities", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PerfectStormVulnerabilityDTO.class)))
     })
     public ResponseEntity<?> getPerfectStormVulnerabilities(
-        @Parameter(
-            description = "Limit the number of results",
-            example = "10",
-            required = true,
-            schema = @Schema(type = "int")
-        )
-        @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        log.info("Retrieving top packages by degree centrality");
-        return restResponseMapper.map(adminService.getPerfectStormVulnerabilities(limit), HttpStatus.OK);
+        return restResponseMapper.map(adminService.getMostDangerousVulnerabilities(limit), HttpStatus.OK);
     }
 }

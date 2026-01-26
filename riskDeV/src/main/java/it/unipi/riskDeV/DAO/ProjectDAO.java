@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
@@ -15,6 +16,8 @@ import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
 
 @Repository
 public class ProjectDAO {
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     public List<AggreagationPackageDTO> mostUsedPackages(int limit) {
@@ -52,22 +55,6 @@ public class ProjectDAO {
         AggregationResults<AggreagationPackageDTO> results = mongoTemplate.aggregate(aggregation, "project", AggreagationPackageDTO.class);
         return results.getMappedResults();
     }
-
-    public List<ContributorCountDTO> getTopAdminsLastMonth() {
-        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
-        Criteria recentCriteria = Criteria.where("last_update").gte(oneMonthAgo);
-
-        Aggregation aggregation = Aggregation.newAggregation(
-            Aggregation.match(recentCriteria),
-            Aggregation.group("admin.username").count().as("count"),
-            Aggregation.project().and("_id").as("username").and("count").as("count")
-        );
-
-        AggregationResults<ContributorCountDTO> results = mongoTemplate.aggregate(aggregation, "project", ContributorCountDTO.class);
-
-        return results.getMappedResults();
-    }
-
 
     public List<ContributorCountDTO> getTopCollaboratorsLastMonth() {
         LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);

@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 
 import it.unipi.riskDeV.service.AuthService;
 import jakarta.validation.Valid;
-import it.unipi.riskDeV.DTO.AuthResponseDTO;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
-import it.unipi.riskDeV.DTO.LoginRequestDTO;
-import it.unipi.riskDeV.DTO.RegisterRequestDTO;
-import it.unipi.riskDeV.controller.util.RestResponseMapper;
+import it.unipi.riskDeV.DTO.user.AuthResponseDTO;
+import it.unipi.riskDeV.DTO.user.LoginRequestDTO;
+import it.unipi.riskDeV.DTO.user.RegisterRequestDTO;
+import it.unipi.riskDeV.results.RestResponseMapper;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

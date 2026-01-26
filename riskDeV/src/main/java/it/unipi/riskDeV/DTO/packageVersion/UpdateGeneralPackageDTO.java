@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.PackageVersion;
+import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 

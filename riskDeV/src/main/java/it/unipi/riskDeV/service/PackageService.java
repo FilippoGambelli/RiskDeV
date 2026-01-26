@@ -8,17 +8,17 @@ import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
-import it.unipi.riskDeV.common.DomainError;
-import it.unipi.riskDeV.common.Result;
-import it.unipi.riskDeV.event.PackageEvent;
-import it.unipi.riskDeV.model.PackageVersion;
-import it.unipi.riskDeV.model.Constraints;
-import it.unipi.riskDeV.model.EmbeddedVulnerability;
-import it.unipi.riskDeV.model.neo4j.PackageVersionNode;
-import it.unipi.riskDeV.repository.PackageVersionGraphRepository;
-import it.unipi.riskDeV.repository.PackageVersionRepository;
+import it.unipi.riskDeV.async.events.PackageEvents;
+import it.unipi.riskDeV.model.documentDB.Constraints;
+import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
+import it.unipi.riskDeV.model.documentDB.PackageVersion;
+import it.unipi.riskDeV.model.graphDB.PackageVersionNode;
+import it.unipi.riskDeV.repository.documentDB.PackageVersionRepository;
+import it.unipi.riskDeV.repository.graphDB.PackageVersionGraphRepository;
+import it.unipi.riskDeV.results.DomainError;
+import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.util.Helper;
-import it.unipi.riskDeV.util.Utility;
+import it.unipi.riskDeV.util.VersionParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +36,7 @@ public class PackageService {
     private final PackageVersionRepository packageVersionRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final Utility util;
+    private final VersionParser versionParser;
     private final Helper helper;
 
     // Returns information about a package using the latest available version.
@@ -140,14 +140,14 @@ public class PackageService {
         }
 
         // TODO: Remove Helper and move the computation of risk_score to an asynchronous event        
-        PackageVersion versionDoc = new PackageVersion(newVersionDTO, helper, util);
+        PackageVersion versionDoc = new PackageVersion(newVersionDTO, helper, versionParser);
 
         try {
             packageVersionRepository.save(versionDoc);
             log.info("Version document saved in MongoDB: {}", versionDoc.getId());
 
             PublishedVersionDTO publishedVersionDTO = new PublishedVersionDTO(versionDoc);
-            eventPublisher.publishEvent(new PackageEvent.VersionReleaseEvent(publishedVersionDTO));
+            eventPublisher.publishEvent(new PackageEvents.VersionReleaseEvent(publishedVersionDTO));
         } catch (Exception e) {
             log.error("Failed to save version in MongoDB.", e);
             return new Result.Failure<>(new DomainError.SystemError("Error while saving version. Please try again.", e));
@@ -165,7 +165,7 @@ public class PackageService {
         helper.updatePackageGeneralMetadata(packageName, updateData);
 
         if(updateData.getDocumentationURL().isPresent()) {
-            eventPublisher.publishEvent(new PackageEvent.UpdateDocumentationEvent(packageName, updateData.getDocumentationURL().get()));
+            eventPublisher.publishEvent(new PackageEvents.UpdateDocumentationEvent(packageName, updateData.getDocumentationURL().get()));
         }
 
         log.info("Metadata updated for {}", packageName);
@@ -211,7 +211,7 @@ public class PackageService {
             packageVersionRepository.save(updateVersion);
             log.info("Update done on MongoDB");
 
-            eventPublisher.publishEvent(new PackageEvent.UpdatePackageVersionEvent(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
+            eventPublisher.publishEvent(new PackageEvents.UpdatePackageVersionEvent(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError("Failed to update the package on MongoDB", e));
         }
@@ -228,7 +228,7 @@ public class PackageService {
         log.info("Successfully deleted package from MongoDB");
 
         eventPublisher.publishEvent(
-            new PackageEvent.DeletePackageVersionEvent(packageName, version)
+            new PackageEvents.DeletePackageVersionEvent(packageName, version)
         );
 
         return new Result.Success<>("Package deleted successfully");

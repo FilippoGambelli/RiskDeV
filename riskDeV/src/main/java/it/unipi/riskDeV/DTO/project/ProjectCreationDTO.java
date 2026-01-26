@@ -1,6 +1,5 @@
 package it.unipi.riskDeV.DTO.project;
 
-import it.unipi.riskDeV.DTO.InstalledPackageDTO; 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

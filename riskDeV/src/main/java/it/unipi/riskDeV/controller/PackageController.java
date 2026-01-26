@@ -14,7 +14,7 @@ import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
-import it.unipi.riskDeV.controller.util.RestResponseMapper;
+import it.unipi.riskDeV.results.RestResponseMapper;
 import it.unipi.riskDeV.service.PackageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
