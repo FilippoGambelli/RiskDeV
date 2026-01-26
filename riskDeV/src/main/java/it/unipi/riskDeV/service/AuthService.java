@@ -4,13 +4,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.unipi.riskDeV.DTO.user.AuthResponseDTO;
 import it.unipi.riskDeV.DTO.user.LoginRequestDTO;
 import it.unipi.riskDeV.DTO.user.RegisterRequestDTO;
-import it.unipi.riskDeV.async.events.UserEvents;
 import it.unipi.riskDeV.model.documentDB.User;
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
 import it.unipi.riskDeV.results.DomainError;
@@ -26,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
     
     private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;  
     private final JwtUtil jwtUtil;
 
@@ -51,14 +48,12 @@ public class AuthService {
             User savedUser = userRepository.save(user);
             log.info("User saved in MongoDB: {}", savedUser.getUsername());
 
-            // Publish event for Neo4J 
-            eventPublisher.publishEvent(new UserEvents.UserCreatedEvent(savedUser.getUsername()));
             String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
 
             return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));
         } catch (Exception e) {
             log.error("Failed to save user in Mongo.", e);
-            return new Result.Failure<>(new DomainError.SystemError("Error during registration. Please try again.", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
     }
 

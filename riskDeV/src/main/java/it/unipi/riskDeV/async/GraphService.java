@@ -9,7 +9,6 @@ import it.unipi.riskDeV.model.graphDB.VulnerabilityNode;
 import it.unipi.riskDeV.repository.graphDB.PackageGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.ProjectGraphRepository;
-import it.unipi.riskDeV.repository.graphDB.UserGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.VulnerabilityGraphRepository;
 import it.unipi.riskDeV.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +22,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class GraphService {
 
-    private final UserGraphRepository userGraphRepository;
     private final ProjectGraphRepository projectGraphRepository;
     private final VulnerabilityGraphRepository vulnerabilityGraphRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
     private final PackageGraphRepository packageGraphRepository;
     private final Helper helper;
     
-
-    public void deleteUserNode(String id) {
-        log.debug("Syncing delete to Neo4j for user: {}", id);
-        userGraphRepository.deleteById(id);
-    }
-
-    public void createUserNode(String username) {
-        log.debug("Syncing create to Neo4j for user: {}", username);
-        userGraphRepository.createUserNode(username);
-    }
-
-    public void updateUsername(String oldUsername, String newUsername) {
-        log.debug("Syncing username update to Neo4j for user mongoId: {} with new username: {}", oldUsername, newUsername);
-        userGraphRepository.updateUsername(oldUsername, newUsername);
-    }
 
     public void createProjectStructure(String projectName, String adminId, List<String> packageIds) {
         projectGraphRepository.createProjectNode(projectName);

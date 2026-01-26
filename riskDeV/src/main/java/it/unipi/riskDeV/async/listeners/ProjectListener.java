@@ -156,7 +156,7 @@ public class ProjectListener {
                 log.info("[Project Listener] Risk metrics updated for project {}", event.projectName());
             } catch (Exception e) {
                 log.error("Error saving updated risk metrics for project {}", event.projectName(), e);
-                saveToDLQ(event, new DomainError.SystemError("Failed to save updated risk metrics", e));
+                saveToDLQ(event, new DomainError.SystemError());
                 return;
             }
         } else {

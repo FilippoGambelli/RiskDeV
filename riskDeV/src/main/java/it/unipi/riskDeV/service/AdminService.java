@@ -51,7 +51,7 @@ public class AdminService {
             log.info("Administrator {} was successfully added", username);
         } catch (Exception e) {
             log.warn("Failed to save administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError("Failed to save administrator", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
 
         return new Result.Success<>("Administrator added successfully");
@@ -78,7 +78,7 @@ public class AdminService {
             log.info("Administrator {} was successfully removed", username);
         } catch (Exception e) {
             log.warn("Failed to remove administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError("Failed to remove administrator", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
 
         return new Result.Success<>("Administrator removed successfully");
@@ -116,6 +116,10 @@ public class AdminService {
     }
 
     public Result<List<PerfectStormVulnerabilityDTO>> getMostDangerousVulnerabilities(int limit) {
-        return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
+        try {
+            return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
+        } catch (Exception e) {
+            return new Result.Failure<>(new DomainError.SystemError());
+        }
     }
 }

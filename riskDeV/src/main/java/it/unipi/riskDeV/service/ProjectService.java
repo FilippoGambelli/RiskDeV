@@ -85,7 +85,7 @@ public class ProjectService {
             return new Result.Success<>(ProjectDTO.fromEntity(savedProject));
         } catch (Exception e) {
             log.error("Error creating project", e);
-            return new Result.Failure<>(new DomainError.SystemError("Creation failed", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         } 
 
     }
@@ -108,7 +108,7 @@ public class ProjectService {
                     
                     return new Result.Success<>(projectName);
                 } catch (Exception e) {
-                    return new Result.Failure<String>(new DomainError.SystemError("Delete failed", e));
+                    return new Result.Failure<String>(new DomainError.SystemError());
                 }
             })
             .orElse(new Result.Failure<>(new DomainError.NotFound("Project not found")));
@@ -154,7 +154,7 @@ public class ProjectService {
 
         } catch (Exception e) {
             log.error("Error updating packages for project {}", projectName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Update failed", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
     }
 
@@ -181,7 +181,7 @@ public class ProjectService {
 
             return new Result.Success<>("Packages removed successfully.");
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError("Remove failed", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
     }
 
@@ -213,7 +213,7 @@ public class ProjectService {
         } catch (IllegalStateException e) {
              return new Result.Failure<>(new DomainError.NotFound(e.getMessage()));
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError("Failed to add collaborator", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
     }
 

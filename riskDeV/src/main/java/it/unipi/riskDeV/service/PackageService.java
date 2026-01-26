@@ -150,7 +150,7 @@ public class PackageService {
             eventPublisher.publishEvent(new PackageEvents.VersionReleaseEvent(publishedVersionDTO));
         } catch (Exception e) {
             log.error("Failed to save version in MongoDB.", e);
-            return new Result.Failure<>(new DomainError.SystemError("Error while saving version. Please try again.", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
 
         return new Result.Success<>("Package created successfully");    
@@ -213,7 +213,7 @@ public class PackageService {
 
             eventPublisher.publishEvent(new PackageEvents.UpdatePackageVersionEvent(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError("Failed to update the package on MongoDB", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
 
         return new Result.Success<>("Package updated successfully");

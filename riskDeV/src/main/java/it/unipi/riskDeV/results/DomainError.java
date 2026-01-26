@@ -9,11 +9,13 @@ public sealed interface DomainError permits
     DomainError.AccessDenied,
     DomainError.InvalidOperation {
 
-    String message();
+    default String message() {
+        return "API request failed! Please try again later.";
+    }
 
     record NotFound(String message) implements DomainError {}
     record AlreadyExists(String message) implements DomainError {}
-    record SystemError(String message, Throwable cause) implements DomainError {}
+    record SystemError() implements DomainError {}
     record InvalidCredentials(String message) implements DomainError {}
     record ValidationFailed(String message) implements DomainError {}
     record AccessDenied(String message) implements DomainError {}

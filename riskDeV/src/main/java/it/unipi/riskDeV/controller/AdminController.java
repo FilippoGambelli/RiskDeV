@@ -19,7 +19,7 @@ import it.unipi.riskDeV.DTO.admin.PerfectStormVulnerabilityDTO;
 import it.unipi.riskDeV.DTO.admin.RiskAggregationDTO;
 import it.unipi.riskDeV.results.RestResponseMapper;
 import it.unipi.riskDeV.service.AdminService;
-
+import it.unipi.riskDeV.util.ResultExecutor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,6 @@ public class AdminController {
 
     private final AdminService adminService;
     private final RestResponseMapper restResponseMapper;
-
 
     @GetMapping("/packagesWithHighCentrality")
     @Operation(
@@ -185,6 +184,6 @@ public class AdminController {
     public ResponseEntity<?> getPerfectStormVulnerabilities(
         @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        return restResponseMapper.map(adminService.getMostDangerousVulnerabilities(limit), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostDangerousVulnerabilities(limit))), HttpStatus.OK);
     }
 }

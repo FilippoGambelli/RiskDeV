@@ -3,7 +3,6 @@ package it.unipi.riskDeV.async.listeners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unipi.riskDeV.async.GraphService;
-import it.unipi.riskDeV.async.events.UserEvents;
 import it.unipi.riskDeV.async.events.PackageEvents.DeletePackageVersionEvent;
 import it.unipi.riskDeV.async.events.PackageEvents.UpdateDocumentationEvent;
 import it.unipi.riskDeV.async.events.PackageEvents.UpdatePackageVersionEvent;
@@ -35,43 +34,6 @@ public class GraphSyncListener {
     private final GraphService graphService;
     private final FailedEventRepository failedEventRepository;
     private final ObjectMapper objectMapper; // ObjectMapper to serialize event payloads for DLQ
-
-    // Async listener to handle UserDeletedEvent after mongo transaction commit
-    @Async 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true) 
-    public void handleUserDeleted(UserEvents.UserDeletedEvent event) {
-        try {
-            graphService.deleteUserNode(event.username());
-            log.info("SUCCESS: User {} deleted from Neo4j.", event.username());
-        } catch (Exception e) {
-            log.error("FAIL: Could not delete user {} from Neo4j. Saving to DLQ.", event.username(), e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUserCreated(UserEvents.UserCreatedEvent event) {
-        try {            
-            graphService.createUserNode(event.username());
-            log.info("SUCCESS: UserNode {} created in Neo4j.", event.username());
-        } catch (Exception e) {
-            log.error("FAIL: Could not create user {} in Neo4j. Saving to DLQ.", event.username(), e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUserUpdated(UserEvents.UserUpdatedEvent event) {
-        try {
-            graphService.updateUsername(event.oldUsername(), event.newUsername());
-            log.info("SUCCESS: UserNode {} updated in Neo4j.", event.newUsername());
-        } catch (Exception e) {
-            log.error("FAIL: Could not update user {} in Neo4j. Saving to DLQ.", event.newUsername(), e);
-            saveToDLQ(event, e);
-        }
-    }
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)

@@ -3,13 +3,11 @@ package it.unipi.riskDeV.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.user.UserDTO;
-import it.unipi.riskDeV.async.events.UserEvents;
 import it.unipi.riskDeV.model.documentDB.User;
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
 import it.unipi.riskDeV.results.DomainError;
@@ -23,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
     
     private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
 
     public Result<UserDTO> getProfile(String username) {
@@ -73,9 +70,7 @@ public class UserService {
         }
         
         User user = userOpt.get();
-        String oldUsername = user.getUsername();
         boolean isUpdated = false;
-        boolean usernameChanged = false;
 
         if (request.getUsername() != null && !request.getUsername().isBlank()) {
             // Check if username is changing
@@ -88,7 +83,6 @@ public class UserService {
 
                 user.setUsername(request.getUsername());
                 isUpdated = true;
-                usernameChanged = true;
             }
         }
 
@@ -109,16 +103,11 @@ public class UserService {
             try {
                 User savedUser = userRepository.save(user);
 
-                // If username changed, publish event
-                if (usernameChanged) {
-                    eventPublisher.publishEvent(new UserEvents.UserUpdatedEvent(oldUsername, savedUser.getUsername()));
-                }
-
                 log.info("User profile updated");
                 return new Result.Success<>(UserDTO.fromEntity(savedUser));
 
             } catch (Exception e) {
-                return new Result.Failure<>(new DomainError.SystemError("Error updating profile", e));
+                return new Result.Failure<>(new DomainError.SystemError());
             }
         }
 
@@ -137,11 +126,10 @@ public class UserService {
             userRepository.deleteByUsername(username);
             log.info("User profile deleted");
 
-            eventPublisher.publishEvent(new UserEvents.UserDeletedEvent(username));
             return new Result.Success<>("User profile deleted");
 
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError("Failed to delete user from database", e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
 
     }
@@ -171,7 +159,7 @@ public class UserService {
             return new Result.Success<>(null);
         } catch (Exception e) {
             log.error("Failed to add project '{}' to user '{}'", projectName, username, e);
-            return new Result.Failure<>(new DomainError.SystemError(String.format("Failed to add project '%s' to user '%s'", projectName, username), e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
         
     }
@@ -197,7 +185,7 @@ public class UserService {
             return new Result.Success<>(null);
         } catch (Exception e) {
             log.error("Failed to remove project '{}' from user '{}'", projectName, username, e);
-            return new Result.Failure<>(new DomainError.SystemError(String.format("Failed to remove project '%s' from user '%s'", projectName, username), e));
+            return new Result.Failure<>(new DomainError.SystemError());
         }
         
     }
