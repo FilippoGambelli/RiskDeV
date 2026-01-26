@@ -9,7 +9,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unipi.riskDeV.DTO.PackageVersionDTO;
+import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.common.DomainError;
 import it.unipi.riskDeV.common.Result;
 import it.unipi.riskDeV.event.ProjectEvents.CalculateRiskMetricsEvent;
