@@ -3,72 +3,89 @@ package it.unipi.riskDeV.DTO.project;
 import it.unipi.riskDeV.DTO.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
 import it.unipi.riskDeV.model.Project;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Data
+@Builder
+@AllArgsConstructor
 public class ProjectDTO {
 
+    @Schema(description = "Unique identifier name of the project", example = "RiskAnalysis_AI")
+    @NotBlank(message = "Project name is mandatory")
+    @Size(max = 100, message = "Project name cannot exceed 100 characters")
     private String name;
+
+    @Schema(description = "Brief description of the project scope", example = "AI model for credit risk assessment")
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
+
+    @Schema(
+        description = "Timestamp of the last modification", 
+        example = "2023-10-01T12:00:00Z",
+        accessMode = Schema.AccessMode.READ_ONLY 
+    )
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant lastUpdate;
+
+    @Schema(description = "Python interpreter version required", example = "3.9")
+    @NotBlank(message = "Python version is mandatory")
     private String pythonVersion;
+
+    @Schema(description = "Project Administrator details")
+    @NotNull(message = "Project admin is mandatory")
+    @Valid
     private CollaboratorDTO admin;
+
+    @ArraySchema(schema = @Schema(description = "List of python packages installed"))
+    @NotNull(message = "Packages list cannot be null (send empty list instead)")
+    @Valid
     private List<InstalledPackageDTO> packages;
+
+    @ArraySchema(schema = @Schema(description = "List of project collaborators"))
+    @NotNull(message = "Collaborators list cannot be null (send empty list instead)")
+    @Valid
     private List<CollaboratorDTO> collaborators;
 
-    // Costruttore principale
-    public ProjectDTO(String name, String description, Instant lastUpdate,
-                      String pythonVersion, CollaboratorDTO admin,
-                      List<InstalledPackageDTO> packages,
-                      List<CollaboratorDTO> collaborators) {
-        this.name = name;
-        this.description = description;
-        this.lastUpdate = lastUpdate;
-        this.pythonVersion = pythonVersion;
-        this.admin = admin;
-        this.packages = packages;
-        this.collaborators = collaborators;
+    public static ProjectDTO fromEntity(Project project) {
+        if (project == null) return null;
+
+        return ProjectDTO.builder()
+                .name(project.getName())
+                .description(project.getDescription())
+                .lastUpdate(project.getLastUpdate())
+                .pythonVersion(project.getPythonVersion())
+                .admin(CollaboratorDTO.fromEntity(project.getAdmin()))
+                .packages(
+                    Optional.ofNullable(project.getPackages())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(InstalledPackageDTO::fromEntity)
+                        .toList() 
+                )
+                .collaborators(
+                    Optional.ofNullable(project.getCollaborators())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(CollaboratorDTO::fromEntity)
+                        .toList()
+                )
+                .build();
     }
 
-    // Costruttore di conversione da Project
-    public ProjectDTO(Project project) {
-        this.name = project.getName();
-        this.description = project.getDescription();
-        this.lastUpdate = project.getLastUpdate();
-        this.pythonVersion = project.getPythonVersion();
-        this.admin = project.getAdmin() != null ? new CollaboratorDTO(project.getAdmin()) : null;
-
-        // mapping delle liste
-        this.packages = new ArrayList<>();
-        if (project.getPackages() != null) {
-            for (Project.ProjectPackage p : project.getPackages()) {
-                this.packages.add(new InstalledPackageDTO(p));
-            }
-        }
-
-        this.collaborators = new ArrayList<>();
-        if (project.getCollaborators() != null) {
-            for (Project.Collaborator c : project.getCollaborators()) {
-                this.collaborators.add(new CollaboratorDTO(c));
-            }
-        }
-    }
-
-    // Getters e Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public Instant getLastUpdate() { return lastUpdate; }
-    public void setLastUpdate(Instant lastUpdate) { this.lastUpdate = lastUpdate; }
-    public String getPythonVersion() { return pythonVersion; }
-    public void setPythonVersion(String pythonVersion) { this.pythonVersion = pythonVersion; }
-    public CollaboratorDTO getAdmin() { return admin; }
-    public void setAdmin(CollaboratorDTO admin) { this.admin = admin; }
-    public List<InstalledPackageDTO> getPackages() { return packages; }
-    public void setPackages(List<InstalledPackageDTO> packages) { this.packages = packages; }
-    public List<CollaboratorDTO> getCollaborators() { return collaborators; }
-    public void setCollaborators(List<CollaboratorDTO> collaborators) { this.collaborators = collaborators; }
 }

@@ -1,12 +1,9 @@
 package it.unipi.riskDeV.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +25,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
-    private final MongoTemplate mongoTemplate;
 
-    public Result<UserDTO> getProfile(String id) {
+    public Result<UserDTO> getProfile(String username) {
         log.info("Get user profile");
         
-        var optUser = userRepository.findByUsername(id);
+        var optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -54,10 +50,10 @@ public class UserService {
         return new Result.Success<>(UserDTO.fromEntity(user));
     }
 
-    public Result<List<String>> getUserProjectNames(String userId) {
+    public Result<List<String>> getUserProjectNames(String username) {
         log.info("Get user projects");
 
-        var optUser = userRepository.findByUsername(userId);
+        var optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -68,10 +64,10 @@ public class UserService {
         return new Result.Success<>(projectNames);
     }
 
-    public Result<UserDTO> updateProfile(String userId, UpdateProfileDTO request) {
+    public Result<UserDTO> updateProfile(String username, UpdateProfileDTO request) {
         log.info("Updating use profile");
 
-        var userOpt = userRepository.findByUsername(userId);
+        var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
@@ -81,31 +77,31 @@ public class UserService {
         boolean isUpdated = false;
         boolean usernameChanged = false;
 
-        if (request.username() != null && !request.username().isBlank()) {
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
             // Check if username is changing
-            if (!request.username().equals(user.getUsername())) {
-                
+            if (!request.getUsername().equals(user.getUsername())) {
+
                 // Check uniqueness
-                if (userRepository.existsByUsername(request.username())) {
+                if (userRepository.existsByUsername(request.getUsername())) {
                     return new Result.Failure<>(new DomainError.AlreadyExists("Username already taken"));
                 }
 
-                user.setUsername(request.username());
+                user.setUsername(request.getUsername());
                 isUpdated = true;
                 usernameChanged = true;
             }
         }
 
-        if (request.firstName() != null && !request.firstName().isBlank()) {
-            user.setFirstName(request.firstName());
+        if (request.getFirstName() != null && !request.getFirstName().isBlank()) {
+            user.setFirstName(request.getFirstName());
             isUpdated = true;
         }
-        if (request.lastName() != null && !request.lastName().isBlank()) {
-            user.setLastName(request.lastName());
+        if (request.getLastName() != null && !request.getLastName().isBlank()) {
+            user.setLastName(request.getLastName());
             isUpdated = true;
         }
-        if (request.password() != null && !request.password().isBlank()) {
-            user.setPassword(passwordEncoder.encode(request.password()));
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
             isUpdated = true;
         }
 
@@ -118,6 +114,7 @@ public class UserService {
                     eventPublisher.publishEvent(new UserEvent.UserUpdatedEvent(oldUsername, savedUser.getUsername()));
                 }
 
+                log.info("User profile updated");
                 return new Result.Success<>(UserDTO.fromEntity(savedUser));
 
             } catch (Exception e) {
@@ -129,17 +126,18 @@ public class UserService {
         return new Result.Success<>(UserDTO.fromEntity(user));
     }
 
-    public Result<String> deleteUser(String id) {
+    public Result<String> deleteUser(String username) {
         log.info("Deleting user profile");
-        if (!userRepository.existsByUsername(id)) {
+
+        if (!userRepository.existsByUsername(username)) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
 
         try {
-            userRepository.deleteByUsername(id);
+            userRepository.deleteByUsername(username);
             log.info("User profile deleted");
 
-            eventPublisher.publishEvent(new UserEvent.UserDeletedEvent(id));
+            eventPublisher.publishEvent(new UserEvent.UserDeletedEvent(username));
             return new Result.Success<>("User profile deleted");
 
         } catch (Exception e) {
@@ -148,23 +146,60 @@ public class UserService {
 
     }
 
-    public void addProjectToUser(String username, String projectName) {
-        log.info("Adding project '{}' to user '{}'", projectName, username);
+    public Result<Void> addProjectToUser(String username, String projectName) {
+        log.debug("Adding project '{}' to user '{}'", projectName, username);
         
-        Query query = Query.query(Criteria.where("username").is(username));
+        var userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound(String.format("User '%s' not found", username)));
+        }
         
-        Update update = new Update().addToSet("project_names", projectName);
-    
-        mongoTemplate.updateFirst(query, update, User.class);
+        try {
+            User user = userOpt.get();
+            if (user.getProjectNames() == null) {
+                user.setProjectNames(new ArrayList<>());
+            }
+            
+            if (!user.getProjectNames().contains(projectName)) {
+                user.getProjectNames().add(projectName);
+                userRepository.save(user);
+                log.debug("Project '{}' added to user '{}'", projectName, username);
+            } else {
+                log.debug("Project '{}' already exists for user '{}'", projectName, username);
+            }
+
+            return new Result.Success<>(null);
+        } catch (Exception e) {
+            log.error("Failed to add project '{}' to user '{}'", projectName, username, e);
+            return new Result.Failure<>(new DomainError.SystemError(String.format("Failed to add project '%s' to user '%s'", projectName, username), e));
+        }
+        
     }
     
-    public void removeProjectFromUser(String username, String projectName) {
-        log.info("Removing project '{}' from user '{}'", projectName, username);
+    public Result<Void> removeProjectFromUser(String username, String projectName) {
+        log.debug("Removing project '{}' from user '{}'", projectName, username);
         
-        Query query = Query.query(Criteria.where("username").is(username));
-        Update update = new Update().pull("project_names", projectName);
+        var userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            log.error("User '{}' not found when removing project '{}'", username, projectName);
+            return new Result.Failure<>(new DomainError.NotFound(String.format("User '%s' not found", username)));
+        }
         
-        mongoTemplate.updateFirst(query, update, User.class);
+        try {
+            User user = userOpt.get();
+            if (user.getProjectNames() != null && user.getProjectNames().remove(projectName)) {
+                userRepository.save(user);
+                log.debug("Project '{}' removed from user '{}'", projectName, username);
+            } else {
+                log.debug("Project '{}' not found for user '{}'", projectName, username);
+            }
+
+            return new Result.Success<>(null);
+        } catch (Exception e) {
+            log.error("Failed to remove project '{}' from user '{}'", projectName, username, e);
+            return new Result.Failure<>(new DomainError.SystemError(String.format("Failed to remove project '%s' from user '%s'", projectName, username), e));
+        }
+        
     }
 
 }

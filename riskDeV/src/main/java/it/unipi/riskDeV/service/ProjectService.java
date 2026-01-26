@@ -1,8 +1,9 @@
 package it.unipi.riskDeV.service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.unipi.riskDeV.DTO.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
 import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
 import it.unipi.riskDeV.DTO.project.ProjectDTO;
@@ -36,63 +38,51 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    @Transactional(readOnly = true)
     public Result<ProjectDTO> getProject(String projectName) {
-        var projectOpt = projectRepository.findByName(projectName);
-        if (projectOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
-        }
-
-        Project project = projectOpt.get();
-        String username = getCurrentUsername();
-        boolean isOwner = project.getAdmin().getUsername().equals(username);
-        boolean isCollaborator = project.getCollaborators().stream()
-                .anyMatch(c -> c.getUsername().equals(username));
-
-        if (!isOwner && !isCollaborator) {
-            return new Result.Failure<>(new DomainError.AccessDenied("You are not authorized to view this project."));
-        }
-
-        return new Result.Success<>(new ProjectDTO(project));
+        return projectRepository.findByName(projectName)
+            .map(project -> {
+                if (!canView(getCurrentUsername(), project)) {
+                    return new Result.Failure<ProjectDTO>(new DomainError.AccessDenied("You are not authorized to view this project."));
+                }
+                return new Result.Success<>(ProjectDTO.fromEntity(project));
+            })
+            .orElseGet(() -> new Result.Failure<>(new DomainError.NotFound("Project not Found")));
     }
 
     @Transactional
-    public Result<ProjectDTO> addProject(ProjectCreationDTO projectCreationDTO) {
-        log.info("Starting insert transaction for user: {}", getCurrentUsername());
+    public Result<ProjectDTO> addProject(ProjectCreationDTO dto) {
+        String username = getCurrentUsername();
+        log.info("Starting insert transaction for user: {}", username);
 
         try {
-            Project project = new Project(projectCreationDTO);
-            Project.Collaborator admin = getCollaboratorInfo(getCurrentUsername());
-            List<Project.Collaborator> collaborators = new ArrayList<>();
-            collaborators.add(admin);
 
-            project.setAdmin(admin);
-            project.setCollaborators(collaborators);
-            project.setLastUpdate(Instant.now());
+            Project.Collaborator admin = getCollaboratorInfo(username);
+            // Entity build using builder pattern
+            Project project  = Project.builder()
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .pythonVersion(dto.getPythonVersion())
+                .admin(admin)
+                .collaborators(List.of(admin))
+                .lastUpdate(Instant.now())
+                .packages(
+                    dto.getPackages().stream()
+                        .map(pkgDto -> Project.ProjectPackage.builder()
+                            .name(pkgDto.getName())
+                            .version(pkgDto.getVersion())
+                            .riskScore(0.0)
+                            .vulnerabilitiesCount(0)
+                            .build())
+                        .toList())
+                .build();
 
             Project savedProject = projectRepository.save(project);
-            log.info("Project {} saved successfully in Mongo.", savedProject.getName());
+            log.info("Project {} saved successfully.", savedProject.getName());
 
-            List<Project.ProjectPackage> packages = savedProject.getPackages();
-            
-            // Publish event to evaluate risk metrics
-            CalculateRiskMetricsEvent calculateRiskMetricsEvent = new CalculateRiskMetricsEvent(
-                savedProject.getName(),
-                packages.stream()
-                    .map(p -> new InstalledPackageDTO(p.getName(), p.getVersion()))
-                    .toList()
-            );
-            eventPublisher.publishEvent(calculateRiskMetricsEvent);
+            triggerPostCreationEvents(savedProject);
 
-            // Package list for event
-            List<String> pkgsForGraph = packages.stream()
-                .map(p -> p.getName() + ":" + p.getVersion())
-                .toList();
-
-            // Publish project created event to create project node in graph and sincrhonize admin user
-            var event = new ProjectEvents.ProjectCreatedEvent(savedProject.getName(), savedProject.getAdmin().getUsername(), pkgsForGraph);
-            eventPublisher.publishEvent(event);
-
-            return new Result.Success<>(new ProjectDTO(savedProject));
+            return new Result.Success<>(ProjectDTO.fromEntity(savedProject));
         } catch (Exception e) {
             log.error("Error creating project", e);
             return new Result.Failure<>(new DomainError.SystemError("Creation failed", e));
@@ -102,178 +92,132 @@ public class ProjectService {
 
     @Transactional
     public Result<String> deleteProject(String projectName) {
-        var projectOpt = projectRepository.findByName(projectName);
-        if (projectOpt.isEmpty()) 
-            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
-
-        Project project = projectOpt.get();
-        String username = getCurrentUsername();
-        if (!project.getAdmin().getUsername().equals(username)) {
-            return new Result.Failure<>(new DomainError.AccessDenied("Only the owner can delete the project"));
-        }
-
-        try {
-            projectRepository.delete(project);
-            log.info("Project {} deleted successfully from Mongo.", projectName);
-
-            // Publish project deleted event to remove project node and sinchronize collaborators
-            eventPublisher.publishEvent(new ProjectDeletedEvent(
-                projectName, 
-                project.getCollaborators().stream()
-                    .map(Project.Collaborator::getUsername)
-                    .toList()
-            ));
-            
-            return new Result.Success<>(projectName);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError("Delete failed", e));
-        }
+        return projectRepository.findByName(projectName)
+            .map(project -> {
+                if (!project.getAdmin().getUsername().equals(getCurrentUsername())) {
+                    return new Result.Failure<String>(new DomainError.AccessDenied("Only the owner can delete the project"));
+                }
+                
+                try {
+                    projectRepository.delete(project);
+                    
+                    List<String> userIds = project.getCollaborators().stream()
+                        .map(Project.Collaborator::getUsername)
+                        .toList();
+                    eventPublisher.publishEvent(new ProjectDeletedEvent(projectName, userIds));
+                    
+                    return new Result.Success<>(projectName);
+                } catch (Exception e) {
+                    return new Result.Failure<String>(new DomainError.SystemError("Delete failed", e));
+                }
+            })
+            .orElse(new Result.Failure<>(new DomainError.NotFound("Project not found")));
     }
 
     public Result<String> updateProjectPackages(String projectName, List<InstalledPackageDTO> newPackages) {
-
-        var projectOpt = projectRepository.findByName(projectName);
-        if (projectOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
-        }
-
         if (newPackages == null || newPackages.isEmpty()) {
             return new Result.Failure<>(new DomainError.ValidationFailed("Package list cannot be null or empty."));
         }
 
-        var project = projectOpt.get();
-        String username = getCurrentUsername();
-        if (!canEdit(username, project)) {
-            return new Result.Failure<>(new DomainError.AccessDenied("Permission denied"));
-        }
-        
-        log.info("Adding packages to project {} for user {}", projectName, username);
-        try {
-
-            for (InstalledPackageDTO dto : newPackages) {
-                
-                if (project.getPackages() == null) {
-                    project.setPackages(new ArrayList<>());
-                }
-
-                //TODO: Consider versioning strategy (multiple versions of same package?)
-                //project.getPackages().removeIf(p -> p.getName().equals(dto.getName()));
-
-                // Initialization of score and vuln count to 0, will be updated after fetching metrics
-                Project.ProjectPackage pkg = new Project.ProjectPackage();
-                pkg.setName(dto.getName());
-                pkg.setVersion(dto.getVersion());
-                pkg.setRiskScore(0.0);
-                pkg.setVulnerabilitiesCount(0);
-
-                project.getPackages().add(pkg);
-            }
-
-            project.setLastUpdate(Instant.now());
-            Project savedProject = projectRepository.save(project);
-            log.info("Project {} packages updated successfully in Mongo.", projectName);
-
-            List<InstalledPackageDTO> packages = savedProject.getPackages().stream()
-                .map(p -> new InstalledPackageDTO(p.getName(), p.getVersion()))
-                .toList();
-            List<String> allPackageIds = project.getPackages().stream()
-                .map(p -> p.getName() + " " + p.getVersion())
-                .toList();
-            eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(projectName, allPackageIds));
-            eventPublisher.publishEvent(new CalculateRiskMetricsEvent(projectName, packages));
-
-            return new Result.Success<>(projectName);
-
-        } catch (Exception e) {
-            log.error("Error updating packages for project {}", projectName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Failed to update project packages.", e));
-        }
-    }
-
-    public Result<String> removePackagesFromProject(String projectName, List<InstalledPackageDTO> packages) {
-        log.info("Removing packages {} from project {}", packages, projectName);
-
         var projectOpt = projectRepository.findByName(projectName);
-        if (projectOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
-        }
-
+        if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
         Project project = projectOpt.get();
+
         if (!canEdit(getCurrentUsername(), project)) {
             return new Result.Failure<>(new DomainError.AccessDenied("Permission denied"));
         }
 
         try {
-            boolean changed = false;
+            Set<String> newPackageNames = newPackages.stream()
+                .map(InstalledPackageDTO::getName)
+                .collect(Collectors.toSet());
+            
+            project.getPackages().removeIf(p -> newPackageNames.contains(p.getName()));
 
-            for (InstalledPackageDTO dtoToRemove : packages) {
-                boolean removed = project.getPackages().removeIf(p -> 
-                    p.getName().equals(dtoToRemove.getName()) && 
-                    p.getVersion().equals(dtoToRemove.getVersion())
-                );
-                if (removed) 
-                    changed = true;
-            }
+            List<Project.ProjectPackage> pkgsToAdd = newPackages.stream()
+                .map(dto -> Project.ProjectPackage.builder()
+                        .name(dto.getName())
+                        .version(dto.getVersion())
+                        .riskScore(0.0)
+                        .vulnerabilitiesCount(0)
+                        .build())
+                .toList();
+            
+            project.getPackages().addAll(pkgsToAdd);
+            
+            project.setLastUpdate(Instant.now()); 
+            Project savedProject = projectRepository.save(project);
 
-            if (!changed) {
-                return new Result.Success<>(null);
-            }
+            triggerPostPackageUpdateEvents(savedProject);
+
+            return new Result.Success<>(projectName);
+
+        } catch (Exception e) {
+            log.error("Error updating packages for project {}", projectName, e);
+            return new Result.Failure<>(new DomainError.SystemError("Update failed", e));
+        }
+    }
+
+    public Result<String> removePackagesFromProject(String projectName, List<String> packagesToRemove) {
+        var projectOpt = projectRepository.findByName(projectName);
+        if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        Project project = projectOpt.get();
+
+        if (!canEdit(getCurrentUsername(), project)) {
+            return new Result.Failure<>(new DomainError.AccessDenied("Permission denied"));
+        }
+
+        try {
+            boolean changed = project.getPackages().removeIf(p -> 
+                packagesToRemove.contains(p.getName())
+            );
+
+            if (!changed) return new Result.Success<>("No packages matched for removal.");
 
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
-            log.info("Project {} updated on Mongo. Packages removed.", projectName);
 
-            List<String> remainingPackageIds = project.getPackages().stream()
-                .map(p -> p.getName() + " " + p.getVersion())
-                .toList();
-
-            eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(projectName, remainingPackageIds));
+            triggerPostPackageUpdateEvents(project);
 
             return new Result.Success<>("Packages removed successfully.");
-
         } catch (Exception e) {
-            log.error("Failed to remove packages from project {}", projectName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Failed to update project packages.", e));
+            return new Result.Failure<>(new DomainError.SystemError("Remove failed", e));
         }
     }
 
     @Transactional
     public Result<String> addCollaboratorToProject(String projectName, String collaboratorUsername) {
-        log.info("Request to add collaborator {} to project {}", collaboratorUsername, projectName);
-
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
-        
-        String username = getCurrentUsername();
         Project project = projectOpt.get();
-        if (!project.getAdmin().getUsername().equals(username)) {
+
+        if (!project.getAdmin().getUsername().equals(getCurrentUsername())) {
             return new Result.Failure<>(new DomainError.AccessDenied("Only owner can add collaborators"));
         }
 
-        if (project.getAdmin().getUsername().equals(collaboratorUsername)) {
-             return new Result.Failure<>(new DomainError.InvalidOperation("User is already the owner"));
-        }
-
         try {
-            var newCollabInfo = getCollaboratorInfo(collaboratorUsername);
-            if (project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(collaboratorUsername))) {
-                return new Result.Failure<>(new DomainError.InvalidOperation("User already is a collaborator"));
+            if (project.getAdmin().getUsername().equals(collaboratorUsername) || 
+                project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(collaboratorUsername))) {
+                return new Result.Failure<>(new DomainError.InvalidOperation("User is already associated with this project"));
             }
 
-            project.getCollaborators().add(newCollabInfo);
+            Project.Collaborator newCollab = getCollaboratorInfo(collaboratorUsername);
+            project.getCollaborators().add(newCollab);
             project.setLastUpdate(Instant.now());
-
+            
             projectRepository.save(project);
-            log.info("Added collaborator {} to project {} on Mongo.", collaboratorUsername, projectName);
+            
             eventPublisher.publishEvent(new CollaboratorAddedEvent(projectName, collaboratorUsername));
+            return new Result.Success<>("Collaborator added");
 
-            return new Result.Success<>("Added collaborator " + collaboratorUsername + " to project " + projectName);
+        } catch (IllegalStateException e) {
+             return new Result.Failure<>(new DomainError.NotFound(e.getMessage()));
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError("Failed to add collaborator", e));
         }
     }
 
-    public Result<List<Project.Collaborator>> getProjectCollaborators(String projectName) {
+    public Result<List<CollaboratorDTO>> getProjectCollaborators(String projectName) {
 
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) {
@@ -282,6 +226,7 @@ public class ProjectService {
 
         String username = getCurrentUsername();
         var project = projectOpt.get();
+
         boolean isOwner = project.getAdmin().getUsername().equals(username);
         boolean isCollaborator = project.getCollaborators().stream()
                 .anyMatch(c -> c.getUsername().equals(username));
@@ -290,48 +235,42 @@ public class ProjectService {
             return new Result.Failure<>(new DomainError.AccessDenied("You are not authorized to view this project's collaborators."));
         }
 
-        return new Result.Success<>(project.getCollaborators());
+        List<CollaboratorDTO> dtos = project.getCollaborators().stream()
+                .map(CollaboratorDTO::fromEntity)
+                .toList(); 
+
+        return new Result.Success<>(dtos);
     }
 
     @Transactional
     public Result<String> removeCollaboratorFromProject(String projectName, String collaboratorUsername) {
-        log.info("Removing collaborator {} from project {}", collaboratorUsername, projectName);
-
-    
         var projectOpt = projectRepository.findByName(projectName);
-        if (projectOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        Project project = projectOpt.get();
+
+        String currentOwner = project.getAdmin().getUsername();
+        String requester = getCurrentUsername();
+
+        boolean isOwnerRemoving = currentOwner.equals(requester);
+        boolean isSelfRemoving = requester.equals(collaboratorUsername);
+
+        if (!isOwnerRemoving && !isSelfRemoving) {
+            return new Result.Failure<>(new DomainError.AccessDenied("You don't have permission to remove this collaborator"));
         }
 
-        String username = getCurrentUsername();
-        var project = projectOpt.get();
-        boolean isRequesterOwner = project.getAdmin().getUsername().equals(username);
-        boolean isSelfRemoval = username.equals(collaboratorUsername); 
-
-        if (!isRequesterOwner) {
-            return new Result.Failure<>(new DomainError.AccessDenied("Only the project owner can remove collaborators."));
+        if (currentOwner.equals(collaboratorUsername)) {
+            return new Result.Failure<>(new DomainError.InvalidOperation("Owner cannot be removed. Transfer ownership or delete project."));
         }
 
-        if (isSelfRemoval) {
-            return new Result.Failure<>(new DomainError.InvalidOperation("The owner cannot be removed from the project."));
-        }
-
-        try {
-            boolean removed = project.getCollaborators().removeIf(c -> c.getUsername().equals(collaboratorUsername));
-            if (!removed) {
-                return new Result.Failure<>(new DomainError.NotFound("Collaborator not found in this project."));
-            }
-
+        boolean removed = project.getCollaborators().removeIf(c -> c.getUsername().equals(collaboratorUsername));
+        
+        if (removed) {
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
             eventPublisher.publishEvent(new CollaboratorRemovedEvent(projectName, collaboratorUsername));
-
-            log.info("Removed collaborator {} from project {} on Mongo.", collaboratorUsername, projectName);
-            return new Result.Success<>(username);
-
-        } catch (Exception e) {
-            log.error("Error removing collaborator {} from project {}", collaboratorUsername, projectName, e);
-            return new Result.Failure<>(new DomainError.SystemError("Error removing collaborator.", e));
+            return new Result.Success<>(collaboratorUsername);
+        } else {
+            return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
         }
     }
 
@@ -339,6 +278,11 @@ public class ProjectService {
     private boolean canEdit(String username, Project project) {
         return project.getAdmin().getUsername().equals(username) || 
                project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(username));
+    }
+
+    // We could implement a different logic in future
+    private boolean canView(String username, Project project) {
+        return canEdit(username, project); 
     }
 
     private String getCurrentUsername() {
@@ -358,6 +302,34 @@ public class ProjectService {
                 return collaborator;
             })
             .orElseThrow(() -> new IllegalStateException("User " + username + " not found."));
+    }
+
+    private void triggerPostCreationEvents(Project project) {
+        List<InstalledPackageDTO> dtos = project.getPackages().stream()
+            .map(InstalledPackageDTO::fromEntity)
+            .toList();
+        eventPublisher.publishEvent(new CalculateRiskMetricsEvent(project.getName(), dtos));
+
+        List<String> pkgStrings = project.getPackages().stream()
+             .map(p -> p.getName() + ":" + p.getVersion())
+             .toList();
+        eventPublisher.publishEvent(new ProjectEvents.ProjectCreatedEvent(
+            project.getName(), 
+            project.getAdmin().getUsername(), 
+            pkgStrings
+        ));
+    }
+
+    private void triggerPostPackageUpdateEvents(Project project) {
+        List<InstalledPackageDTO> dtos = project.getPackages().stream()
+            .map(InstalledPackageDTO::fromEntity)
+            .toList();
+        eventPublisher.publishEvent(new CalculateRiskMetricsEvent(project.getName(), dtos));
+
+        List<String> ids = project.getPackages().stream()
+             .map(p -> p.getName() + " " + p.getVersion())
+             .toList();
+        eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(project.getName(), ids));
     }
 
 }

@@ -12,8 +12,8 @@ import it.unipi.riskDeV.event.ProjectEvents.ProjectCreatedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectDeletedEvent;
 import it.unipi.riskDeV.event.ProjectEvents.ProjectPackagesUpdatedEvent;
 import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityCreatedEvent;
-import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityDeleteEvent;
-import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityUpdateEvent;
+import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityDeletedEvent;
+import it.unipi.riskDeV.event.VulnerabilityEvent.VulnerabilityUpdatedEvent;
 import it.unipi.riskDeV.event.UserEvent;
 import it.unipi.riskDeV.model.FailedEvent;
 import it.unipi.riskDeV.repository.FailedEventRepository;
@@ -151,7 +151,7 @@ public class GraphSyncListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVulnerabilityUpdated(VulnerabilityUpdateEvent event) {
+    public void handleVulnerabilityUpdated(VulnerabilityUpdatedEvent event) {
         try {
             log.debug("Neo4j: Updating vulnerability {}", event.cveId());
             graphService.updateVulnerability(event.cveId(), event.description(), event.baseScore());
@@ -163,7 +163,7 @@ public class GraphSyncListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVulnerabilityDeteled(VulnerabilityDeleteEvent event) {
+    public void handleVulnerabilityDeteled(VulnerabilityDeletedEvent event) {
         try {
             log.debug("Neo4j: Deleting vulnerability {}", event.cveId());
             graphService.deleteVulnerability(event.cveId());

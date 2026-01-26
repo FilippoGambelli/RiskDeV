@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import it.unipi.riskDeV.DTO.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.InstalledPackageDTO;
 import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
+import it.unipi.riskDeV.DTO.project.ProjectDTO;
 import it.unipi.riskDeV.controller.util.RestResponseMapper;
 import it.unipi.riskDeV.service.ProjectService;
 import jakarta.validation.Valid;
@@ -32,12 +34,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
-// TODO: Review and refine API documentation for each endpoint
-
 @RestController
 @RequestMapping("/api/projects")
 @Tag(name = "Projects controller", description = "API for Projects operations")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 @ApiResponses(value = {
     @ApiResponse(
         responseCode = "500", 
@@ -56,133 +57,209 @@ public class ProjectController {
     private final RestResponseMapper restResponseMapper;
 
     @PostMapping("/")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Insert a new project",
-            description = "Insert a new project for the current user.")
+    @Operation(summary = "Create a new project", description = "Creates a new project owned by the authenticated user.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Project created successfully",
+        @ApiResponse(
+            responseCode = "201", 
+            description = "Project created successfully",
             content = @Content(mediaType = "application/json", 
-            schema = @Schema(implementation = String.class, description = "The ID of the created project")))
+            schema = @Schema(implementation = ProjectDTO.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Validation Error",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> insertProject(@Valid @RequestBody ProjectCreationDTO projectCreationDTO) {
+    public ResponseEntity<?> insertProject(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "\"Project creation payload\", required = true") @RequestBody @Valid ProjectCreationDTO projectCreationDTO) {
         return restResponseMapper.map(projectService.addProject(projectCreationDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectName}")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Get project details",
-            description = "Fetches the details of a project for the current user.")
+    @Operation(summary = "Get project details", description = "Retrieves full details of a specific project.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Project details retrieved successfully",
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Project found",
             content = @Content(mediaType = "application/json", 
-            schema = @Schema(implementation = String.class, description = "Project details"))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+            schema = @Schema(implementation = ProjectDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getProjectDetails(@PathVariable String projectName) {
+    public ResponseEntity<?> getProjectDetails(@Parameter(description = "Unique name of the project", example = "RiskAnalysis_AI") @PathVariable String projectName) {
         return restResponseMapper.map(projectService.getProject(projectName), HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectName}")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Delete a project",
-            description = "Deletes a project for the current user.")
+    @Operation(summary = "Delete a project", description = "Permanently deletes a project. Only the Owner can perform this action.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Project deleted successfully",
-            content = @Content(schema = @Schema(implementation = String.class))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "204", 
+            description = "Project deleted successfully",
+            content = @Content(mediaType = "text/plain", 
+            schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> deleteProject(@PathVariable String projectName) {
-        return restResponseMapper.map(projectService.deleteProject(projectName), HttpStatus.OK);
+    public ResponseEntity<?> deleteProject(@Parameter(description = "Name of the project to delete") @PathVariable String projectName) {
+        return restResponseMapper.map(projectService.deleteProject(projectName), HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{projectName}/packages")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Update project packages",
-            description = "Updates the packages of a project for the current user.")
+    @Operation(summary = "Upsert packages", description = "Adds new packages or updates versions of existing ones.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Packages updated successfully",
-            content = @Content(schema = @Schema(implementation = String.class, description = "Project ID"))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid package data",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Packages updated successfully",
+            content = @Content(mediaType = "text/plain", 
+            schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Invalid package list",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> updateProjectPackages(@PathVariable String projectName, @Valid @RequestBody List<InstalledPackageDTO> packages) {
+    public ResponseEntity<?> updateProjectPackages(
+            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to add/update")
+            @Valid @RequestBody List<InstalledPackageDTO> packages) {
         return restResponseMapper.map(projectService.updateProjectPackages(projectName, packages), HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectName}/packages")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Remove packages from project",    
-            description = "Removes packages from a project for the current user.")
+    @Operation(summary = "Remove packages", description = "Removes packages from the project configuration.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Packages removed successfully",
-            content = @Content(schema = @Schema(implementation = String.class, description = "Project ID"))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "204", 
+            description = "Packages removed successfully",
+            content = @Content(mediaType = "text/plain", 
+            schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> removePackagesFromProject(@PathVariable String projectName, @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        return restResponseMapper.map(projectService.removePackagesFromProject(projectName, packages), HttpStatus.OK);
+    public ResponseEntity<?> removePackagesFromProject(
+            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to remove")
+            @Valid @RequestBody List<String> packages) {
+        return restResponseMapper.map(projectService.removePackagesFromProject(projectName, packages), HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{projectName}/users")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Add collaborator to project",
-            description = "Adds a collaborator to a project for the current user.")
+    @PutMapping("/{projectName}/users/{collaboratorUsername}")
+    @Operation(summary = "Add collaborator", description = "Grants a user access to the project. Only Owner can add collaborators.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Collaborator added successfully",
-            content = @Content(schema = @Schema(implementation = String.class, example = "Collaborator added."))),
-        @ApiResponse(responseCode = "404", description = "Project or User not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid Operation",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Collaborator added successfully",
+            content = @Content(mediaType = "text/plain", 
+            schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "User already collaborator or Owner",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project or User not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> addCollaboratorToProject(@PathVariable String projectName, @Valid @RequestBody CollaboratorDTO collaborator) {
-        return restResponseMapper.map(projectService.addCollaboratorToProject(projectName, collaborator.getUsername()), HttpStatus.OK);
+    public ResponseEntity<?> addCollaboratorToProject(
+            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
+        ) {
+        return restResponseMapper.map(projectService.addCollaboratorToProject(projectName, collaboratorUsername), HttpStatus.OK);
     }
 
     @GetMapping("/{projectName}/users")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Get collaborators of project",
-            description = "Fetches the list of collaborators of a project for the current user.")
+    @Operation(summary = "List collaborators", description = "Get the list of all collaborators for the project.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "List of collaborators retrieved",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, description = "Username")))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "200", 
+            description = "List of collaborators retrieved",
+            content = @Content(mediaType = "application/json", 
+            array = @ArraySchema(schema = @Schema(implementation = CollaboratorDTO.class)))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getCollaboratorsOfProject(@PathVariable String projectName) {
+    public ResponseEntity<?> getCollaboratorsOfProject(@Parameter(description = "Project name") @PathVariable String projectName) {
         return restResponseMapper.map(projectService.getProjectCollaborators(projectName), HttpStatus.OK);
     }   
     
-    @DeleteMapping("/{projectName}/users")
-    @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Remove collaborator from project",
-            description = "Removes a collaborator from a project for the current user.")
+    @DeleteMapping("/{projectName}/users/{collaboratorUsername}")
+    @Operation(summary = "Remove collaborator", description = "Revokes access to a collaborator. Only Owner can remove collaborators.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Collaborator removed successfully",
-            content = @Content(schema = @Schema(implementation = String.class, description = "Removed Username"))),
-        @ApiResponse(responseCode = "404", description = "Project not found",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Access Denied",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(
+            responseCode = "204", 
+            description = "Collaborator removed successfully",
+            content = @Content(mediaType = "text/plain", 
+            schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Cannot remove Owner",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project or Collaborator not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Access Denied",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> removeCollaboratorFromProject(@PathVariable String projectName, @Valid @RequestBody CollaboratorDTO collaborator) {
-        return restResponseMapper.map(projectService.removeCollaboratorFromProject(projectName, collaborator.getUsername()), HttpStatus.OK);
+    public ResponseEntity<?> removeCollaboratorFromProject(
+            @Parameter(description = "Project name") @PathVariable String projectName,
+            @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
+    ) {
+        return restResponseMapper.map(projectService.removeCollaboratorFromProject(projectName, collaboratorUsername), HttpStatus.NO_CONTENT);
     }
     
 }

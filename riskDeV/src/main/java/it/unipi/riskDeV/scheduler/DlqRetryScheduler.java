@@ -1,12 +1,13 @@
 package it.unipi.riskDeV.scheduler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unipi.riskDeV.event.UserEvent;
+import it.unipi.riskDeV.handler.EventHandler;
 import it.unipi.riskDeV.model.FailedEvent;
 import it.unipi.riskDeV.repository.FailedEventRepository;
-import it.unipi.riskDeV.service.GraphService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,44 +20,40 @@ import java.util.List;
 public class DlqRetryScheduler {
 
     private final FailedEventRepository failedEventRepository;
-    private final GraphService graphService;
-    private final ObjectMapper objectMapper;
+    private final List<EventHandler> eventHandlers; 
+    private static final int BATCH_SIZE = 50;
 
-    // Execute every 5 minutes
-    @Scheduled(fixedDelay = 300_000) 
+    @Scheduled(fixedDelayString = "${app.scheduler.retry.delay:300000}")
     public void retryFailedEvents() {
         
-        // Seach for failed events that are not resolved and have retryCount < maxRetries
-        List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(5);
+        // Uso Pageable per evitare OutOfMemory
+        Pageable limit = PageRequest.of(0, BATCH_SIZE);
+        List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(5, limit);
 
         if (events.isEmpty()) return;
 
-        log.info("Found {} events to retry...", events.size());
+        log.info("Processing batch of {} failed events.", events.size());
 
-        // For every failed event try to reprocess
         for (FailedEvent failedEvent : events) {
-            try {
-                if ("UserDeletedEvent".equals(failedEvent.getEventType())) {
-                    
-                    UserEvent.UserDeletedEvent originalEvent = objectMapper.readValue(
-                        failedEvent.getPayloadJson(), UserEvent.UserDeletedEvent.class
-                    );
-                    
-                    // Retry the operation
-                    graphService.deleteUserNode(originalEvent.username());
-                }
-                
-                /*******************************************/
-                /* WE COULD ADD MORE EVENT TYPES TO MANAGE */
-                /*******************************************/ 
+            processSingleEvent(failedEvent);
+        }
+    }
 
-                // Remove event from DLQ
-                markAsResolved(failedEvent);
+    // Strategy pattern
+    private void processSingleEvent(FailedEvent failedEvent) {
+        try {
+            EventHandler handler = eventHandlers.stream()
+                .filter(h -> h.canHandle(failedEvent.getEventType()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No handler for type: " + failedEvent.getEventType()));
 
-            } catch (Exception e) {
-                // Update retry count and last retry timestamp
-                markAsFailedAgain(failedEvent, e);
-            }
+            // logic execution
+            handler.handle(failedEvent.getPayloadJson());
+
+            markAsResolved(failedEvent);
+
+        } catch (Exception e) {
+            markAsFailedAgain(failedEvent, e);
         }
     }
 

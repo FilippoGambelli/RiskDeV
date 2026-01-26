@@ -8,10 +8,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "project")
 public class Project {
     
@@ -30,34 +35,17 @@ public class Project {
     @Field("python_version")
     private String pythonVersion;
 
-    private List<ProjectPackage> packages;
+    @Builder.Default
+    private List<ProjectPackage> packages = new ArrayList<>();
 
-    private List<Collaborator> collaborators;
-
-    public Project(ProjectCreationDTO dto) {
-        this.name = dto.name();
-        this.description = dto.description();
-        this.pythonVersion = dto.pythonVersion();
-        this.lastUpdate = Instant.now();
-
-        this.packages = new ArrayList<>();
-        if (dto.packages() != null) {
-            for (ProjectCreationDTO.PackageInput input : dto.packages()) {
-                ProjectPackage pkg = new ProjectPackage();
-                pkg.setName(input.name());
-                pkg.setVersion(input.version());
-                pkg.setRiskScore(null);
-                pkg.setVulnerabilitiesCount(null);
-                this.packages.add(pkg);
-            }
-        }
-
-        this.collaborators = new ArrayList<>();
-        this.admin = null;
-    }
+    @Builder.Default
+    private List<Collaborator> collaborators = new ArrayList<>();
 
     // Inner classes for ProjectPackage and Collaborator
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class ProjectPackage {
         
         private String name;
@@ -71,7 +59,10 @@ public class Project {
         private Integer vulnerabilitiesCount;
     }
 
-    @Data 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Collaborator {
 
         private String username;
