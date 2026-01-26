@@ -31,6 +31,7 @@ VERSION_PATTERNS = {
 
 def parse_dependency(dep_string):
     result = {
+        "full": dep_string,
         "name": None,
         "version_gte": None,
         "version_lte": None,
