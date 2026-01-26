@@ -57,7 +57,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the top packages by degree centrality", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CentralityResultDTO.class)))    
     })
     public ResponseEntity<?> getTopByDegree() {
-        return restResponseMapper.map(adminService.getTopByDegree(), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopByDegree())), HttpStatus.OK);
     }
 
     @GetMapping("/packagesWithPageRank")
@@ -69,7 +69,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the top packages by PageRank", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CentralityResultDTO.class)))
     })
     public ResponseEntity<?> getTopByPageRank() {
-        return restResponseMapper.map(adminService.getTopByPageRank(), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopByPageRank())), HttpStatus.OK);
     }
 
 
@@ -86,7 +86,7 @@ public class AdminController {
     public ResponseEntity<?> addNewAdmin(
         @Parameter(description = "The username of the user to be promoted to administrator", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
     ) {
-        return restResponseMapper.map(adminService.addNewAdmin(username), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.addNewAdmin(username))), HttpStatus.OK);
     }
 
     @DeleteMapping("removeAdmin/{username}")
@@ -102,7 +102,7 @@ public class AdminController {
     public ResponseEntity<?> removeAdmin(
         @Parameter(description = "The username of the administrator to be removed", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
     ) {
-        return restResponseMapper.map(adminService.removeAdmin(username), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.removeAdmin(username))), HttpStatus.OK);
     }
 
     @GetMapping("/mostUsedPackages/{limit}")
@@ -116,7 +116,7 @@ public class AdminController {
     public ResponseEntity<?> getMostUsedPackages(
         @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        return restResponseMapper.map(adminService.getMostUsedPackages(limit), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostUsedPackages(limit))), HttpStatus.OK);
     }
 
 
@@ -131,7 +131,7 @@ public class AdminController {
     public ResponseEntity<?> getMostUsedPackagesLastMonth(
         @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        return restResponseMapper.map(adminService.getMostUsedPackagesLastMonth(limit), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostUsedPackagesLastMonth(limit))), HttpStatus.OK);
     }
 
     @GetMapping("/topContributorLastMonth/{limit}")
@@ -145,7 +145,7 @@ public class AdminController {
     public ResponseEntity<?> getTopContributorLastMonth(
         @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
     ) {
-        return restResponseMapper.map(adminService.getTopContributorsLastMonth(limit), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopContributorsLastMonth(limit))), HttpStatus.OK);
     }
 
     @GetMapping("/packagesRiskBuckets")
@@ -157,7 +157,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved packages aggregated by risk buckets", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RiskAggregationDTO.class)))
     })
     public ResponseEntity<?> getPackagesRiskBuckets() {
-        return restResponseMapper.map(adminService.getAggregateRiskBuckets(), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getAggregateRiskBuckets())), HttpStatus.OK);
     }
 
 
@@ -170,7 +170,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the vulnerability trend over the last year", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContributorCountDTO.class)))
     })
     public ResponseEntity<?> getTrendVulnerabilityLastYear() {
-        return restResponseMapper.map(adminService.getTrendVulnerabilityLastYear(), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTrendVulnerabilityLastYear())), HttpStatus.OK);
     }
 
     @GetMapping("/mostDangerousVulnerabilities/{limit}")

@@ -8,6 +8,7 @@ import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
+import it.unipi.riskDeV.DTO.vulnerability.VulnerabilityReportDTO;
 import it.unipi.riskDeV.async.events.PackageEvents;
 import it.unipi.riskDeV.model.documentDB.Constraints;
 import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
@@ -124,6 +125,23 @@ public class PackageService {
         PackageVersionDTO safeVersion = new PackageVersionDTO(optionalSafeVersion.get());
         
         return new Result.Success<>(safeVersion);
+    }
+
+    // Returns the latest version of the specified package with no known vulnerabilities, also taking transactional vulnerabilities into account.
+    public Result<PackageVersionDTO> getIndirectSafeVersions(String packageName) {
+        if (!packageVersionRepository.existsByPackageName(packageName)) {
+            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
+        }
+
+        var safeVersions = packageVersionRepository.findByPackageNameAndRiskScoreOrderByVersionArrayDesc(packageName, 0);
+        
+        for (PackageVersion version : safeVersions) {
+            List<VulnerabilityReportDTO> vulnerabilities = packageVersionGraphRepository.findRecursiveVulnerabilities(version.getPackageName(), version.getVersion());
+            if (vulnerabilities.isEmpty()) {
+                return new Result.Success<>(new PackageVersionDTO(version));
+            }
+        }
+        return new Result.Success<>(null);
     }
 
     // Add a new version of a package.

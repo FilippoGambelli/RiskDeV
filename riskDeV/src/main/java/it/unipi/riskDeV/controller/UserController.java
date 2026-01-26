@@ -22,6 +22,7 @@ import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.user.UserDTO;
 import it.unipi.riskDeV.results.RestResponseMapper;
 import it.unipi.riskDeV.service.UserService;
+import it.unipi.riskDeV.util.ResultExecutor;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -77,7 +78,7 @@ public class UserController {
         )
     })
     public ResponseEntity<?> getMyProfile(@AuthenticationPrincipal String username) {
-        return responseMapper.map(userService.getProfile(username), HttpStatus.OK);
+        return responseMapper.map(ResultExecutor.execute(() -> (userService.getProfile(username))), HttpStatus.OK);
     }
     
     @PatchMapping("/me")
@@ -120,7 +121,7 @@ public class UserController {
         )
     })
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal String username, @RequestBody @Valid UpdateProfileDTO dto) {
-        return responseMapper.map(userService.updateProfile(username, dto), HttpStatus.OK);
+        return responseMapper.map(ResultExecutor.execute(() -> (userService.updateProfile(username, dto))), HttpStatus.OK);
     }
 
     @DeleteMapping("/me")
@@ -147,7 +148,7 @@ public class UserController {
         )
     })
     public ResponseEntity<?> deleteAccount(@AuthenticationPrincipal String username) {
-        return responseMapper.map(userService.deleteUser(username), HttpStatus.NO_CONTENT);
+        return responseMapper.map(ResultExecutor.execute(() -> (userService.deleteUser(username))), HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/me/projects")
@@ -174,6 +175,6 @@ public class UserController {
         )
     })
     public ResponseEntity<?> getMyProjects(@AuthenticationPrincipal String username) {
-        return responseMapper.map(userService.getUserProjectNames(username), HttpStatus.OK);
+        return responseMapper.map(ResultExecutor.execute(() -> (userService.getUserProjectNames(username))), HttpStatus.OK);
     }
 }

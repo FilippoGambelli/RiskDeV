@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PackageVersionRepository extends MongoRepository<PackageVersion, String> {
@@ -22,5 +23,7 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
     // Find safe versions of a package
     Optional<PackageVersion> findTopByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
 
+    List<PackageVersion> findByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
+    
     void deleteByPackageNameAndVersion(String packageName, String version);
 }

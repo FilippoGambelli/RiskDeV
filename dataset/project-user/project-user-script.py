@@ -197,8 +197,8 @@ def generate_users(count: int) -> List[Dict[str, Any]]:
 def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str, Any]]):
     """
     Link users and projects:
-    1. Assign an admin to each project.
-    2. Assign random collaborators to projects, excluding the admin.
+    1. Assign an admin to each project AND add them as a collaborator.
+    2. Assign random additional collaborators to projects.
     """
     print("\n--- Linking Users and Projects ---")
     if not users or not projects:
@@ -207,29 +207,31 @@ def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str
     # Assign an admin for each project
     for proj in projects:
         admin_user = random.choice(users)
-        proj['admin'] = {
+        user_info = {
             "username": admin_user['username'],
             "email": admin_user['email']
         }
+        
+        proj['admin'] = user_info
 
-        # Add project to admin's project list
+        proj['collaborators'].append(user_info)
+
         if proj['name'] not in admin_user['project_names']:
             admin_user['project_names'].append(proj['name'])
 
-    # Assign collaborators
     for user in users:
         num_projects = random.randint(0, min(3, len(projects)))
         if num_projects == 0:
             continue
+            
         assigned_projects = random.sample(projects, k=num_projects)
+        
         for proj in assigned_projects:
-            if proj['admin']['username'] == user['username']:
-                continue  # Admin cannot be a collaborator
-            # Update user's project list
             if proj['name'] not in user['project_names']:
                 user['project_names'].append(proj['name'])
-            # Update project's collaborator list
+            
             collaborator_entry = {"username": user['username'], "email": user['email']}
+            
             if collaborator_entry not in proj['collaborators']:
                 proj['collaborators'].append(collaborator_entry)
 

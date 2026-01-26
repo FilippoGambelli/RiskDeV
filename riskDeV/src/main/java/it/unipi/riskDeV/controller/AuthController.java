@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import it.unipi.riskDeV.service.AuthService;
+import it.unipi.riskDeV.util.ResultExecutor;
 import jakarta.validation.Valid;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.user.AuthResponseDTO;
@@ -65,7 +66,7 @@ public class AuthController {
         )
     })
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO request) {
-        return restResponseMapper.map(authService.register(request), HttpStatus.CREATED);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (authService.register(request))), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -83,6 +84,6 @@ public class AuthController {
         )
     })
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO request) {
-        return restResponseMapper.map(authService.login(request), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (authService.login(request))), HttpStatus.OK);
     }
 }

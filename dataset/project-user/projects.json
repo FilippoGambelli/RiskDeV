@@ -30,6 +30,10 @@
         },
         "collaborators": [
             {
+                "username": "daniel.wilson",
+                "email": "daniel.wilson@company.io"
+            },
+            {
                 "username": "chris.anderson",
                 "email": "chris.anderson@mail.com"
             },
@@ -108,6 +112,10 @@
         },
         "collaborators": [
             {
+                "username": "michael.moore",
+                "email": "michael.moore@example.com"
+            },
+            {
                 "username": "chris.anderson",
                 "email": "chris.anderson@mail.com"
             },
@@ -184,6 +192,10 @@
         },
         "collaborators": [
             {
+                "username": "luca.ferrari",
+                "email": "luca.ferrari@mail.com"
+            },
+            {
                 "username": "michael.moore",
                 "email": "michael.moore@example.com"
             },
@@ -245,6 +257,10 @@
             "email": "giulia.johnson@mail.com"
         },
         "collaborators": [
+            {
+                "username": "giulia.johnson",
+                "email": "giulia.johnson@mail.com"
+            },
             {
                 "username": "david.russo",
                 "email": "david.russo@mail.com"
@@ -366,6 +382,10 @@
         },
         "collaborators": [
             {
+                "username": "laura.bianchi",
+                "email": "laura.bianchi@example.com"
+            },
+            {
                 "username": "david.russo",
                 "email": "david.russo@mail.com"
             },
@@ -448,6 +468,10 @@
         },
         "collaborators": [
             {
+                "username": "laura.martin",
+                "email": "laura.martin@test.org"
+            },
+            {
                 "username": "emily.taylor",
                 "email": "emily.taylor@test.org"
             },
@@ -499,6 +523,10 @@
             "email": "michael.johnson@mail.com"
         },
         "collaborators": [
+            {
+                "username": "michael.johnson",
+                "email": "michael.johnson@mail.com"
+            },
             {
                 "username": "luca.ferrari",
                 "email": "luca.ferrari@mail.com"
@@ -654,6 +682,10 @@
         },
         "collaborators": [
             {
+                "username": "alice.martin",
+                "email": "alice.martin@company.io"
+            },
+            {
                 "username": "michael.bianchi",
                 "email": "michael.bianchi@company.io"
             },
@@ -729,6 +761,10 @@
             "email": "emily.taylor@test.org"
         },
         "collaborators": [
+            {
+                "username": "emily.taylor",
+                "email": "emily.taylor@test.org"
+            },
             {
                 "username": "alice.smith",
                 "email": "alice.smith@example.com"
@@ -824,6 +860,10 @@
         },
         "collaborators": [
             {
+                "username": "luca.ferrari",
+                "email": "luca.ferrari@mail.com"
+            },
+            {
                 "username": "francesca.martin",
                 "email": "francesca.martin@company.io"
             },
@@ -875,6 +915,10 @@
             "email": "sophia.bianchi@example.com"
         },
         "collaborators": [
+            {
+                "username": "sophia.bianchi",
+                "email": "sophia.bianchi@example.com"
+            },
             {
                 "username": "luca.miller",
                 "email": "luca.miller@test.org"
@@ -1000,6 +1044,10 @@
         },
         "collaborators": [
             {
+                "username": "luca.miller",
+                "email": "luca.miller@test.org"
+            },
+            {
                 "username": "michael.johnson1",
                 "email": "michael.johnson1@company.io"
             },
@@ -1114,6 +1162,10 @@
         },
         "collaborators": [
             {
+                "username": "michael.bianchi",
+                "email": "michael.bianchi@company.io"
+            },
+            {
                 "username": "paolo.taylor",
                 "email": "paolo.taylor@example.com"
             },
@@ -1187,6 +1239,10 @@
             "email": "chris.rossi@company.io"
         },
         "collaborators": [
+            {
+                "username": "chris.rossi",
+                "email": "chris.rossi@company.io"
+            },
             {
                 "username": "sophia.bianchi",
                 "email": "sophia.bianchi@example.com"
@@ -1304,6 +1360,10 @@
         },
         "collaborators": [
             {
+                "username": "francesca.martin",
+                "email": "francesca.martin@company.io"
+            },
+            {
                 "username": "tom.miller",
                 "email": "tom.miller@mail.com"
             },
@@ -1392,6 +1452,10 @@
         },
         "collaborators": [
             {
+                "username": "giulia.johnson",
+                "email": "giulia.johnson@mail.com"
+            },
+            {
                 "username": "emily.bianchi",
                 "email": "emily.bianchi@mail.com"
             }
@@ -1451,6 +1515,10 @@
             "email": "sophia.johnson@example.com"
         },
         "collaborators": [
+            {
+                "username": "sophia.johnson",
+                "email": "sophia.johnson@example.com"
+            },
             {
                 "username": "laura.martin",
                 "email": "laura.martin@test.org"
@@ -1594,6 +1662,10 @@
         },
         "collaborators": [
             {
+                "username": "alice.rossi",
+                "email": "alice.rossi@mail.com"
+            },
+            {
                 "username": "chris.rossi",
                 "email": "chris.rossi@company.io"
             },
@@ -1714,6 +1786,10 @@
         },
         "collaborators": [
             {
+                "username": "jane.johnson",
+                "email": "jane.johnson@company.io"
+            },
+            {
                 "username": "marco.smith",
                 "email": "marco.smith@mail.com"
             },
@@ -1757,6 +1833,10 @@
             "email": "tom.martin@example.com"
         },
         "collaborators": [
+            {
+                "username": "tom.martin",
+                "email": "tom.martin@example.com"
+            },
             {
                 "username": "chris.smith",
                 "email": "chris.smith@company.io"

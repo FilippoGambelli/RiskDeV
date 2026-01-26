@@ -19,6 +19,7 @@ import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
 import it.unipi.riskDeV.DTO.project.ProjectDTO;
 import it.unipi.riskDeV.results.RestResponseMapper;
 import it.unipi.riskDeV.service.ProjectService;
+import it.unipi.riskDeV.util.ResultExecutor;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -71,7 +72,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> insertProject(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "\"Project creation payload\", required = true") @RequestBody @Valid ProjectCreationDTO projectCreationDTO) {
-        return restResponseMapper.map(projectService.addProject(projectCreationDTO), HttpStatus.CREATED);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.addProject(projectCreationDTO))), HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectName}")
@@ -94,7 +95,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getProjectDetails(@Parameter(description = "Unique name of the project", example = "RiskAnalysis_AI") @PathVariable String projectName) {
-        return restResponseMapper.map(projectService.getProject(projectName), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.getProject(projectName))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectName}")
@@ -117,7 +118,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> deleteProject(@Parameter(description = "Name of the project to delete") @PathVariable String projectName) {
-        return restResponseMapper.map(projectService.deleteProject(projectName), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.deleteProject(projectName))), HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{projectName}/packages")
@@ -148,7 +149,7 @@ public class ProjectController {
             @Parameter(description = "Project name") @PathVariable String projectName, 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to add/update")
             @Valid @RequestBody List<InstalledPackageDTO> packages) {
-        return restResponseMapper.map(projectService.updateProjectPackages(projectName, packages), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.updateProjectPackages(projectName, packages))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectName}/packages")
@@ -174,7 +175,7 @@ public class ProjectController {
             @Parameter(description = "Project name") @PathVariable String projectName, 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to remove")
             @Valid @RequestBody List<String> packages) {
-        return restResponseMapper.map(projectService.removePackagesFromProject(projectName, packages), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removePackagesFromProject(projectName, packages))), HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{projectName}/users/{collaboratorUsername}")
@@ -205,7 +206,7 @@ public class ProjectController {
             @Parameter(description = "Project name") @PathVariable String projectName, 
             @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
         ) {
-        return restResponseMapper.map(projectService.addCollaboratorToProject(projectName, collaboratorUsername), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.addCollaboratorToProject(projectName, collaboratorUsername))), HttpStatus.OK);
     }
 
     @GetMapping("/{projectName}/users")
@@ -228,7 +229,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getCollaboratorsOfProject(@Parameter(description = "Project name") @PathVariable String projectName) {
-        return restResponseMapper.map(projectService.getProjectCollaborators(projectName), HttpStatus.OK);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.getProjectCollaborators(projectName))), HttpStatus.OK);
     }   
     
     @DeleteMapping("/{projectName}/users/{collaboratorUsername}")
@@ -259,7 +260,7 @@ public class ProjectController {
             @Parameter(description = "Project name") @PathVariable String projectName,
             @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
     ) {
-        return restResponseMapper.map(projectService.removeCollaboratorFromProject(projectName, collaboratorUsername), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removeCollaboratorFromProject(projectName, collaboratorUsername))), HttpStatus.NO_CONTENT);
     }
     
 }
