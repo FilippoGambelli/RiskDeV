@@ -1,47 +1,199 @@
 [
   {
-    "username": "emily.ferrari",
-    "first_name": "Emily",
-    "last_name": "Ferrari",
-    "email": "emily.ferrari@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_ADMIN",
-    "project_names": []
-  },
-  {
-    "username": "david.russo",
-    "first_name": "David",
-    "last_name": "Russo",
-    "email": "david.russo@mail.com",
+    "username": "francesca.romano",
+    "first_name": "Francesca",
+    "last_name": "Romano",
+    "email": "francesca.romano@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Orbit-Core",
-      "Aperture-Analyzer"
-    ]
-  },
-  {
-    "username": "chris.smith",
-    "first_name": "Chris",
-    "last_name": "Smith",
-    "email": "chris.smith@company.io",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Orbit-Core",
       "Gamma-Studio"
     ]
   },
   {
-    "username": "alice.smith",
-    "first_name": "Alice",
-    "last_name": "Smith",
-    "email": "alice.smith@example.com",
+    "username": "john.esposito",
+    "first_name": "John",
+    "last_name": "Esposito",
+    "email": "john.esposito@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Delta-Gateway"
+      "Delta-Pipeline",
+      "Zenith-Studio",
+      "Vector-Analyzer"
     ]
+  },
+  {
+    "username": "daniel.martin",
+    "first_name": "Daniel",
+    "last_name": "Martin",
+    "email": "daniel.martin@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Manager-2",
+      "Delta-Pipeline",
+      "Vector-Analyzer-2"
+    ]
+  },
+  {
+    "username": "chris.miller",
+    "first_name": "Chris",
+    "last_name": "Miller",
+    "email": "chris.miller@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Pulse-Dashboard",
+      "Alpha-Service",
+      "Vertex-Manager-2"
+    ]
+  },
+  {
+    "username": "emily.brown",
+    "first_name": "Emily",
+    "last_name": "Brown",
+    "email": "emily.brown@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Lab",
+      "Gamma-Studio",
+      "Orbit-Studio"
+    ]
+  },
+  {
+    "username": "chris.johnson",
+    "first_name": "Chris",
+    "last_name": "Johnson",
+    "email": "chris.johnson@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Echo-Pipeline"
+    ]
+  },
+  {
+    "username": "sophia.anderson",
+    "first_name": "Sophia",
+    "last_name": "Anderson",
+    "email": "sophia.anderson@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Manager"
+    ]
+  },
+  {
+    "username": "david.johnson",
+    "first_name": "David",
+    "last_name": "Johnson",
+    "email": "david.johnson@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "luca.johnson",
+    "first_name": "Luca",
+    "last_name": "Johnson",
+    "email": "luca.johnson@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Echo-Manager"
+    ]
+  },
+  {
+    "username": "robert.bianchi",
+    "first_name": "Robert",
+    "last_name": "Bianchi",
+    "email": "robert.bianchi@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vector-Analyzer-2"
+    ]
+  },
+  {
+    "username": "luca.miller",
+    "first_name": "Luca",
+    "last_name": "Miller",
+    "email": "luca.miller@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Zenith-Studio",
+      "Vertex-Lab",
+      "Echo-Lab",
+      "Delta-Collector"
+    ]
+  },
+  {
+    "username": "laura.martin",
+    "first_name": "Laura",
+    "last_name": "Martin",
+    "email": "laura.martin@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Nimbus-Pipeline",
+      "Zenith-Core",
+      "Beta-Collector",
+      "Echo-Manager"
+    ]
+  },
+  {
+    "username": "francesca.smith",
+    "first_name": "Francesca",
+    "last_name": "Smith",
+    "email": "francesca.smith@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Studio",
+      "Beta-Service"
+    ]
+  },
+  {
+    "username": "marco.miller",
+    "first_name": "Marco",
+    "last_name": "Miller",
+    "email": "marco.miller@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Gamma-Studio"
+    ]
+  },
+  {
+    "username": "daniel.martin1",
+    "first_name": "Daniel",
+    "last_name": "Martin",
+    "email": "daniel.martin1@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "giulia.johnson",
+    "first_name": "Giulia",
+    "last_name": "Johnson",
+    "email": "giulia.johnson@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Lab"
+    ]
+  },
+  {
+    "username": "laura.rossi",
+    "first_name": "Laura",
+    "last_name": "Rossi",
+    "email": "laura.rossi@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
   },
   {
     "username": "luca.ferrari",
@@ -49,38 +201,189 @@
     "last_name": "Ferrari",
     "email": "luca.ferrari@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_ADMIN",
-    "project_names": [
-      "Nimbus-Pipeline",
-      "Beta-Engine",
-      "Gamma-Studio",
-      "Beta-Collector"
-    ]
+    "role": "ROLE_USER",
+    "project_names": []
   },
   {
-    "username": "jane.bianchi",
-    "first_name": "Jane",
-    "last_name": "Bianchi",
-    "email": "jane.bianchi@example.com",
+    "username": "laura.smith",
+    "first_name": "Laura",
+    "last_name": "Smith",
+    "email": "laura.smith@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Beta-Collector",
+      "Vertex-Manager-2",
       "Delta-Gateway"
     ]
   },
   {
-    "username": "michael.moore",
+    "username": "giulia.esposito",
+    "first_name": "Giulia",
+    "last_name": "Esposito",
+    "email": "giulia.esposito@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Collector",
+      "Vertex-Service",
+      "Pulse-Engine"
+    ]
+  },
+  {
+    "username": "michael.romano",
     "first_name": "Michael",
-    "last_name": "Moore",
-    "email": "michael.moore@example.com",
+    "last_name": "Romano",
+    "email": "michael.romano@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Zenith-Studio",
+      "Alpha-Dashboard"
+    ]
+  },
+  {
+    "username": "tom.conti",
+    "first_name": "Tom",
+    "last_name": "Conti",
+    "email": "tom.conti@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Toolkit",
+      "Orbit-Core"
+    ]
+  },
+  {
+    "username": "john.taylor",
+    "first_name": "John",
+    "last_name": "Taylor",
+    "email": "john.taylor@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Zenith-Studio",
+      "Echo-Pipeline"
+    ]
+  },
+  {
+    "username": "sarah.romano",
+    "first_name": "Sarah",
+    "last_name": "Romano",
+    "email": "sarah.romano@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Orbit-Studio"
+    ]
+  },
+  {
+    "username": "emily.miller",
+    "first_name": "Emily",
+    "last_name": "Miller",
+    "email": "emily.miller@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Studio-2",
+      "Beta-Service-2",
+      "Aperture-Analyzer",
+      "Pulse-Engine"
+    ]
+  },
+  {
+    "username": "marco.miller1",
+    "first_name": "Marco",
+    "last_name": "Miller",
+    "email": "marco.miller1@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "giulia.rossi",
+    "first_name": "Giulia",
+    "last_name": "Rossi",
+    "email": "giulia.rossi@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Engine"
+    ]
+  },
+  {
+    "username": "jane.miller",
+    "first_name": "Jane",
+    "last_name": "Miller",
+    "email": "jane.miller@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Lighthouse-Pipeline",
+      "Aperture-Collector",
+      "Aperture-Analyzer-2"
+    ]
+  },
+  {
+    "username": "tom.rossi",
+    "first_name": "Tom",
+    "last_name": "Rossi",
+    "email": "tom.rossi@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vector-Analyzer-2"
+    ]
+  },
+  {
+    "username": "francesca.brown",
+    "first_name": "Francesca",
+    "last_name": "Brown",
+    "email": "francesca.brown@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Nimbus-Toolkit",
+      "Echo-Engine",
+      "Vertex-Studio"
+    ]
+  },
+  {
+    "username": "emma.esposito",
+    "first_name": "Emma",
+    "last_name": "Esposito",
+    "email": "emma.esposito@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Service-2",
+      "Delta-Collector",
+      "Alpha-Dashboard",
+      "Gamma-Studio"
+    ]
+  },
+  {
+    "username": "anna.ferrari",
+    "first_name": "Anna",
+    "last_name": "Ferrari",
+    "email": "anna.ferrari@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
       "Gamma-Gateway",
-      "Delta-Gateway",
-      "Nimbus-Pipeline"
+      "Aperture-Collector",
+      "Gamma-Studio",
+      "Pulse-Engine",
+      "Echo-Engine"
     ]
+  },
+  {
+    "username": "marco.conti",
+    "first_name": "Marco",
+    "last_name": "Conti",
+    "email": "marco.conti@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
   },
   {
     "username": "chris.anderson",
@@ -90,126 +393,99 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Delta-Gateway",
-      "Gamma-Gateway",
-      "Vertex-Service"
+      "Beta-Manager"
     ]
   },
   {
-    "username": "alice.martin",
-    "first_name": "Alice",
-    "last_name": "Martin",
-    "email": "alice.martin@company.io",
+    "username": "francesca.conti",
+    "first_name": "Francesca",
+    "last_name": "Conti",
+    "email": "francesca.conti@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_ADMIN",
+    "project_names": [
+      "Alpha-Pipeline"
+    ]
+  },
+  {
+    "username": "emma.ferrari",
+    "first_name": "Emma",
+    "last_name": "Ferrari",
+    "email": "emma.ferrari@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Echo-Pipeline",
-      "Aperture-Analyzer",
-      "Delta-Gateway"
+      "Orbit-Core",
+      "Alpha-Service",
+      "Vertex-Dashboard-2",
+      "Orbit-Studio"
     ]
   },
   {
-    "username": "tom.miller",
-    "first_name": "Tom",
-    "last_name": "Miller",
-    "email": "tom.miller@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Vertex-Studio"
-    ]
-  },
-  {
-    "username": "chris.rossi",
+    "username": "chris.smith",
     "first_name": "Chris",
-    "last_name": "Rossi",
-    "email": "chris.rossi@company.io",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Pulse-Dashboard",
-      "Vertex-Lab",
-      "Vertex-Service",
-      "Orbit-Core"
-    ]
-  },
-  {
-    "username": "giulia.russo",
-    "first_name": "Giulia",
-    "last_name": "Russo",
-    "email": "giulia.russo@test.org",
+    "last_name": "Smith",
+    "email": "chris.smith@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": []
   },
   {
-    "username": "tom.wilson",
-    "first_name": "Tom",
-    "last_name": "Wilson",
-    "email": "tom.wilson@example.com",
+    "username": "anna.rossi",
+    "first_name": "Anna",
+    "last_name": "Rossi",
+    "email": "anna.rossi@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Lab"
+      "Echo-Lab",
+      "Aperture-Analyzer-2"
     ]
   },
   {
-    "username": "laura.bianchi",
-    "first_name": "Laura",
-    "last_name": "Bianchi",
-    "email": "laura.bianchi@example.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Aperture-Analyzer"
-    ]
-  },
-  {
-    "username": "marco.smith",
-    "first_name": "Marco",
-    "last_name": "Smith",
-    "email": "marco.smith@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Lighthouse-Pipeline",
-      "Vertex-Lab"
-    ]
-  },
-  {
-    "username": "sophia.bianchi",
+    "username": "sophia.esposito",
     "first_name": "Sophia",
-    "last_name": "Bianchi",
-    "email": "sophia.bianchi@example.com",
+    "last_name": "Esposito",
+    "email": "sophia.esposito@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Dashboard",
-      "Pulse-Dashboard"
+      "Vector-Analyzer"
     ]
   },
   {
-    "username": "michael.johnson",
-    "first_name": "Michael",
-    "last_name": "Johnson",
-    "email": "michael.johnson@mail.com",
+    "username": "paolo.wilson",
+    "first_name": "Paolo",
+    "last_name": "Wilson",
+    "email": "paolo.wilson@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "tom.moore",
+    "first_name": "Tom",
+    "last_name": "Moore",
+    "email": "tom.moore@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Beta-Collector",
-      "Gamma-Gateway"
+      "Vertex-Service"
     ]
   },
   {
-    "username": "michael.johnson1",
+    "username": "michael.ferrari",
     "first_name": "Michael",
-    "last_name": "Johnson",
-    "email": "michael.johnson1@company.io",
+    "last_name": "Ferrari",
+    "email": "michael.ferrari@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Toolkit",
-      "Gamma-Gateway"
+      "Vertex-Service",
+      "Aperture-Analyzer-2",
+      "Alpha-Dashboard",
+      "Vertex-Manager-2",
+      "Nimbus-Toolkit"
     ]
   },
   {
@@ -220,16 +496,88 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Echo-Manager",
-      "Beta-Collector",
-      "Echo-Pipeline"
+      "Lighthouse-Pipeline",
+      "Nimbus-Pipeline",
+      "Vertex-Studio"
     ]
   },
   {
-    "username": "alice.rossi",
-    "first_name": "Alice",
+    "username": "laura.rossi1",
+    "first_name": "Laura",
     "last_name": "Rossi",
-    "email": "alice.rossi@mail.com",
+    "email": "laura.rossi1@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Echo-Manager",
+      "Orbit-Analyzer",
+      "Zenith-Core",
+      "Lighthouse-Pipeline"
+    ]
+  },
+  {
+    "username": "john.johnson",
+    "first_name": "John",
+    "last_name": "Johnson",
+    "email": "john.johnson@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Aperture-Analyzer",
+      "Aperture-Dashboard",
+      "Vertex-Studio"
+    ]
+  },
+  {
+    "username": "alice.brown",
+    "first_name": "Alice",
+    "last_name": "Brown",
+    "email": "alice.brown@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Gamma-Studio",
+      "Alpha-Pipeline",
+      "Delta-Collector"
+    ]
+  },
+  {
+    "username": "francesca.rossi",
+    "first_name": "Francesca",
+    "last_name": "Rossi",
+    "email": "francesca.rossi@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Delta-Pipeline"
+    ]
+  },
+  {
+    "username": "alice.conti",
+    "first_name": "Alice",
+    "last_name": "Conti",
+    "email": "alice.conti@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "david.smith",
+    "first_name": "David",
+    "last_name": "Smith",
+    "email": "david.smith@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Toolkit",
+      "Beta-Manager-2"
+    ]
+  },
+  {
+    "username": "francesca.bianchi",
+    "first_name": "Francesca",
+    "last_name": "Bianchi",
+    "email": "francesca.bianchi@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
@@ -237,183 +585,199 @@
     ]
   },
   {
-    "username": "sophia.moore",
-    "first_name": "Sophia",
-    "last_name": "Moore",
-    "email": "sophia.moore@mail.com",
+    "username": "tom.wilson",
+    "first_name": "Tom",
+    "last_name": "Wilson",
+    "email": "tom.wilson@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Lab",
-      "Pulse-Dashboard"
+      "Aperture-Analyzer"
     ]
   },
   {
-    "username": "alice.miller",
-    "first_name": "Alice",
-    "last_name": "Miller",
-    "email": "alice.miller@mail.com",
+    "username": "chris.bianchi",
+    "first_name": "Chris",
+    "last_name": "Bianchi",
+    "email": "chris.bianchi@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
+      "Beta-Service-3"
+    ]
+  },
+  {
+    "username": "paolo.anderson",
+    "first_name": "Paolo",
+    "last_name": "Anderson",
+    "email": "paolo.anderson@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Pulse-Service",
+      "Gamma-Studio"
+    ]
+  },
+  {
+    "username": "tom.esposito",
+    "first_name": "Tom",
+    "last_name": "Esposito",
+    "email": "tom.esposito@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Alpha-Dashboard",
       "Echo-Pipeline"
     ]
   },
   {
-    "username": "emily.taylor",
-    "first_name": "Emily",
-    "last_name": "Taylor",
-    "email": "emily.taylor@test.org",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Delta-Gateway",
-      "Aperture-Collector"
-    ]
-  },
-  {
-    "username": "luca.miller",
-    "first_name": "Luca",
+    "username": "emma.miller",
+    "first_name": "Emma",
     "last_name": "Miller",
-    "email": "luca.miller@test.org",
+    "email": "emma.miller@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Toolkit",
-      "Vertex-Service",
-      "Aperture-Collector",
-      "Vertex-Dashboard"
+      "Vertex-Manager-2",
+      "Gamma-Studio",
+      "Vertex-Dashboard-2"
     ]
   },
   {
-    "username": "paolo.johnson",
-    "first_name": "Paolo",
-    "last_name": "Johnson",
-    "email": "paolo.johnson@example.com",
+    "username": "sarah.moore",
+    "first_name": "Sarah",
+    "last_name": "Moore",
+    "email": "sarah.moore@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_ADMIN",
+    "project_names": [
+      "Vertex-Manager",
+      "Vector-Lab"
+    ]
+  },
+  {
+    "username": "daniel.bianchi",
+    "first_name": "Daniel",
+    "last_name": "Bianchi",
+    "email": "daniel.bianchi@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
+    "project_names": [
+      "Alpha-Dashboard",
+      "Aperture-Collector",
+      "Nimbus-Toolkit"
+    ]
+  },
+  {
+    "username": "tom.moore1",
+    "first_name": "Tom",
+    "last_name": "Moore",
+    "email": "tom.moore1@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Aperture-Analyzer",
+      "Aperture-Dashboard"
+    ]
+  },
+  {
+    "username": "daniel.wilson",
+    "first_name": "Daniel",
+    "last_name": "Wilson",
+    "email": "daniel.wilson@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vector-Analyzer-2",
+      "Beta-Manager",
+      "Nimbus-Toolkit"
+    ]
+  },
+  {
+    "username": "anna.bianchi",
+    "first_name": "Anna",
+    "last_name": "Bianchi",
+    "email": "anna.bianchi@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_ADMIN",
     "project_names": [
       "Echo-Pipeline",
-      "Delta-Gateway",
+      "Gamma-Gateway",
       "Aperture-Collector"
     ]
   },
   {
-    "username": "jane.conti",
-    "first_name": "Jane",
-    "last_name": "Conti",
-    "email": "jane.conti@company.io",
+    "username": "marco.esposito",
+    "first_name": "Marco",
+    "last_name": "Esposito",
+    "email": "marco.esposito@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Echo-Engine",
+      "Aperture-Dashboard"
+    ]
+  },
+  {
+    "username": "david.anderson",
+    "first_name": "David",
+    "last_name": "Anderson",
+    "email": "david.anderson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": []
   },
   {
-    "username": "emily.bianchi",
-    "first_name": "Emily",
-    "last_name": "Bianchi",
-    "email": "emily.bianchi@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Gamma-Gateway",
-      "Aperture-Analyzer-2",
-      "Echo-Pipeline"
-    ]
-  },
-  {
-    "username": "robert.wilson",
-    "first_name": "Robert",
-    "last_name": "Wilson",
-    "email": "robert.wilson@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Vertex-Studio"
-    ]
-  },
-  {
-    "username": "francesca.martin",
-    "first_name": "Francesca",
-    "last_name": "Martin",
-    "email": "francesca.martin@company.io",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Vertex-Studio",
-      "Beta-Engine",
-      "Echo-Pipeline"
-    ]
-  },
-  {
-    "username": "paolo.bianchi",
-    "first_name": "Paolo",
-    "last_name": "Bianchi",
-    "email": "paolo.bianchi@example.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_ADMIN",
-    "project_names": [
-      "Vertex-Service"
-    ]
-  },
-  {
-    "username": "paolo.taylor",
-    "first_name": "Paolo",
-    "last_name": "Taylor",
-    "email": "paolo.taylor@example.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Echo-Manager"
-    ]
-  },
-  {
-    "username": "chris.smith1",
-    "first_name": "Chris",
-    "last_name": "Smith",
-    "email": "chris.smith1@example.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Delta-Gateway",
-      "Nimbus-Pipeline"
-    ]
-  },
-  {
-    "username": "laura.martin",
-    "first_name": "Laura",
-    "last_name": "Martin",
-    "email": "laura.martin@test.org",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Aperture-Collector",
-      "Vertex-Toolkit",
-      "Orbit-Studio"
-    ]
-  },
-  {
-    "username": "alice.moore",
-    "first_name": "Alice",
-    "last_name": "Moore",
-    "email": "alice.moore@mail.com",
+    "username": "giulia.anderson",
+    "first_name": "Giulia",
+    "last_name": "Anderson",
+    "email": "giulia.anderson@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
       "Vertex-Lab",
-      "Vertex-Dashboard",
-      "Vertex-Service"
+      "Vector-Lab",
+      "Delta-Core",
+      "Pulse-Engine",
+      "Nimbus-Pipeline"
     ]
   },
   {
-    "username": "giulia.johnson",
-    "first_name": "Giulia",
-    "last_name": "Johnson",
-    "email": "giulia.johnson@mail.com",
+    "username": "michael.miller",
+    "first_name": "Michael",
+    "last_name": "Miller",
+    "email": "michael.miller@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Orbit-Core",
-      "Aperture-Analyzer-2"
+      "Vertex-Studio",
+      "Zenith-Studio"
+    ]
+  },
+  {
+    "username": "marco.wilson",
+    "first_name": "Marco",
+    "last_name": "Wilson",
+    "email": "marco.wilson@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Lab",
+      "Vertex-Toolkit",
+      "Delta-Collector"
+    ]
+  },
+  {
+    "username": "jane.rossi",
+    "first_name": "Jane",
+    "last_name": "Rossi",
+    "email": "jane.rossi@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Alpha-Pipeline",
+      "Beta-Service-2",
+      "Aperture-Collector"
     ]
   },
   {
@@ -424,174 +788,414 @@
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Aperture-Collector",
+      "Alpha-Dashboard",
+      "Alpha-Service",
+      "Beta-Dashboard",
+      "Orbit-Analyzer"
+    ]
+  },
+  {
+    "username": "alice.smith",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "email": "alice.smith@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Delta-Core",
+      "Beta-Collector"
+    ]
+  },
+  {
+    "username": "anna.conti",
+    "first_name": "Anna",
+    "last_name": "Conti",
+    "email": "anna.conti@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Orbit-Analyzer"
+    ]
+  },
+  {
+    "username": "chris.bianchi1",
+    "first_name": "Chris",
+    "last_name": "Bianchi",
+    "email": "chris.bianchi1@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Manager-2",
+      "Beta-Service-2",
       "Lighthouse-Pipeline"
     ]
   },
   {
-    "username": "daniel.wilson",
-    "first_name": "Daniel",
-    "last_name": "Wilson",
-    "email": "daniel.wilson@company.io",
+    "username": "laura.romano",
+    "first_name": "Laura",
+    "last_name": "Romano",
+    "email": "laura.romano@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
+      "Beta-Service-3",
+      "Vector-Analyzer",
+      "Nimbus-Pipeline"
+    ]
+  },
+  {
+    "username": "alice.smith1",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "email": "alice.smith1@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Dashboard",
+      "Vector-Analyzer",
+      "Aperture-Collector",
+      "Beta-Manager",
+      "Orbit-Studio"
+    ]
+  },
+  {
+    "username": "marco.conti1",
+    "first_name": "Marco",
+    "last_name": "Conti",
+    "email": "marco.conti1@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Delta-Gateway",
+      "Echo-Pipeline",
+      "Vertex-Manager-3"
+    ]
+  },
+  {
+    "username": "paolo.anderson1",
+    "first_name": "Paolo",
+    "last_name": "Anderson",
+    "email": "paolo.anderson1@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Manager",
       "Vertex-Service",
-      "Gamma-Gateway",
-      "Orbit-Core"
+      "Delta-Core"
     ]
   },
   {
-    "username": "francesca.moore",
-    "first_name": "Francesca",
-    "last_name": "Moore",
-    "email": "francesca.moore@mail.com",
+    "username": "giulia.smith1",
+    "first_name": "Giulia",
+    "last_name": "Smith",
+    "email": "giulia.smith1@example.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Toolkit",
-      "Vertex-Dashboard",
-      "Pulse-Dashboard"
+      "Beta-Dashboard",
+      "Orbit-Core",
+      "Echo-Manager"
     ]
   },
   {
-    "username": "robert.ferrari",
-    "first_name": "Robert",
-    "last_name": "Ferrari",
-    "email": "robert.ferrari@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": []
-  },
-  {
-    "username": "jane.johnson",
-    "first_name": "Jane",
-    "last_name": "Johnson",
-    "email": "jane.johnson@company.io",
+    "username": "francesca.anderson",
+    "first_name": "Francesca",
+    "last_name": "Anderson",
+    "email": "francesca.anderson@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_ADMIN",
     "project_names": [
-      "Lighthouse-Pipeline",
-      "Beta-Collector",
-      "Delta-Gateway"
+      "Echo-Engine",
+      "Beta-Service-3"
     ]
   },
   {
-    "username": "jane.johnson1",
-    "first_name": "Jane",
+    "username": "sarah.johnson",
+    "first_name": "Sarah",
     "last_name": "Johnson",
-    "email": "jane.johnson1@test.org",
+    "email": "sarah.johnson@company.io",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Service",
+      "Alpha-Pipeline",
+      "Alpha-Dashboard",
+      "Beta-Service-3"
+    ]
+  },
+  {
+    "username": "giulia.esposito1",
+    "first_name": "Giulia",
+    "last_name": "Esposito",
+    "email": "giulia.esposito1@mail.com",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": []
   },
   {
-    "username": "tom.martin",
-    "first_name": "Tom",
-    "last_name": "Martin",
-    "email": "tom.martin@example.com",
+    "username": "paolo.esposito",
+    "first_name": "Paolo",
+    "last_name": "Esposito",
+    "email": "paolo.esposito@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Gamma-Studio",
-      "Vertex-Service",
-      "Orbit-Studio",
+      "Beta-Engine",
       "Vertex-Lab"
     ]
   },
   {
-    "username": "tom.brown",
-    "first_name": "Tom",
-    "last_name": "Brown",
-    "email": "tom.brown@mail.com",
+    "username": "giulia.romano",
+    "first_name": "Giulia",
+    "last_name": "Romano",
+    "email": "giulia.romano@test.org",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Toolkit"
-    ]
-  },
-  {
-    "username": "michael.brown",
-    "first_name": "Michael",
-    "last_name": "Brown",
-    "email": "michael.brown@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Nimbus-Pipeline",
-      "Vertex-Dashboard",
       "Lighthouse-Pipeline"
     ]
   },
   {
-    "username": "giulia.taylor",
-    "first_name": "Giulia",
-    "last_name": "Taylor",
-    "email": "giulia.taylor@mail.com",
+    "username": "daniel.brown",
+    "first_name": "Daniel",
+    "last_name": "Brown",
+    "email": "daniel.brown@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Manager-2",
+      "Beta-Service-2",
+      "Echo-Pipeline"
+    ]
+  },
+  {
+    "username": "john.johnson1",
+    "first_name": "John",
+    "last_name": "Johnson",
+    "email": "john.johnson1@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": []
+  },
+  {
+    "username": "laura.brown",
+    "first_name": "Laura",
+    "last_name": "Brown",
+    "email": "laura.brown@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Alpha-Pipeline",
+      "Zenith-Core"
+    ]
+  },
+  {
+    "username": "john.bianchi",
+    "first_name": "John",
+    "last_name": "Bianchi",
+    "email": "john.bianchi@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Gamma-Studio"
+    ]
+  },
+  {
+    "username": "john.anderson",
+    "first_name": "John",
+    "last_name": "Anderson",
+    "email": "john.anderson@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "david.moore",
+    "first_name": "David",
+    "last_name": "Moore",
+    "email": "david.moore@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Dashboard",
+      "Aperture-Collector",
+      "Vertex-Studio",
+      "Echo-Pipeline"
+    ]
+  },
+  {
+    "username": "sophia.rossi",
+    "first_name": "Sophia",
+    "last_name": "Rossi",
+    "email": "sophia.rossi@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Echo-Pipeline",
+      "Beta-Manager-2",
+      "Beta-Engine"
+    ]
+  },
+  {
+    "username": "daniel.russo",
+    "first_name": "Daniel",
+    "last_name": "Russo",
+    "email": "daniel.russo@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Zenith-Core",
+      "Lighthouse-Pipeline",
+      "Vertex-Manager"
+    ]
+  },
+  {
+    "username": "emma.taylor",
+    "first_name": "Emma",
+    "last_name": "Taylor",
+    "email": "emma.taylor@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Nimbus-Toolkit",
+      "Vertex-Manager-3",
+      "Beta-Dashboard",
+      "Zenith-Studio"
+    ]
+  },
+  {
+    "username": "anna.taylor",
+    "first_name": "Anna",
+    "last_name": "Taylor",
+    "email": "anna.taylor@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Gamma-Toolkit",
+      "Aperture-Analyzer-2",
+      "Vertex-Studio-2",
+      "Vector-Analyzer"
+    ]
+  },
+  {
+    "username": "anna.conti1",
+    "first_name": "Anna",
+    "last_name": "Conti",
+    "email": "anna.conti1@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Gamma-Toolkit"
+    ]
+  },
+  {
+    "username": "robert.brown",
+    "first_name": "Robert",
+    "last_name": "Brown",
+    "email": "robert.brown@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Manager-2",
+      "Nimbus-Toolkit"
+    ]
+  },
+  {
+    "username": "emily.ferrari",
+    "first_name": "Emily",
+    "last_name": "Ferrari",
+    "email": "emily.ferrari@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Manager",
+      "Aperture-Analyzer"
+    ]
   },
   {
     "username": "sophia.johnson",
     "first_name": "Sophia",
     "last_name": "Johnson",
-    "email": "sophia.johnson@example.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Orbit-Studio",
-      "Beta-Engine"
-    ]
-  },
-  {
-    "username": "francesca.esposito",
-    "first_name": "Francesca",
-    "last_name": "Esposito",
-    "email": "francesca.esposito@company.io",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Vertex-Dashboard",
-      "Echo-Manager",
-      "Beta-Engine"
-    ]
-  },
-  {
-    "username": "robert.esposito",
-    "first_name": "Robert",
-    "last_name": "Esposito",
-    "email": "robert.esposito@mail.com",
-    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
-    "role": "ROLE_USER",
-    "project_names": [
-      "Beta-Collector"
-    ]
-  },
-  {
-    "username": "daniel.conti",
-    "first_name": "Daniel",
-    "last_name": "Conti",
-    "email": "daniel.conti@mail.com",
+    "email": "sophia.johnson@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_ADMIN",
     "project_names": [
-      "Echo-Manager",
-      "Aperture-Collector",
-      "Beta-Engine"
+      "Vertex-Manager-3",
+      "Beta-Dashboard"
     ]
   },
   {
-    "username": "anna.wilson",
-    "first_name": "Anna",
-    "last_name": "Wilson",
-    "email": "anna.wilson@company.io",
+    "username": "chris.miller1",
+    "first_name": "Chris",
+    "last_name": "Miller",
+    "email": "chris.miller1@company.io",
     "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
     "role": "ROLE_USER",
     "project_names": [
-      "Vertex-Lab",
-      "Vertex-Service",
-      "Beta-Engine"
+      "Vertex-Manager",
+      "Vertex-Lab"
+    ]
+  },
+  {
+    "username": "michael.esposito",
+    "first_name": "Michael",
+    "last_name": "Esposito",
+    "email": "michael.esposito@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": []
+  },
+  {
+    "username": "francesca.moore",
+    "first_name": "Francesca",
+    "last_name": "Moore",
+    "email": "francesca.moore@example.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Beta-Collector",
+      "Echo-Lab",
+      "Gamma-Studio"
+    ]
+  },
+  {
+    "username": "francesca.russo",
+    "first_name": "Francesca",
+    "last_name": "Russo",
+    "email": "francesca.russo@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Pulse-Engine",
+      "Beta-Engine",
+      "Alpha-Dashboard",
+      "Vector-Lab"
+    ]
+  },
+  {
+    "username": "david.miller",
+    "first_name": "David",
+    "last_name": "Miller",
+    "email": "david.miller@mail.com",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Alpha-Service",
+      "Orbit-Analyzer",
+      "Vector-Analyzer"
+    ]
+  },
+  {
+    "username": "tom.romano",
+    "first_name": "Tom",
+    "last_name": "Romano",
+    "email": "tom.romano@test.org",
+    "password": "0dc5d26a6a85c6288a3c691c9189c14626e0bf7c08006c0f1482d5964f789f74",
+    "role": "ROLE_USER",
+    "project_names": [
+      "Vertex-Studio-2",
+      "Beta-Manager",
+      "Echo-Manager"
     ]
   }
 ]

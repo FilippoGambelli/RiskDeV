@@ -13,8 +13,8 @@ from typing import Dict, Any, List
 OUTPUT_PROJECTS = "projects.json"
 OUTPUT_USERS = "users.json"
 
-PROJECT_COUNT = 20  # Number of projects to generate
-USER_COUNT = 50     # Number of users to generate
+PROJECT_COUNT = 50  # Number of projects to generate
+USER_COUNT = 100     # Number of users to generate
 ADMIN_COUNT = 5     # Number of users to assign admin roles
 
 PASSWORD_SALT = "static_salt_for_demo_purposes"  # Salt for password hashing
