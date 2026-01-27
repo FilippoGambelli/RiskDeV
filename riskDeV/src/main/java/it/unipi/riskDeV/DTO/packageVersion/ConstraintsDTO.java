@@ -1,15 +1,10 @@
 package it.unipi.riskDeV.DTO.packageVersion;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.unipi.riskDeV.model.documentDB.Constraints;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Schema(name = "ConstraintsDTO", description = "DTO representing version constraints for a package")
 public class ConstraintsDTO {
 
@@ -61,4 +56,14 @@ public class ConstraintsDTO {
     )
     private String versionNeq;
 
+    public ConstraintsDTO(Constraints constraint) {
+        this.full = constraint.getFull();
+        this.name = constraint.getName();
+        this.versionGte = constraint.getVersionGte();
+        this.versionLte = constraint.getVersionLte();
+        this.versionGt = constraint.getVersionGt();
+        this.versionLt = constraint.getVersionLt();
+        this.versionEq = constraint.getVersionEq();
+        this.versionNeq = constraint.getVersionNeq();
+    }
 }
