@@ -1,6 +1,8 @@
 package it.unipi.riskDeV.repository.documentDB;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Update;
 
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
 
@@ -26,4 +28,8 @@ public interface PackageVersionRepository extends MongoRepository<PackageVersion
     List<PackageVersion> findByPackageNameAndRiskScoreOrderByVersionArrayDesc(String packageName, int riskScore);
     
     void deleteByPackageNameAndVersion(String packageName, String version);
+
+    @Query("{ 'packageName': ?0, 'version': ?1 }")
+    @Update("{ '$set': { 'riskScore': ?2 } }")
+    void updateRiskScoreByPackageNameAndVersion(String packageName, String version, Double riskScore);
 }

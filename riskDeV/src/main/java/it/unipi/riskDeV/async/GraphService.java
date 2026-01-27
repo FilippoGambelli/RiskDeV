@@ -78,17 +78,17 @@ public class GraphService {
     }
 
 
-    public void addPackage(PublishedVersionDTO publishedVersionDTO) {
-        PackageVersionNode packageVersioneNode = new PackageVersionNode(publishedVersionDTO);
+    public void addPackage(PublishedVersionDTO publishedVersionDTO, Double risk_score) {
+        PackageVersionNode packageVersioneNode = new PackageVersionNode(publishedVersionDTO, risk_score);
         
         packageVersionGraphRepository.save(packageVersioneNode);
         
         packageGraphRepository.addVersionToPackage(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
         
-        List<EmbeddedVulnerabilityDTO> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
-        for (EmbeddedVulnerabilityDTO vulnerability : vulnerabilityList) {
+        List<String> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
+        for (String cveId : vulnerabilityList) {
             // TODO: We should check if the vulnerability exists, and if it doesn't, make an API request            
-            packageVersionGraphRepository.attachVulnerability(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), vulnerability.getCveId());
+            packageVersionGraphRepository.attachVulnerability(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), cveId);
         }
 
         List<ConstraintsDTO> dependecesList = publishedVersionDTO.getDependencies();

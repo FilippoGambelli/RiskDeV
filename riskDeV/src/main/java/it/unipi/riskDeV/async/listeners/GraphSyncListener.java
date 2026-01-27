@@ -2,12 +2,14 @@ package it.unipi.riskDeV.async.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.unipi.riskDeV.async.DocumentService;
 import it.unipi.riskDeV.async.GraphService;
 import it.unipi.riskDeV.async.events.PackageEvent;
 import it.unipi.riskDeV.async.events.ProjectEvent;
 import it.unipi.riskDeV.async.events.VulnerabilityEvent;
 import it.unipi.riskDeV.model.documentDB.FailedEvent;
 import it.unipi.riskDeV.repository.documentDB.FailedEventRepository;
+import it.unipi.riskDeV.util.Helper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -23,8 +25,10 @@ import java.time.Instant;
 public class GraphSyncListener {
 
     private final GraphService graphService;
+    private final DocumentService documentService;
     private final FailedEventRepository failedEventRepository;
     private final ObjectMapper objectMapper;
+    private final Helper helper;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
@@ -85,8 +89,11 @@ public class GraphSyncListener {
             log.debug("Neo4j Sync: Processing package event for {}", event.packageName());
 
             switch (event) {
-                case PackageEvent.VersionRelease v -> 
-                    graphService.addPackage(v.publishedVersionDTO());
+                case PackageEvent.VersionRelease v -> {
+                    Double risk_score = helper.getMaxBaseScore(v.publishedVersionDTO().getVulnerabilities());
+                    documentService.updateRiskScore(v.publishedVersionDTO().getPackageName(), v.publishedVersionDTO().getVersion(), risk_score);
+                    graphService.addPackage(v.publishedVersionDTO(), risk_score);
+                }
                 
                 case PackageEvent.UpdateDocumentation d -> 
                     graphService.updatePackageDocumentation(d.packageName(), d.documentationURL());

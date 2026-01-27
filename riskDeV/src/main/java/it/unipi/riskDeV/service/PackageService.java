@@ -157,8 +157,7 @@ public class PackageService {
             return new Result.Failure<>(new DomainError.AlreadyExists("Version " + version + " already exists."));
         }
 
-        // TODO: Remove Helper and move the computation of risk_score to an asynchronous event        
-        PackageVersion versionDoc = new PackageVersion(newVersionDTO, helper, versionParser);
+        PackageVersion versionDoc = new PackageVersion(newVersionDTO, versionParser);
 
         try {
             packageVersionRepository.save(versionDoc);

@@ -12,7 +12,6 @@ import it.unipi.riskDeV.DTO.packageVersion.AddPackageVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.EmbeddedVulnerabilityDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.util.DependencyParser;
-import it.unipi.riskDeV.util.Helper;
 import it.unipi.riskDeV.util.VersionParser;
 
 import java.time.Instant;
@@ -89,7 +88,7 @@ public class PackageVersion {
         }
     }
 
-    public PackageVersion(AddPackageVersionDTO dto, Helper helper, VersionParser versionParser) {
+    public PackageVersion(AddPackageVersionDTO dto, VersionParser versionParser) {
         this.packageName = dto.getPackageName();
         this.version = dto.getVersion();
         this.author = dto.getAuthor();
@@ -107,14 +106,12 @@ public class PackageVersion {
                 this.dependencies.add(DependencyParser.parseFullString(dep));
             }
         }
-        
-        List<String> cveIds = new ArrayList<>();
-        for (var vuln : this.vulnerabilities) {
-            if (vuln.getCveId() != null) {
-                cveIds.add(vuln.getCveId());
-            }
+
+        this.vulnerabilities = new ArrayList<>();
+        for(EmbeddedVulnerabilityDTO tmp: dto.getVulnerabilities()) {
+            this.vulnerabilities.add(new EmbeddedVulnerability(tmp));
         }
 
-        this.riskScore = helper.getMaxBaseScore(cveIds);
+        this.riskScore = 0.0;
     }
 }

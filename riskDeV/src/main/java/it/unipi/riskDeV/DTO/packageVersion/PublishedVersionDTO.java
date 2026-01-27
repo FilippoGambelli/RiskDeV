@@ -25,14 +25,8 @@ public class PublishedVersionDTO {
 
     private List<Integer> versionArray;
 
-    @Schema(description = "Description of the package")
-    private String description;
-
     @Schema(description = "The official documentation URL of the package")
     private String documentationURL;
-
-    @Schema(description = "Python version requirements", example = ">=3.6")
-    private String requiresPython;
 
     @Schema(description = "List of package dependencies (raw strings)", example = "[\"pandas >= 1.0\", \"scipy\"]")
     private List<ConstraintsDTO> dependencies;
@@ -42,7 +36,7 @@ public class PublishedVersionDTO {
 
     @Schema(description = "List of known vulnerabilities associated with this version")
     @Valid 
-    private List<EmbeddedVulnerabilityDTO> vulnerabilities;
+    private List<String> vulnerabilities;
 
     public PublishedVersionDTO(PackageVersion model) {
         this.packageName = model.getPackageName();
@@ -50,14 +44,12 @@ public class PublishedVersionDTO {
         this.versionArray = model.getVersionArray();
         this.vulnerabilities = new ArrayList<>();
         for(EmbeddedVulnerability vulnerability: model.getVulnerabilities()) {
-            this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(vulnerability));
+            this.vulnerabilities.add(vulnerability.getCveId());
         }
-        this.requiresPython = model.getRequiresPython();
         this.dependencies = new ArrayList<>();
         for(Constraints dependency: model.getDependencies()) {
             this.dependencies.add(new ConstraintsDTO(dependency));
         }
-        this.description = model.getDescription();
         this.documentationURL = model.getDocumentationURL();
         this.riskScore = model.getRiskScore();
     }

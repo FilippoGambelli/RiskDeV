@@ -1,9 +1,12 @@
 package it.unipi.riskDeV.async.handlers.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import it.unipi.riskDeV.async.DocumentService;
 import it.unipi.riskDeV.async.GraphService;
 import it.unipi.riskDeV.async.events.PackageEvent;
 import it.unipi.riskDeV.async.handlers.EventHandler;
+import it.unipi.riskDeV.util.Helper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,10 @@ import org.springframework.stereotype.Service;
 public class PackageEventHandler implements EventHandler {
 
     private final GraphService graphService;
+    private final DocumentService documentService;
     private final ObjectMapper objectMapper;
+    private final Helper helper;
+
 
     @Override
     public boolean canHandle(String eventType) {
@@ -28,8 +34,10 @@ public class PackageEventHandler implements EventHandler {
         log.debug("DLQ Retry: Synchronizing package graph for {}", event.packageName());
 
         switch (event) {
-            case PackageEvent.VersionRelease v -> 
-                graphService.addPackage(v.publishedVersionDTO());
+            case PackageEvent.VersionRelease v -> {
+                Double risk_score = helper.getMaxBaseScore(v.publishedVersionDTO().getVulnerabilities());
+                documentService.updateRiskScore(v.publishedVersionDTO().getPackageName(), v.publishedVersionDTO().getVersion(), risk_score);
+                graphService.addPackage(v.publishedVersionDTO(), risk_score);}
             
             case PackageEvent.UpdateDocumentation d -> 
                 graphService.updatePackageDocumentation(d.packageName(), d.documentationURL());

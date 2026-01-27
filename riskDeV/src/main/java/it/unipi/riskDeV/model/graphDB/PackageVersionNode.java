@@ -31,17 +31,14 @@ public class PackageVersionNode {
     
     @Property("risk_score")
     private Double riskScore;
-    
-    @Property("requires_python")
-    private String requiresPython;
 
     private String documentation;
 
-    public PackageVersionNode(PublishedVersionDTO publishedVersionDTO) {
+    public PackageVersionNode(PublishedVersionDTO publishedVersionDTO, Double risk_score) {
         this.packageName = publishedVersionDTO.getPackageName();
         this.version = publishedVersionDTO.getVersion();
         this.versionArray = publishedVersionDTO.getVersionArray();
-        this.requiresPython = publishedVersionDTO.getRequiresPython();
         this.documentation = publishedVersionDTO.getDocumentationURL();
+        this.riskScore = risk_score;
     }
 }
