@@ -26,17 +26,13 @@ public class UserDTO {
     
     @Schema(description = "List of project names the user belongs to")
     List<String> projectNames;
-    
-    public static UserDTO fromEntity(User user) {
-        if (user == null) return null;
-        
-        return new UserDTO(
-            user.getUsername(), 
-            user.getFirstName(),
-            user.getLastName(),
-            user.getEmail(),
-            user.getRole(),
-            user.getProjectNames() != null ? user.getProjectNames() : List.of()
-        );
+
+    public UserDTO(User user) {
+        this.username = user.getUsername();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+        this.projectNames = user.getProjectNames() != null ? user.getProjectNames() : List.of();
     }
 }

@@ -32,7 +32,7 @@ public class UserService {
         }
 
         User user = optUser.get();
-        return new Result.Success<>(UserDTO.fromEntity(user));
+        return new Result.Success<>(new UserDTO(user));
     }
 
     public Result<UserDTO> getProfileByUsername(String username) {
@@ -44,7 +44,7 @@ public class UserService {
         }
 
         User user = optUser.get();
-        return new Result.Success<>(UserDTO.fromEntity(user));
+        return new Result.Success<>(new UserDTO(user));
     }
 
     public Result<List<String>> getUserProjectNames(String username) {
@@ -104,7 +104,7 @@ public class UserService {
                 User savedUser = userRepository.save(user);
 
                 log.info("User profile updated");
-                return new Result.Success<>(UserDTO.fromEntity(savedUser));
+                return new Result.Success<>(new UserDTO(savedUser));
 
             } catch (Exception e) {
                 return new Result.Failure<>(new DomainError.SystemError());
@@ -112,7 +112,7 @@ public class UserService {
         }
 
         log.info("User profile updated");
-        return new Result.Success<>(UserDTO.fromEntity(user));
+        return new Result.Success<>(new UserDTO(user));
     }
 
     public Result<String> deleteUser(String username) {

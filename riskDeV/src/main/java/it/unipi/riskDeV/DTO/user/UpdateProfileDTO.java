@@ -17,15 +17,15 @@ public class UpdateProfileDTO {
     @Schema(description = "New username. Must be unique and alphanumeric.", example = "john.doe")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "Username can only contain letters, numbers, dots, underscores and hyphens")
-    String username;
+    private String username;
     
     @Schema(description = "New first name", example = "John")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
-    String firstName;
+    private String firstName;
     
     @Schema(description = "New last name", example = "Doe")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
-    String lastName;
+    private String lastName;
     
     @Schema(description = "New password", example = "MySecureP@ssw0rd")
     @Size(min = 8, message = "Password must be at least 8 characters")
@@ -33,5 +33,5 @@ public class UpdateProfileDTO {
         regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
         message = "Password must contain at least one uppercase, lowercase, and number"
     )
-    String password;
+    private String password;
 }
