@@ -6,6 +6,7 @@ import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
+import it.unipi.riskDeV.DTO.vulnerability.VulnerabilityReportDTO;
 import it.unipi.riskDeV.async.events.PackageEvent;
 import it.unipi.riskDeV.mapper.PackageMapper;
 import it.unipi.riskDeV.model.documentDB.Constraints;
@@ -135,7 +136,7 @@ public class PackageService {
         for (PackageVersion version : safeVersions) {
             List<VulnerabilityReportDTO> vulnerabilities = packageVersionGraphRepository.findRecursiveVulnerabilities(version.getPackageName(), version.getVersion());
             if (vulnerabilities.isEmpty()) {
-                return new Result.Success<>(new PackageVersionDTO(version));
+                return new Result.Success<>(packageMapper.toDto(version));
             }
         }
         return new Result.Success<>(null);
