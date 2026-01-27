@@ -9,7 +9,7 @@ import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
 import it.unipi.riskDeV.DTO.vulnerability.VulnerabilityReportDTO;
-import it.unipi.riskDeV.async.events.PackageEvents;
+import it.unipi.riskDeV.async.events.PackageEvent;
 import it.unipi.riskDeV.model.documentDB.Constraints;
 import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
@@ -165,7 +165,7 @@ public class PackageService {
             log.info("Version document saved in MongoDB: {}", versionDoc.getId());
 
             PublishedVersionDTO publishedVersionDTO = new PublishedVersionDTO(versionDoc);
-            eventPublisher.publishEvent(new PackageEvents.VersionReleaseEvent(publishedVersionDTO));
+            eventPublisher.publishEvent(new PackageEvent.VersionRelease(publishedVersionDTO));
         } catch (Exception e) {
             log.error("Failed to save version in MongoDB.", e);
             return new Result.Failure<>(new DomainError.SystemError());
@@ -183,7 +183,7 @@ public class PackageService {
         helper.updatePackageGeneralMetadata(packageName, updateData);
 
         if(updateData.getDocumentationURL().isPresent()) {
-            eventPublisher.publishEvent(new PackageEvents.UpdateDocumentationEvent(packageName, updateData.getDocumentationURL().get()));
+            eventPublisher.publishEvent(new PackageEvent.UpdateDocumentation(packageName, updateData.getDocumentationURL().get()));
         }
 
         log.info("Metadata updated for {}", packageName);
@@ -229,7 +229,7 @@ public class PackageService {
             packageVersionRepository.save(updateVersion);
             log.info("Update done on MongoDB");
 
-            eventPublisher.publishEvent(new PackageEvents.UpdatePackageVersionEvent(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
+            eventPublisher.publishEvent(new PackageEvent.UpdatePackageVersion(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError());
         }
@@ -246,7 +246,7 @@ public class PackageService {
         log.info("Successfully deleted package from MongoDB");
 
         eventPublisher.publishEvent(
-            new PackageEvents.DeletePackageVersionEvent(packageName, version)
+            new PackageEvent.DeletePackageVersion(packageName, version)
         );
 
         return new Result.Success<>("Package deleted successfully");

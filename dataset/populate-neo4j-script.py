@@ -6,14 +6,11 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version as PyVersion, InvalidVersion
 from tqdm import tqdm
 
-# ==========================================
-# 1. Configuration & Constants
-# ==========================================
+# --- Configuration ---
 FILES = {
     "packages": "pkg-cve/package.json",
     "vulnerabilities": "pkg-cve/vulnerability.json",
-    "projects": "project-user/projects.json",
-    "users": "project-user/users.json"
+    "projects": "project-user/projects.json"
 }
 
 NEO4J_URI = "bolt://localhost:7687"
@@ -22,59 +19,36 @@ NEO4J_PASSWORD = "password"
 TARGET_DB = "neo4j"
 
 BATCH_SIZE = 2000
-
-# --- Version Normalization Config ---
 MAX_VERSION_LEN = 6
 
-# Mapping text parts (alpha, beta, rc) to negative integers for correct sorting
 VERSION_WEIGHTS = {
-    'dev': -10,
-    'a': -5, 'alpha': -5,
-    'b': -4, 'beta': -4,
-    'rc': -1, 'c': -1, 'pre': -1,
-    'post': 1, 'pl': 1, 'r': 1,
-    'final': 0
+    'dev': -10, 'a': -5, 'alpha': -5, 'b': -4, 'beta': -4,
+    'rc': -1, 'c': -1, 'pre': -1, 'post': 1, 'pl': 1, 'r': 1, 'final': 0
 }
 
-# ==========================================
-# 2. Logic: Version Normalization
-# ==========================================
+# --- Helpers ---
 def normalize_version(version_str):
-    """
-    Transforms a version string into a fixed-length array of integers.
-    E.g., '1.0rc1' -> [1, 0, 0, -1, 1, 0]
-    """
     if not version_str:
         return [0] * MAX_VERSION_LEN
     
     v = str(version_str).lower()
-    # Split into numbers and words
     parts = re.findall(r'(\d+|[a-z]+)', v)
-    
     normalized = []
     
     for part in parts:
         if part.isdigit():
             normalized.append(int(part))
         else:
-            # Map text to weight, default to -5 (alpha level) if unknown
-            weight = VERSION_WEIGHTS.get(part, -5)
-            normalized.append(weight)
+            normalized.append(VERSION_WEIGHTS.get(part, -5))
             
-    # Pad with 0s to reach fixed length
     while len(normalized) < MAX_VERSION_LEN:
         normalized.append(0)
         
-    # Truncate if longer than max length
     return normalized[:MAX_VERSION_LEN]
 
-# ==========================================
-# 3. Property Mappings
-# ==========================================
+# --- Mappings ---
 PROPERTY_MAPPING = {
-    "Package": {
-        "package_name": "package_name"
-    },
+    "Package": { "package_name": "package_name" },
     "Version": {
         "package_name": "package_name",
         "version": "version",
@@ -87,26 +61,16 @@ PROPERTY_MAPPING = {
         "description": "description",
         "baseScore": "metrics.baseScore"
     },
-    "Project": {
-        "name": "name"
-    },
-    "User": {
-        "username": "username"
-    }
+    "Project": { "name": "name" }
 }
 
-# Properties for relationships based on JSON path relative to the source object
 RELATIONSHIP_PROPERTIES = {
-    "DEPENDS_ON": {}, # Populated dynamically with constraints
-    "USES": {},       # E.g., dev/prod dependency type
-    "WORKS_ON": {},   # E.g., user role
+    "DEPENDS_ON": {}, 
+    "USES": {},        
     "HAS_VERSION": {},
     "AFFECTED_BY": {}
 }
 
-# ==========================================
-# 4. Importer Class
-# ==========================================
 class Neo4jImporter:
     def __init__(self, uri, user, password, database="neo4j"):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -117,8 +81,8 @@ class Neo4jImporter:
     def close(self):
         self.driver.close()
 
-    # --- Helpers ---
     def _extract_value(self, data, path):
+        if not isinstance(path, str): return None
         keys = path.split('.')
         current = data
         try:
@@ -140,12 +104,10 @@ class Neo4jImporter:
     def _map_rel_properties(self, item, rel_type, extra_data=None):
         mapping = RELATIONSHIP_PROPERTIES.get(rel_type, {})
         props = {}
-        # Map from JSON
         for neo_key, json_path in mapping.items():
             val = self._extract_value(item, json_path)
             if val is not None:
                 props[neo_key] = val
-        # Merge extra calculated data
         if extra_data:
             props.update(extra_data)
         return props
@@ -173,19 +135,41 @@ class Neo4jImporter:
             for chunk in tqdm(chunks, desc=description, unit="batch"):
                 session.run(query, batch=chunk)
 
-    # --- Dependency Logic ---
-    def _parse_requirement(self, req_str):
-        # Splits "flask>=2.0" into "flask" and ">=2.0"
+    def _parse_requirement(self, req_input):
+        """
+        Parses requirements handling both raw strings and dictionary objects 
+        (e.g., {'full': 'name (>=1.0)', 'name': 'name'}).
+        """
+        req_str = ""
+        
+        # Handle Dictionary input (common in package.json)
+        if isinstance(req_input, dict):
+            req_str = req_input.get("full") or req_input.get("name")
+        # Handle String input
+        elif isinstance(req_input, str):
+            req_str = req_input
+
+        if not req_str:
+            return None, None
+
+        # Remove environment markers (e.g., "; python_version < '3.8'")
         base_req = req_str.split(';')[0].strip()
+        
+        # Regex to separate package name from version constraints
         match = re.match(r"^([a-zA-Z0-9_\-\.]+)(.*)$", base_req)
-        if not match: return None, None
+        
+        if not match: 
+            return None, None
+            
         name = match.group(1).strip()
         constraints = match.group(2).strip().replace("(", "").replace(")", "")
+        
         return name, constraints
 
     def _resolve_dependencies(self):
         edges = []
         print("Resolving dependencies...")
+        
         for item in tqdm(self.raw_package_data, desc="Building Graph"):
             src_pkg_name = item.get("package_name")
             src_ver_str = item.get("version")
@@ -196,9 +180,11 @@ class Neo4jImporter:
 
             for req in requirements:
                 req_name, req_constraints = self._parse_requirement(req)
-                if req_name not in self.available_versions_map: continue
+                
+                # Skip if parsing failed or target package is not in our DB
+                if not req_name or req_name not in self.available_versions_map: 
+                    continue
 
-                # Capture constraint string for the relationship property
                 rel_props = self._map_rel_properties(item, "DEPENDS_ON", extra_data={"constraint": req_constraints})
 
                 candidates = self.available_versions_map[req_name]
@@ -208,9 +194,11 @@ class Neo4jImporter:
                     valid_targets = candidates
                 else:
                     try:
+                        # Filter candidate versions using SpecifierSet
                         spec = SpecifierSet(req_constraints)
                         valid_targets = [c for c in candidates if spec.contains(c["ver_obj"], prereleases=True)]
-                    except Exception: continue
+                    except Exception: 
+                        continue
 
                 for target in valid_targets:
                     edges.append({
@@ -222,15 +210,13 @@ class Neo4jImporter:
                     })
         return edges
 
-    # --- Import Phases ---
     def create_constraints(self):
         print("Creating constraints...")
         queries = [
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (p:Package) REQUIRE p.package_name IS UNIQUE",
             "CREATE INDEX IF NOT EXISTS FOR (v:Version) ON (v.package_name, v.version)",
+            "CREATE INDEX IF NOT EXISTS FOR (v:Version) ON (v.package_name)",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (vn:Vulnerability) REQUIRE vn.cve_id IS UNIQUE",
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (prj:Project) REQUIRE prj.name IS UNIQUE",
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (u:User) REQUIRE u.username IS UNIQUE"
+            "CREATE CONSTRAINT IF NOT EXISTS FOR (prj:Project) REQUIRE prj.name IS UNIQUE"
         ]
         with self.driver.session(database=self.database) as session:
             for q in queries: session.run(q)
@@ -259,7 +245,6 @@ class Neo4jImporter:
             ver_str = item.get("version")
             
             if pkg_name and ver_str:
-                # Populate map for dependency resolution later
                 self.available_versions_map.setdefault(pkg_name, [])
                 try:
                     self.available_versions_map[pkg_name].append({
@@ -270,11 +255,7 @@ class Neo4jImporter:
 
                 pkg_props = self._map_properties(item, "Package")
                 ver_props = self._map_properties(item, "Version")
-                
-                # --- APPLY VERSION NORMALIZATION ---
-                # This adds the integer array property for sorting
                 ver_props["version_array"] = normalize_version(ver_str)
-                # -----------------------------------
                 
                 has_ver_props = self._map_rel_properties(item, "HAS_VERSION")
 
@@ -294,17 +275,12 @@ class Neo4jImporter:
 
         query = """
         UNWIND $batch AS row
-        
         MERGE (p:Package {package_name: row.pkg.package_name})
         SET p += row.pkg
-        
         MERGE (v:Version {package_name: row.ver.package_name, version: row.ver.version})
         SET v += row.ver 
-        // Note: row.ver contains 'version_array', so it's automatically set here
-        
         MERGE (p)-[r:HAS_VERSION]->(v)
         SET r += row.has_ver_props
-        
         FOREACH (v_data IN row.vulns |
             MERGE (vn:Vulnerability {cve_id: v_data.cve})
             MERGE (v)-[rel:AFFECTED_BY]->(vn)
@@ -315,6 +291,9 @@ class Neo4jImporter:
 
     def import_dependencies(self):
         edges = self._resolve_dependencies()
+        if not edges:
+            print("WARNING: No dependencies found to import.")
+        
         query = """
         UNWIND $batch AS row
         MATCH (s:Version {package_name: row.src_pkg, version: row.src_ver})
@@ -327,11 +306,9 @@ class Neo4jImporter:
     def import_projects(self):
         data = self._load_json(FILES["projects"])
         batch = []
-        
         for item in data:
             props = self._map_properties(item, "Project")
             if not props.get("name"): continue
-
             dependencies = []
             for dep in item.get("packages", []):
                 rel_props = self._map_rel_properties(dep, "USES")
@@ -340,57 +317,21 @@ class Neo4jImporter:
                     "version": dep.get("version"),
                     "rel_props": rel_props
                 })
-
-            collaborators = []
-            for collab in item.get("collaborators", []):
-                rel_props = self._map_rel_properties(collab, "WORKS_ON")
-                collaborators.append({
-                    "username": collab.get("username"), 
-                    "email": collab.get("email"),
-                    "rel_props": rel_props
-                })
-            
-            batch.append({
-                "props": props,
-                "deps": dependencies,
-                "collabs": collaborators
-            })
+            batch.append({ "props": props, "deps": dependencies })
 
         query = """
         UNWIND $batch AS row
         MERGE (prj:Project {name: row.props.name})
         SET prj += row.props
-
         FOREACH (dep IN row.deps |
             MERGE (p:Package {package_name: dep.name})
-            MERGE (p)-[:HAS_VERSION]->(v:Version {version: dep.version})
+            MERGE (v:Version {package_name: dep.name, version: dep.version})
+            MERGE (p)-[:HAS_VERSION]->(v)
             MERGE (prj)-[r:USES]->(v)
             SET r += dep.rel_props
         )
-        
-        FOREACH (user_data IN row.collabs |
-            MERGE (u:User {username: user_data.username})
-            ON CREATE SET u.email = user_data.email
-            MERGE (u)-[r:WORKS_ON]->(prj)
-            SET r += user_data.rel_props
-        )
         """
         self._run_batch(query, batch, "Importing Projects")
-
-    def import_users(self):
-        data = self._load_json(FILES["users"])
-        batch = []
-        for item in data:
-            props = self._map_properties(item, "User")
-            if props.get("username"):
-                batch.append(props)
-            
-        query = """
-        UNWIND $batch AS row
-        MERGE (u:User {username: row.username})
-        SET u += row
-        """
-        self._run_batch(query, batch, "Importing Users Details")
 
     def run(self):
         self.create_constraints()
@@ -398,7 +339,6 @@ class Neo4jImporter:
         self.import_packages_and_versions()
         self.import_dependencies()
         self.import_projects()
-        self.import_users()
         print("\nIMPORT COMPLETED SUCCESSFULLY")
 
 if __name__ == "__main__":
@@ -407,5 +347,7 @@ if __name__ == "__main__":
         importer.run()
     except Exception as e:
         print(f"\nCRITICAL ERROR: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         importer.close()
