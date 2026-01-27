@@ -2,12 +2,15 @@ package it.unipi.riskDeV.model.documentDB;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Constraints {
 
     private String full;
@@ -31,14 +34,4 @@ public class Constraints {
     @Field("version_neq")
     private String versionNeq;
 
-    public Constraints(ConstraintsDTO constraintDto) {
-        this.full = constraintDto.getFull();
-        this.name = constraintDto.getName();
-        this.versionGte = constraintDto.getVersionGte();
-        this.versionLte = constraintDto.getVersionLte();
-        this.versionGt = constraintDto.getVersionGt();
-        this.versionLt = constraintDto.getVersionLt();
-        this.versionEq = constraintDto.getVersionEq();
-        this.versionNeq = constraintDto.getVersionNeq();
-    }
 }

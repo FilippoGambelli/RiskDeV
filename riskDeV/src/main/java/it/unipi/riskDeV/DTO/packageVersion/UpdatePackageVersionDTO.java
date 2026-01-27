@@ -1,16 +1,12 @@
 package it.unipi.riskDeV.DTO.packageVersion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.documentDB.Constraints;
-import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
-import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,16 +29,4 @@ public class UpdatePackageVersionDTO {
     @Valid 
     private List<EmbeddedVulnerabilityDTO> vulnerabilities;
 
-    public UpdatePackageVersionDTO(PackageVersion model) {
-        this.uploadTime = Optional.ofNullable(model.getUploadTime());
-        this.vulnerabilities = new ArrayList<>();
-        for(EmbeddedVulnerability vulnerabilty: model.getVulnerabilities()) {
-            this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(vulnerabilty));
-        }
-        this.requiresPython = Optional.ofNullable(model.getRequiresPython());
-        this.dependencies = new ArrayList<>();
-        for(Constraints dependency: model.getDependencies()) {
-            this.dependencies.add(new ConstraintsDTO(dependency));
-        }
-    }
 }

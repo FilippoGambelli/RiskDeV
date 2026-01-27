@@ -1,22 +1,20 @@
 package it.unipi.riskDeV.DTO.packageVersion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.documentDB.Constraints;
-import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
-import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackageVersionDTO {
@@ -66,28 +64,4 @@ public class PackageVersionDTO {
     @Valid 
     private List<EmbeddedVulnerabilityDTO> vulnerabilities;
 
-    public PackageVersionDTO(PackageVersion model) {
-        this.packageName = model.getPackageName();
-        this.version = model.getVersion();
-        this.uploadTime = model.getUploadTime();
-        this.vulnerabilities = new ArrayList<>();
-        for (EmbeddedVulnerability ev : model.getVulnerabilities()) {
-            this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(ev));
-        }
-        this.requiresPython = model.getRequiresPython();
-
-        this.dependencies = new ArrayList<>();
-        if(model.getDependencies() != null){
-            for(Constraints dependency: model.getDependencies()) {
-                this.dependencies.add(dependency.getFull());
-            }
-        }
-        
-        this.author = model.getAuthor();
-        this.authorEmail = model.getAuthorEmail();
-        this.description = model.getDescription();
-        this.packageURL = model.getPackageURL();
-        this.documentationURL = model.getDocumentationURL();
-        this.riskScore = model.getRiskScore();
-    }
 }

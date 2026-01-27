@@ -11,16 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.DTO.project.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.project.InstalledPackageDTO;
 import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
 import it.unipi.riskDeV.DTO.project.ProjectDTO;
-import it.unipi.riskDeV.async.events.ProjectEvents;
-import it.unipi.riskDeV.async.events.ProjectEvents.CalculateRiskMetricsEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorAddedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorRemovedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectDeletedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectPackagesUpdatedEvent;
+import it.unipi.riskDeV.async.events.ProjectEvent;
 import it.unipi.riskDeV.model.documentDB.Project;
 import it.unipi.riskDeV.repository.documentDB.ProjectRepository;
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
@@ -36,6 +32,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final PackageService packageService;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -104,7 +101,7 @@ public class ProjectService {
                     List<String> userIds = project.getCollaborators().stream()
                         .map(Project.Collaborator::getUsername)
                         .toList();
-                    eventPublisher.publishEvent(new ProjectDeletedEvent(projectName, userIds));
+                    eventPublisher.publishEvent(new ProjectEvent.ProjectDeleted(projectName, userIds));
                     
                     return new Result.Success<>(projectName);
                 } catch (Exception e) {
@@ -207,7 +204,7 @@ public class ProjectService {
             
             projectRepository.save(project);
             
-            eventPublisher.publishEvent(new CollaboratorAddedEvent(projectName, collaboratorUsername));
+            eventPublisher.publishEvent(new ProjectEvent.CollaboratorAdded(projectName, collaboratorUsername));
             return new Result.Success<>("Collaborator added");
 
         } catch (IllegalStateException e) {
@@ -267,10 +264,61 @@ public class ProjectService {
         if (removed) {
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
-            eventPublisher.publishEvent(new CollaboratorRemovedEvent(projectName, collaboratorUsername));
+            eventPublisher.publishEvent(new ProjectEvent.CollaboratorRemoved(projectName, collaboratorUsername));
             return new Result.Success<>(collaboratorUsername);
         } else {
             return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
+        }
+    }
+
+    public Result<Void> updateRiskMetrics(String projectName) {
+        var projectOpt = projectRepository.findByName(projectName);
+        if (projectOpt.isEmpty()) {
+            log.warn("Project {} not found during risk calculation. Skipping.", projectName);
+            return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
+        }
+
+        Project project = projectOpt.get();
+        boolean dataChanged = false;
+
+        if (project.getPackages() != null) {
+            for (Project.ProjectPackage pkg : project.getPackages()) {
+                try {
+                    // Use of package service to get latest risk data
+                    Result<PackageVersionDTO> result = packageService.getPackageByNameVersion(pkg.getName(), pkg.getVersion());
+
+                    if (result instanceof Result.Success<PackageVersionDTO> success) {
+                        PackageVersionDTO details = success.data();
+                        
+                        double newScore = (details.getRiskScore() != null) ? details.getRiskScore() : 0.0;
+                        int newVulnCount = (details.getVulnerabilities() != null) ? details.getVulnerabilities().size() : 0;
+
+                        // Update only if there are changes
+                        if (pkg.getRiskScore() != newScore || pkg.getVulnerabilitiesCount() != newVulnCount) {
+                            pkg.setRiskScore(newScore);
+                            pkg.setVulnerabilitiesCount(newVulnCount);
+                            dataChanged = true;
+                        }
+                    }
+                } catch (Exception ex) {
+                    log.error("Error calculating risk for package {} in project {}", pkg.getName(), project.getName(), ex);
+                }
+            }
+        }
+
+        if (dataChanged) {
+            try {
+                project.setLastUpdate(Instant.now());
+                projectRepository.save(project);
+                log.info("[Project Listener] Risk metrics updated for project {}", projectName);
+                return new Result.Success<>(null);
+            } catch (Exception e) {
+                log.error("Error saving updated risk metrics for project {}", projectName, e);
+                return new Result.Failure<>(new DomainError.SystemError());
+            }
+        } else {
+            log.debug("No risk changes detected for project {}", projectName);
+            return new Result.Success<>(null);
         }
     }
 
@@ -308,28 +356,24 @@ public class ProjectService {
         List<InstalledPackageDTO> dtos = project.getPackages().stream()
             .map(InstalledPackageDTO::fromEntity)
             .toList();
-        eventPublisher.publishEvent(new CalculateRiskMetricsEvent(project.getName(), dtos));
+        eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
         List<String> pkgStrings = project.getPackages().stream()
              .map(p -> p.getName() + ":" + p.getVersion())
              .toList();
-        eventPublisher.publishEvent(new ProjectEvents.ProjectCreatedEvent(
-            project.getName(), 
-            project.getAdmin().getUsername(), 
-            pkgStrings
-        ));
+        eventPublisher.publishEvent(new ProjectEvent.ProjectCreated(project.getName(), project.getAdmin().getUsername(), pkgStrings));
     }
 
     private void triggerPostPackageUpdateEvents(Project project) {
         List<InstalledPackageDTO> dtos = project.getPackages().stream()
             .map(InstalledPackageDTO::fromEntity)
             .toList();
-        eventPublisher.publishEvent(new CalculateRiskMetricsEvent(project.getName(), dtos));
+        eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
         List<String> ids = project.getPackages().stream()
              .map(p -> p.getName() + " " + p.getVersion())
              .toList();
-        eventPublisher.publishEvent(new ProjectPackagesUpdatedEvent(project.getName(), ids));
+        eventPublisher.publishEvent(new ProjectEvent.ProjectPackagesUpdated(project.getName(), ids));
     }
 
 }

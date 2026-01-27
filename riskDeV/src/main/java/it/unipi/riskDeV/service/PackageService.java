@@ -1,17 +1,14 @@
 package it.unipi.riskDeV.service;
 
 import it.unipi.riskDeV.DTO.packageVersion.AddPackageVersionDTO;
-import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
-import it.unipi.riskDeV.DTO.packageVersion.EmbeddedVulnerabilityDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.ReverseDependencyDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdatePackageVersionDTO;
-import it.unipi.riskDeV.DTO.vulnerability.VulnerabilityReportDTO;
-import it.unipi.riskDeV.async.events.PackageEvents;
+import it.unipi.riskDeV.async.events.PackageEvent;
+import it.unipi.riskDeV.mapper.PackageMapper;
 import it.unipi.riskDeV.model.documentDB.Constraints;
-import it.unipi.riskDeV.model.documentDB.EmbeddedVulnerability;
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import it.unipi.riskDeV.model.graphDB.PackageVersionNode;
 import it.unipi.riskDeV.repository.documentDB.PackageVersionRepository;
@@ -19,7 +16,6 @@ import it.unipi.riskDeV.repository.graphDB.PackageVersionGraphRepository;
 import it.unipi.riskDeV.results.DomainError;
 import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.util.Helper;
-import it.unipi.riskDeV.util.VersionParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,7 +33,7 @@ public class PackageService {
     private final PackageVersionRepository packageVersionRepository;
     private final PackageVersionGraphRepository packageVersionGraphRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final VersionParser versionParser;
+    private final PackageMapper packageMapper;
     private final Helper helper;
 
     // Returns information about a package using the latest available version.
@@ -45,7 +41,7 @@ public class PackageService {
         var optionalPackage = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
 
         if (optionalPackage.isPresent()) {
-            return new Result.Success<>(new PackageVersionDTO(optionalPackage.get()));
+            return new Result.Success<>(packageMapper.toDto(optionalPackage.get()));
         }
 
         // TODO: If the specified package does not exist, perform an API request to PyPI
@@ -59,7 +55,7 @@ public class PackageService {
         var optionalPackage = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
             
         if (optionalPackage.isPresent()) {
-            return new Result.Success<>(new PackageVersionDTO(optionalPackage.get()));
+            return new Result.Success<>(packageMapper.toDto(optionalPackage.get()));
         }
 
         // TODO: If the specified package version does not exist, perform an API request to PyPI
@@ -122,8 +118,9 @@ public class PackageService {
 
         var optionalSafeVersion = packageVersionRepository.findTopByPackageNameAndRiskScoreOrderByVersionArrayDesc(packageName, 0);
         
-        PackageVersionDTO safeVersion = new PackageVersionDTO(optionalSafeVersion.get());
-        
+        // PackageVersionDTO safeVersion = new PackageVersionDTO(optionalSafeVersion.get());
+        PackageVersionDTO safeVersion = packageMapper.toDto(optionalSafeVersion.get());
+
         return new Result.Success<>(safeVersion);
     }
 
@@ -153,10 +150,11 @@ public class PackageService {
         String version = newVersionDTO.getVersion();
         log.info("Publishing version {} for package {}", version, packageName);
 
-        if (packageVersionRepository.existsByPackageNameAndVersion(packageName, version)) {
-            return new Result.Failure<>(new DomainError.AlreadyExists("Version " + version + " already exists."));
+        if (packageVersionRepository.existsByPackageNameAndVersion(packageName, newVersionDTO.getVersion())) {
+            return new Result.Failure<>(new DomainError.AlreadyExists("Version " + newVersionDTO.getVersion() + " already exists."));
         }
 
+        /*
         // TODO: Remove Helper and move the computation of risk_score to an asynchronous event        
         PackageVersion versionDoc = new PackageVersion(newVersionDTO, helper, versionParser);
 
@@ -165,13 +163,31 @@ public class PackageService {
             log.info("Version document saved in MongoDB: {}", versionDoc.getId());
 
             PublishedVersionDTO publishedVersionDTO = new PublishedVersionDTO(versionDoc);
-            eventPublisher.publishEvent(new PackageEvents.VersionReleaseEvent(publishedVersionDTO));
+            eventPublisher.publishEvent(new PackageEvent.VersionRelease(publishedVersionDTO));
         } catch (Exception e) {
             log.error("Failed to save version in MongoDB.", e);
             return new Result.Failure<>(new DomainError.SystemError());
         }
 
         return new Result.Success<>("Package created successfully");    
+        */
+
+        try {
+            PackageVersion versionDoc = packageMapper.toEntity(newVersionDTO);
+
+            packageVersionRepository.save(versionDoc);
+            log.info("Version document saved in MongoDB: {}", versionDoc.getId());
+
+            // TODO: Remove Helper and move the computation of risk_score to an asynchronous event
+            PublishedVersionDTO publishedVersionDTO = packageMapper.toPublishedDto(versionDoc);
+            eventPublisher.publishEvent(new PackageEvent.VersionRelease(publishedVersionDTO));
+
+            return new Result.Success<>("Package created successfully");
+            
+        } catch (Exception e) {
+            log.error("Critical error while saving version {} for package {}", newVersionDTO.getVersion(), packageName, e);
+            return new Result.Failure<>(new DomainError.SystemError());
+        }
     }
 
     // Updates the general metadata of a package for all its versions.
@@ -183,7 +199,7 @@ public class PackageService {
         helper.updatePackageGeneralMetadata(packageName, updateData);
 
         if(updateData.getDocumentationURL().isPresent()) {
-            eventPublisher.publishEvent(new PackageEvents.UpdateDocumentationEvent(packageName, updateData.getDocumentationURL().get()));
+            eventPublisher.publishEvent(new PackageEvent.UpdateDocumentation(packageName, updateData.getDocumentationURL().get()));
         }
 
         log.info("Metadata updated for {}", packageName);
@@ -193,48 +209,30 @@ public class PackageService {
 
     // Updates the data of a specific package version.
     public Result<String> updatePackageVersion(String packageName, String version, UpdatePackageVersionDTO updateVersionDTO) {
-        var existingOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
-        
-        if (existingOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " " + version + " not found."));
-        }
-        
-        PackageVersion updateVersion = existingOpt.get();
+    
+        return packageVersionRepository.findByPackageNameAndVersion(packageName, version)
+            .map(existingEntity -> {
+                try {
+                    packageMapper.updateEntityFromDto(updateVersionDTO, existingEntity);
 
-        if (updateVersionDTO.getRequiresPython().isPresent()) {
-            updateVersion.setRequiresPython(updateVersionDTO.getRequiresPython().get());
-        }
+                    packageVersionRepository.save(existingEntity);
+                    log.info("Update successful for {} version {}", packageName, version);
 
-        if (updateVersionDTO.getUploadTime().isPresent()) {
-            updateVersion.setUploadTime(updateVersionDTO.getUploadTime().get());
-        }
+                    eventPublisher.publishEvent(new PackageEvent.UpdatePackageVersion(
+                        packageName, 
+                        version, 
+                        updateVersionDTO.getDependencies(), 
+                        updateVersionDTO.getVulnerabilities()
+                    ));
 
-        if (updateVersionDTO.getDependencies() != null) {
-            List<Constraints> dependencyList = new ArrayList<>();
-            for(ConstraintsDTO tmp: updateVersionDTO.getDependencies()) {
-                dependencyList.add(new Constraints(tmp));
-            }
-            updateVersion.setDependencies(dependencyList);
-        }
+                    return new Result.Success<>("Package updated successfully");
 
-        if (updateVersionDTO.getVulnerabilities() != null) {
-            List<EmbeddedVulnerability> vulnerabiltyList = new ArrayList<>();
-            for(EmbeddedVulnerabilityDTO tmp: updateVersionDTO.getVulnerabilities()) {
-                vulnerabiltyList.add(new EmbeddedVulnerability(tmp));
-            }
-            updateVersion.setVulnerabilities(vulnerabiltyList);
-        }
-
-        try {
-            packageVersionRepository.save(updateVersion);
-            log.info("Update done on MongoDB");
-
-            eventPublisher.publishEvent(new PackageEvents.UpdatePackageVersionEvent(packageName, version, updateVersionDTO.getDependencies(), updateVersionDTO.getVulnerabilities()));
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
-        }
-
-        return new Result.Success<>("Package updated successfully");
+                } catch (Exception e) {
+                    log.error("Failed to update package {} {}", packageName, version, e);
+                    return new Result.Failure<String>(new DomainError.SystemError());
+                }
+            })
+            .orElseGet(() -> new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " " + version + " not found.")));
     }
 
     // Deletes a specific version of a package.
@@ -246,7 +244,7 @@ public class PackageService {
         log.info("Successfully deleted package from MongoDB");
 
         eventPublisher.publishEvent(
-            new PackageEvents.DeletePackageVersionEvent(packageName, version)
+            new PackageEvent.DeletePackageVersion(packageName, version)
         );
 
         return new Result.Success<>("Package deleted successfully");
