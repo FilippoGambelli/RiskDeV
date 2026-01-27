@@ -26,7 +26,6 @@ public class DlqRetryScheduler {
     @Scheduled(fixedDelayString = "${app.scheduler.retry.delay:300000}")
     public void retryFailedEvents() {
         
-        // Uso Pageable per evitare OutOfMemory
         Pageable limit = PageRequest.of(0, BATCH_SIZE);
         List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(5, limit);
 

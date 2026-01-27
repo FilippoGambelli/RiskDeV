@@ -3,18 +3,9 @@ package it.unipi.riskDeV.async.listeners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unipi.riskDeV.async.GraphService;
-import it.unipi.riskDeV.async.events.PackageEvents.DeletePackageVersionEvent;
-import it.unipi.riskDeV.async.events.PackageEvents.UpdateDocumentationEvent;
-import it.unipi.riskDeV.async.events.PackageEvents.UpdatePackageVersionEvent;
-import it.unipi.riskDeV.async.events.PackageEvents.VersionReleaseEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorAddedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorRemovedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectCreatedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectDeletedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectPackagesUpdatedEvent;
-import it.unipi.riskDeV.async.events.VulnerabilityEvents.VulnerabilityCreatedEvent;
-import it.unipi.riskDeV.async.events.VulnerabilityEvents.VulnerabilityDeletedEvent;
-import it.unipi.riskDeV.async.events.VulnerabilityEvents.VulnerabilityUpdatedEvent;
+import it.unipi.riskDeV.async.events.PackageEvent;
+import it.unipi.riskDeV.async.events.ProjectEvent;
+import it.unipi.riskDeV.async.events.VulnerabilityEvent;
 import it.unipi.riskDeV.model.documentDB.FailedEvent;
 import it.unipi.riskDeV.repository.documentDB.FailedEventRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,152 +24,81 @@ public class GraphSyncListener {
 
     private final GraphService graphService;
     private final FailedEventRepository failedEventRepository;
-    private final ObjectMapper objectMapper; // ObjectMapper to serialize event payloads for DLQ
+    private final ObjectMapper objectMapper;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleProjectCreated(ProjectCreatedEvent event) {
+    public void handleProjectEvent(ProjectEvent event) {
         try {
-            log.debug("Neo4j: Creating project {}", event.projectName());
-            graphService.createProjectStructure(
-                event.projectName(), 
-                event.adminUsername(), 
-                event.packageIds()
-            );
+            log.debug("Neo4j Sync: Processing project event for {}", event.projectName());
+
+            switch (event) {
+                case ProjectEvent.ProjectCreated c -> 
+                    graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.packageIds());
+                
+                case ProjectEvent.ProjectDeleted d -> 
+                    graphService.deleteProjectNode(d.projectName());
+                
+                case ProjectEvent.ProjectPackagesUpdated p -> 
+                    graphService.syncProjectPackages(p.projectName(), p.packageIds());
+                
+                case ProjectEvent.CollaboratorAdded a -> 
+                    graphService.addCollaborator(a.projectName(), a.collaboratorUsername());
+                
+                case ProjectEvent.CollaboratorRemoved r -> 
+                    graphService.removeCollaborator(r.projectName(), r.collaboratorUsername());
+
+                case ProjectEvent.CalculateRiskMetrics m -> {}
+            }
         } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Create Project {}", event.projectName(), e);
+            log.error("Neo4j Sync Failed: Error processing {} for project {}", event.getClass().getSimpleName(), event.projectName(), e);
             saveToDLQ(event, e);
         }
     }
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleProjectDeleted(ProjectDeletedEvent event) {
+    public void handleVulnerabilityEvent(VulnerabilityEvent event) {
         try {
-            log.debug("Neo4j: Deleting project {}", event.projectName());
-            graphService.deleteProjectNode(event.projectName());
+            log.debug("Neo4j Sync: Processing vulnerability event for CVE {}", event.cveId());
+            
+            switch (event) {
+                case VulnerabilityEvent.VulnerabilityCreated c -> 
+                    graphService.addVulnerability(c.cveId(), c.description(), c.baseScore());
+                
+                case VulnerabilityEvent.VulnerabilityUpdated u -> 
+                    graphService.updateVulnerability(u.cveId(), u.description(), u.baseScore());
+                
+                case VulnerabilityEvent.VulnerabilityDeleted d -> 
+                    graphService.deleteVulnerability(d.cveId());
+            }
         } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Delete Project {}", event.projectName(), e);
+            log.error("Neo4j Sync Failed: Vulnerability event processing error for {}", event.cveId(), e);
             saveToDLQ(event, e);
         }
     }
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handlePackagesUpdated(ProjectPackagesUpdatedEvent event) {
+    public void handlePackageEvent(PackageEvent event) {
         try {
-            log.debug("Neo4j: Syncing packages for project {}", event.projectName());
-            graphService.syncProjectPackages(event.projectName(), event.packageIds());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Update Packages {}", event.projectName(), e);
-            saveToDLQ(event, e);
-        }
-    }
+            log.debug("Neo4j Sync: Processing package event for {}", event.packageName());
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleCollaboratorAdded(CollaboratorAddedEvent event) {
-        try {
-            log.debug("Neo4j: Adding collaborator {} to {}", event.collaboratorUsername(), event.projectName());
-            graphService.addCollaborator(event.projectName(), event.collaboratorUsername());
+            switch (event) {
+                case PackageEvent.VersionRelease v -> 
+                    graphService.addPackage(v.publishedVersionDTO());
+                
+                case PackageEvent.UpdateDocumentation d -> 
+                    graphService.updatePackageDocumentation(d.packageName(), d.documentationURL());
+                
+                case PackageEvent.UpdatePackageVersion u -> 
+                    graphService.updatePackageVersion(u.packageName(), u.version(), u.dependecies(), u.vulnerabilities());
+                
+                case PackageEvent.DeletePackageVersion del -> 
+                    graphService.deletePackageVersion(del.packageName(), del.version());
+            }
         } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Add Collaborator", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleCollaboratorRemoved(CollaboratorRemovedEvent event) {
-        try {
-            log.debug("Neo4j: Removing collaborator {} from {}", event.collaboratorUsername(), event.projectName());
-            graphService.removeCollaborator(event.projectName(), event.collaboratorUsername());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Remove Collaborator", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVulnerabilityCreated(VulnerabilityCreatedEvent event) {
-        try {
-            log.debug("Neo4j: Adding vulnerability {}", event.cveId());
-            graphService.addVulnerability(event.cveId(), event.description(), event.baseScore());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Add vulnerability", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVulnerabilityUpdated(VulnerabilityUpdatedEvent event) {
-        try {
-            log.debug("Neo4j: Updating vulnerability {}", event.cveId());
-            graphService.updateVulnerability(event.cveId(), event.description(), event.baseScore());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Update vulnerability", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVulnerabilityDeteled(VulnerabilityDeletedEvent event) {
-        try {
-            log.debug("Neo4j: Deleting vulnerability {}", event.cveId());
-            graphService.deleteVulnerability(event.cveId());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Delete vulnerability", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleVersionReleaseEvent(VersionReleaseEvent event) {
-        try {
-            log.debug("Neo4j: Adding package {}", event.publishedVersionDTO().getPackageName());
-            graphService.addPackage(event.publishedVersionDTO());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Adding package", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUpdateDocumentationEvent(UpdateDocumentationEvent event) {
-        try {
-            log.debug("Neo4j: Update documentation url for package {}", event.packageName());
-            graphService.updatePackageDocumentation(event.packageName(), event.documentationURL());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Updating documentation url", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleUpdateDocumentationEvent(UpdatePackageVersionEvent event) {
-        try {
-            log.debug("Neo4j: Update package {}", event.packageName());
-            graphService.updatePackageVersion(event.packageName(), event.version(), event.dependecies(), event.vulnerabilities());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Updating package", e);
-            saveToDLQ(event, e);
-        }
-    }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
-    public void handleDeletePackageEvent(DeletePackageVersionEvent event) {
-        try {
-            log.debug("Neo4j: Delete package {}", event.packageName());
-            graphService.deletePackageVersion(event.packageName(), event.version());
-        } catch (Exception e) {
-            log.error("Neo4j Sync Failed: Deleting package", e);
+            log.error("Neo4j Sync Failed: Error processing {} for package {}", event.getClass().getSimpleName(), event.packageName(), e);
             saveToDLQ(event, e);
         }
     }

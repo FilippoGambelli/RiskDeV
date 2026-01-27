@@ -9,19 +9,12 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
-import it.unipi.riskDeV.async.events.ProjectEvents.CalculateRiskMetricsEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorAddedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.CollaboratorRemovedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectCreatedEvent;
-import it.unipi.riskDeV.async.events.ProjectEvents.ProjectDeletedEvent;
+import it.unipi.riskDeV.async.events.ProjectEvent;
 import it.unipi.riskDeV.model.documentDB.FailedEvent;
-import it.unipi.riskDeV.model.documentDB.Project;
 import it.unipi.riskDeV.repository.documentDB.FailedEventRepository;
-import it.unipi.riskDeV.repository.documentDB.ProjectRepository;
 import it.unipi.riskDeV.results.DomainError;
 import it.unipi.riskDeV.results.Result;
-import it.unipi.riskDeV.service.PackageService;
+import it.unipi.riskDeV.service.ProjectService;
 import it.unipi.riskDeV.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,139 +25,68 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectListener {
 
     private final UserService userService;
-    private final PackageService packageService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
     private final FailedEventRepository failedEventRepository;
     private final ObjectMapper objectMapper;
 
-    
-    /************************/
-    /* User-Project Syncing */
-    /************************/
-
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onProjectCreated(ProjectCreatedEvent event) {
-        log.info("[Project Listener] Project created: {}. Syncing admin profile for: {}", event.projectName(), event.adminUsername());
-        
-        var result = userService.addProjectToUser(event.adminUsername(), event.projectName());
-        if (result instanceof Result.Failure<?> failure) {
-            log.error("Error syncing admin profile for project {}", event.projectName(), failure.error());
-            saveToDLQ(event, failure.error());
-        } else {
-            log.debug("Successfully synced admin profile for project {}", event.projectName());
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
+    public void handleProjectEvent(ProjectEvent event) {
+        log.info("[Project Listener] Processing {} for project: {}", event.getClass().getSimpleName(), event.projectName());
+
+        try {
+            switch (event) {
+                case ProjectEvent.ProjectCreated c -> 
+                    syncUserAction(c.adminUsername(), c.projectName(), true, c);
+
+                case ProjectEvent.CollaboratorAdded a -> 
+                    syncUserAction(a.collaboratorUsername(), a.projectName(), true, a);
+
+                case ProjectEvent.CollaboratorRemoved r -> 
+                    syncUserAction(r.collaboratorUsername(), r.projectName(), false, r);
+
+                case ProjectEvent.ProjectDeleted d -> 
+                    handleProjectDeletionCleanup(d);
+
+                case ProjectEvent.CalculateRiskMetrics m -> 
+                    handleRiskCalculation(m);
+
+                case ProjectEvent.ProjectPackagesUpdated u -> {}
+            };
+        } catch (Exception e) {
+            log.error("Unexpected error in ProjectListener for project {}", event.projectName(), e);
+            saveToDLQ(event, new DomainError.SystemError());
         }
     }
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onProjectDeleted(ProjectDeletedEvent event) {
-        log.info("[Project Listener] Project deleted: {}. Cleaning involved users profiles.", event.projectName());
-
-        if (event.involvedCollaborators() == null || event.involvedCollaborators().isEmpty()) {
-            log.debug("No collaborators to clean for project {}", event.projectName());
-            return;
+    private void syncUserAction(String username, String projectName, boolean isAdd, ProjectEvent event) {
+        var result = isAdd ? userService.addProjectToUser(username, projectName) : userService.removeProjectFromUser(username, projectName);
+            
+        if (result instanceof Result.Failure<?> failure) {
+            log.error("Failed to {} project {} for user {}: {}", isAdd ? "add" : "remove", projectName, username, failure.error().message());
+            saveToDLQ(event, failure.error());
         }
+    }
+
+    private void handleProjectDeletionCleanup(ProjectEvent.ProjectDeleted event) {
+        if (event.involvedCollaborators() == null || event.involvedCollaborators().isEmpty()) return;
 
         for (String username : event.involvedCollaborators()) {
             var result = userService.removeProjectFromUser(username, event.projectName());
             if (result instanceof Result.Failure<?> failure) {
-                log.error("Failed to remove project from user {}. Saving to DLQ. Error: {}", username, failure.error().message());
-                saveToDLQ(new CollaboratorRemovedEvent(event.projectName(), username), failure.error());
-            } else {
-                log.debug("Successfully removed project from user {}", username);
+                saveToDLQ(new ProjectEvent.CollaboratorRemoved(event.projectName(), username), failure.error());
             }
         }
     }
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onCollaboratorAdded(CollaboratorAddedEvent event) {
-        log.debug("[Project Listener] Collaborator {} added to {}. Updating user profile.", event.collaboratorUsername(), event.projectName());
-        
-        var result = userService.addProjectToUser(event.collaboratorUsername(), event.projectName());
+    private void handleRiskCalculation(ProjectEvent.CalculateRiskMetrics event) {
+        var result = projectService.updateRiskMetrics(event.projectName());
         if (result instanceof Result.Failure<?> failure) {
-            log.error("Failed to add project to collaborator {}. Saving to DLQ. Error: {}", event.collaboratorUsername(), failure.error().message());
             saveToDLQ(event, failure.error());
-        } else {
-            log.debug("Successfully added project to collaborator {}", event.collaboratorUsername());
         }
     }
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onCollaboratorRemoved(CollaboratorRemovedEvent event) {
-        log.debug("[Project Listener] Collaborator {} removed from {}. Updating user profile.", event.collaboratorUsername(), event.projectName());
-        
-        var result = userService.removeProjectFromUser(event.collaboratorUsername(), event.projectName());
-        if (result instanceof Result.Failure<?> failure) {
-            log.error("Failed to remove project from collaborator {}. Saving to DLQ. Error: {}", event.collaboratorUsername(), failure.error().message());
-            saveToDLQ(event, failure.error());
-        } else {
-            log.debug("Successfully removed project from collaborator {}", event.collaboratorUsername());
-        }
-    }
-
-
-    /****************************/
-    /* Risk Metrics Calculation */
-    /****************************/
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onCalculateRiskMetrics(CalculateRiskMetricsEvent event) {
-        log.debug("[Project Listener] Calculating risk metrics for project: {}", event.projectName());
-        
-        var projectOpt = projectRepository.findByName(event.projectName());
-        if (projectOpt.isEmpty()) {
-            log.warn("Project {} not found during risk calculation. Skipping.", event.projectName());
-            return;
-        }
-
-        Project project = projectOpt.get();
-        boolean dataChanged = false;
-
-        if (project.getPackages() != null) {
-            for (Project.ProjectPackage pkg : project.getPackages()) {
-                try {
-                    // Use of package service to get latest risk data
-                    Result<PackageVersionDTO> result = packageService.getPackageByNameVersion(pkg.getName(), pkg.getVersion());
-
-                    if (result instanceof Result.Success<PackageVersionDTO> success) {
-                        PackageVersionDTO details = success.data();
-                        
-                        double newScore = (details.getRiskScore() != null) ? details.getRiskScore() : 0.0;
-                        int newVulnCount = (details.getVulnerabilities() != null) ? details.getVulnerabilities().size() : 0;
-
-                        // Update only if there are changes
-                        if (pkg.getRiskScore() != newScore || pkg.getVulnerabilitiesCount() != newVulnCount) {
-                            pkg.setRiskScore(newScore);
-                            pkg.setVulnerabilitiesCount(newVulnCount);
-                            dataChanged = true;
-                        }
-                    }
-                } catch (Exception ex) {
-                    log.error("Error calculating risk for package {} in project {}", pkg.getName(), project.getName(), ex);
-                }
-            }
-        }
-
-        if (dataChanged) {
-            try {
-                project.setLastUpdate(Instant.now());
-                projectRepository.save(project);
-                log.info("[Project Listener] Risk metrics updated for project {}", event.projectName());
-            } catch (Exception e) {
-                log.error("Error saving updated risk metrics for project {}", event.projectName(), e);
-                saveToDLQ(event, new DomainError.SystemError());
-                return;
-            }
-        } else {
-            log.debug("No risk changes detected for project {}", event.projectName());
-        }
-    }
-
-     private void saveToDLQ(Object event, DomainError e) {
+    private void saveToDLQ(Object event, DomainError e) {
         try {
             FailedEvent dlq = new FailedEvent();
             dlq.setEventType(event.getClass().getSimpleName());
