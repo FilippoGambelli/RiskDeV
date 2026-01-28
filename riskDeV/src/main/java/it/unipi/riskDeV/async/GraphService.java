@@ -3,6 +3,7 @@ package it.unipi.riskDeV.async;
 import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
 import it.unipi.riskDeV.DTO.packageVersion.EmbeddedVulnerabilityDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PublishedVersionDTO;
+import it.unipi.riskDeV.DTO.project.InstalledPackageDTO;
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
 import it.unipi.riskDeV.model.graphDB.PackageVersionNode;
 import it.unipi.riskDeV.model.graphDB.VulnerabilityNode;
@@ -31,16 +32,14 @@ public class GraphService {
     private final Helper helper;
     
 
-    public Result<Void> createProjectStructure(String projectName, String adminId, List<String> packageIds) {
+    public Result<Void> createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> packageIds) {
         try {
             projectGraphRepository.createProjectNode(projectName);
-    
-            if (adminId != null) {
-                projectGraphRepository.setProjectOwner(projectName, adminId);
-            }
 
             if (packageIds != null && !packageIds.isEmpty()) {
-                projectGraphRepository.replaceAllDependencies(projectName, packageIds);
+                for (InstalledPackageDTO installedPackage : packageIds) {
+                    projectGraphRepository.replaceDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
+                }
             }
 
             return new Result.Success<>(null);
@@ -59,27 +58,11 @@ public class GraphService {
         }
     }
 
-    public Result<Void> syncProjectPackages(String projectName, List<String> packageIds) {
+    public Result<Void> syncProjectPackages(String projectName, List<InstalledPackageDTO> packageIds) {
         try {
-            projectGraphRepository.replaceAllDependencies(projectName, packageIds);
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
-        }
-    }
-
-    public Result<Void> addCollaborator(String projectName, String userId) {
-        try {
-            projectGraphRepository.addCollaboratorRelation(projectName, userId);
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
-        }
-    }
-
-    public Result<Void> removeCollaborator(String projectName, String userId) {
-        try {
-            projectGraphRepository.removeCollaboratorRelation(projectName, userId);    
+            for (InstalledPackageDTO installedPackage : packageIds) {
+                projectGraphRepository.replaceDependency(projectName, installedPackage.getName(),installedPackage.getVersion());
+            }
             return new Result.Success<>(null);
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError());

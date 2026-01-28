@@ -130,6 +130,7 @@ public class ProjectService {
                 .map(InstalledPackageDTO::getName)
                 .collect(Collectors.toSet());
             
+            // TODO: Check list of packets give us by the user 
             project.getPackages().removeIf(p -> newPackageNames.contains(p.getName()));
 
             List<Project.ProjectPackage> pkgsToAdd = newPackages.stream()
@@ -397,10 +398,11 @@ public class ProjectService {
             .toList();
         eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
-        List<String> pkgStrings = project.getPackages().stream()
-             .map(p -> p.getName() + ":" + p.getVersion())
+        // TODO: change with installedDTO
+        List<InstalledPackageDTO> pkgList = project.getPackages().stream()
+             .map(InstalledPackageDTO::fromEntity)
              .toList();
-        eventPublisher.publishEvent(new ProjectEvent.ProjectCreated(project.getName(), project.getAdmin().getUsername(), pkgStrings));
+        eventPublisher.publishEvent(new ProjectEvent.ProjectCreated(project.getName(), project.getAdmin().getUsername(), pkgList));
     }
 
     private void triggerPostPackageUpdateEvents(Project project) {
@@ -409,10 +411,10 @@ public class ProjectService {
             .toList();
         eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
-        List<String> ids = project.getPackages().stream()
-             .map(p -> p.getName() + " " + p.getVersion())
+        List<InstalledPackageDTO> pkgList = project.getPackages().stream()
+             .map(InstalledPackageDTO::fromEntity)
              .toList();
-        eventPublisher.publishEvent(new ProjectEvent.ProjectPackagesUpdated(project.getName(), ids));
+        eventPublisher.publishEvent(new ProjectEvent.ProjectPackagesUpdated(project.getName(), pkgList));
     }
 
     private Result<Void> changeCollaboratorData(String projectName, String collaboratorUsername, String newUsername, String newEmail) {

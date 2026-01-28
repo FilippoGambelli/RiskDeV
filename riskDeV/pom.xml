@@ -112,7 +112,8 @@
 							<version>1.18.30</version> 
 						</path>
 					</annotationProcessorPaths>
-				</configuration>
+					<parameters>true</parameters>
+				</configuration> 
 			</plugin>
 
 			<plugin>

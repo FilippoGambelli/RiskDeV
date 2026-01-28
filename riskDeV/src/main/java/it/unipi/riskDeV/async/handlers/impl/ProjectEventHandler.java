@@ -7,6 +7,7 @@ import it.unipi.riskDeV.async.handlers.EventHandler;
 import it.unipi.riskDeV.results.DomainError;
 import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.service.ProjectService;
+import it.unipi.riskDeV.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ProjectEventHandler implements EventHandler {
 
+    private final UserService userService;
     private final GraphService graphService;
     private final ProjectService projectService;
     private final ObjectMapper objectMapper;
@@ -48,10 +50,10 @@ public class ProjectEventHandler implements EventHandler {
                 graphService.syncProjectPackages(p.projectName(), p.packageIds());
             
             case ProjectEvent.CollaboratorAdded a -> 
-                graphService.addCollaborator(a.projectName(), a.collaboratorUsername());
+                userService.addProjectToUser(a.collaboratorUsername(),a.projectName());
             
             case ProjectEvent.CollaboratorRemoved r -> 
-                graphService.removeCollaborator(r.projectName(), r.collaboratorUsername());
+                userService.removeProjectFromUser(r.collaboratorUsername(),r.projectName());
 
             case ProjectEvent.CalculateRiskMetrics m -> 
                 projectService.updateRiskMetrics(m.projectName());

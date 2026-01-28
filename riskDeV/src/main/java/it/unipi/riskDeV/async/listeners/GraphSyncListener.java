@@ -46,11 +46,9 @@ public class GraphSyncListener {
                 case ProjectEvent.ProjectPackagesUpdated p -> 
                     graphService.syncProjectPackages(p.projectName(), p.packageIds());
                 
-                case ProjectEvent.CollaboratorAdded a -> 
-                    graphService.addCollaborator(a.projectName(), a.collaboratorUsername());
+                case ProjectEvent.CollaboratorAdded a -> {}
                 
-                case ProjectEvent.CollaboratorRemoved r -> 
-                    graphService.removeCollaborator(r.projectName(), r.collaboratorUsername());
+                case ProjectEvent.CollaboratorRemoved r -> {}
 
                 case ProjectEvent.CalculateRiskMetrics m -> {}
             }
