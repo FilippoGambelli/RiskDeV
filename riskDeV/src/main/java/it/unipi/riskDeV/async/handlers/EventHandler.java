@@ -1,6 +1,8 @@
 package it.unipi.riskDeV.async.handlers;
 
+import it.unipi.riskDeV.results.Result;
+
 public interface EventHandler {
     boolean canHandle(String eventType);
-    void handle(String payloadJson) throws Exception;
+    Result<Void> handle(String payloadJson);
 }

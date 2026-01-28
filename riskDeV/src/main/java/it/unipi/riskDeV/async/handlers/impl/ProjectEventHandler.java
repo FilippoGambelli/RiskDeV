@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unipi.riskDeV.async.GraphService;
 import it.unipi.riskDeV.async.events.ProjectEvent;
 import it.unipi.riskDeV.async.handlers.EventHandler;
+import it.unipi.riskDeV.results.DomainError;
+import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +26,18 @@ public class ProjectEventHandler implements EventHandler {
     }
 
     @Override
-    public void handle(String payloadJson) throws Exception {
-        ProjectEvent event = objectMapper.readValue(payloadJson, ProjectEvent.class);
+    public Result<Void> handle(String payloadJson) {
+        ProjectEvent event;
+        try {
+            event = objectMapper.readValue(payloadJson, ProjectEvent.class);    
+        } catch (Exception e) {
+            return new Result.Failure<>(new DomainError.SystemError());
+        }
+        
         
         log.debug("DLQ Retry: Handling project event for {}", event.projectName());
 
-        switch (event) {
+        return switch (event) {
             case ProjectEvent.ProjectCreated c -> 
                 graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.packageIds());
             
@@ -47,6 +55,6 @@ public class ProjectEventHandler implements EventHandler {
 
             case ProjectEvent.CalculateRiskMetrics m -> 
                 projectService.updateRiskMetrics(m.projectName());
-        }
+        };
     }
 }

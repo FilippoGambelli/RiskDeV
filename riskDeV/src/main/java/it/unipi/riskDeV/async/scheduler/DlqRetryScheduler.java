@@ -3,6 +3,7 @@ package it.unipi.riskDeV.async.scheduler;
 import it.unipi.riskDeV.async.handlers.EventHandler;
 import it.unipi.riskDeV.model.documentDB.FailedEvent;
 import it.unipi.riskDeV.repository.documentDB.FailedEventRepository;
+import it.unipi.riskDeV.results.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,12 +48,16 @@ public class DlqRetryScheduler {
                 .orElseThrow(() -> new IllegalArgumentException("No handler for type: " + failedEvent.getEventType()));
 
             // logic execution
-            handler.handle(failedEvent.getPayloadJson());
-
-            markAsResolved(failedEvent);
-
+            var result = handler.handle(failedEvent.getPayloadJson());
+            if (result instanceof Result.Success) {
+                markAsResolved(failedEvent);
+            } else if (result instanceof Result.Failure failure) {
+                String errorMessage = failure.error().message();
+                markAsFailedAgain(failedEvent, errorMessage);
+            }
+            
         } catch (Exception e) {
-            markAsFailedAgain(failedEvent, e);
+            markAsFailedAgain(failedEvent, e.getMessage());
         }
     }
 
@@ -63,10 +68,10 @@ public class DlqRetryScheduler {
         log.info("Event {} healed successfully.", event.getId());
     }
 
-    private void markAsFailedAgain(FailedEvent event, Exception e) {
+    private void markAsFailedAgain(FailedEvent event, String resultMessage) {
         event.setRetryCount(event.getRetryCount() + 1);
         event.setLastRetryAt(Instant.now());
-        event.setExceptionMessage(e.getMessage());
+        event.setExceptionMessage(resultMessage);
         failedEventRepository.save(event);
         log.error("Retry failed for event {}. Count: {}", event.getId(), event.getRetryCount());
     }

@@ -3,11 +3,13 @@ package it.unipi.riskDeV.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.user.UserDTO;
+import it.unipi.riskDeV.async.events.UserEvent;
 import it.unipi.riskDeV.model.documentDB.User;
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
 import it.unipi.riskDeV.results.DomainError;
@@ -22,6 +24,7 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Result<UserDTO> getProfile(String username) {
         log.info("Get user profile");
@@ -71,6 +74,7 @@ public class UserService {
         
         User user = userOpt.get();
         boolean isUpdated = false;
+        boolean importantChanges = false;
 
         if (request.getUsername() != null && !request.getUsername().isBlank()) {
             // Check if username is changing
@@ -83,6 +87,16 @@ public class UserService {
 
                 user.setUsername(request.getUsername());
                 isUpdated = true;
+                importantChanges = true;
+            }
+        }
+
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            if (!request.getEmail().equals(user.getEmail())) {
+                
+                user.setEmail(request.getEmail());
+                isUpdated = true;
+                importantChanges = true;
             }
         }
 
@@ -90,10 +104,12 @@ public class UserService {
             user.setFirstName(request.getFirstName());
             isUpdated = true;
         }
+        
         if (request.getLastName() != null && !request.getLastName().isBlank()) {
             user.setLastName(request.getLastName());
             isUpdated = true;
         }
+
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             isUpdated = true;
@@ -102,8 +118,19 @@ public class UserService {
         if (isUpdated) {
             try {
                 User savedUser = userRepository.save(user);
-
                 log.info("User profile updated");
+
+                if (importantChanges) {
+                    if (savedUser.getProjectNames() != null && !savedUser.getProjectNames().isEmpty()) {
+                        eventPublisher.publishEvent(new UserEvent.UserUpdated(
+                                savedUser.getProjectNames(),             
+                                username,          
+                                savedUser.getUsername(), 
+                                savedUser.getEmail()
+                        ));
+                    }
+                }
+                
                 return new Result.Success<>(new UserDTO(savedUser));
 
             } catch (Exception e) {
@@ -118,14 +145,17 @@ public class UserService {
     public Result<String> deleteUser(String username) {
         log.info("Deleting user profile");
 
-        if (!userRepository.existsByUsername(username)) {
+        var userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User not found"));
         }
-
+        
+        User user = userOpt.get();
         try {
             userRepository.deleteByUsername(username);
             log.info("User profile deleted");
 
+            eventPublisher.publishEvent(new UserEvent.UserDeleted(user.getProjectNames(),username));
             return new Result.Success<>("User profile deleted");
 
         } catch (Exception e) {

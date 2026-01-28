@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -239,6 +240,25 @@ public class ProjectService {
         return new Result.Success<>(dtos);
     }
 
+    public Result<Void> changeCollaboratorDataInProjects(List<String> projectNames, String collaboratorUsername, String newUsername, String newEmail) {
+        List<DomainError> errors = new ArrayList<>();
+
+        for (String projectName : projectNames) {
+            Result<Void> result = changeCollaboratorData(projectName, collaboratorUsername, newUsername, newEmail);
+
+            if (result instanceof Result.Failure<Void> failure) {
+                errors.add(failure.error());
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            log.error("Aggiornamento parziale per {} fallito in alcuni progetti. Errori: {}", collaboratorUsername, errors);
+            return new Result.Failure<>(new DomainError.SystemError());
+        }
+
+        return new Result.Success<>(null);
+    }
+
     @Transactional
     public Result<String> removeCollaboratorFromProject(String projectName, String collaboratorUsername) {
         var projectOpt = projectRepository.findByName(projectName);
@@ -269,6 +289,25 @@ public class ProjectService {
         } else {
             return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
         }
+    }
+
+    public Result<Void> removeCollaboratorFromProjects(List<String> projectsName, String username) {
+        List<DomainError> errors = new ArrayList<>();
+
+        for (String pName : projectsName) {
+            Result<String> result = removeCollaboratorFromProject(pName, username);
+
+            if (result instanceof Result.Failure<?> failure) {
+                errors.add(failure.error());
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            log.error("Failed removal of user {} from a project.", username);
+            return new Result.Failure<>(new DomainError.SystemError());
+        }
+
+        return new Result.Success<>(null);
     }
 
     public Result<Void> updateRiskMetrics(String projectName) {
@@ -374,6 +413,36 @@ public class ProjectService {
              .map(p -> p.getName() + " " + p.getVersion())
              .toList();
         eventPublisher.publishEvent(new ProjectEvent.ProjectPackagesUpdated(project.getName(), ids));
+    }
+
+    private Result<Void> changeCollaboratorData(String projectName, String collaboratorUsername, String newUsername, String newEmail) {
+        var projectOpt = projectRepository.findByName(projectName);
+        if (projectOpt.isEmpty()) {
+            return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        }
+
+        Project project = projectOpt.get();
+        var collaborator = project.getCollaborators();
+        collaborator.stream()
+                    .filter(c -> c.getUsername().equals(collaboratorUsername))
+                    .findFirst() 
+                    .ifPresent(c -> {
+                        if (newUsername != null && !newUsername.isBlank()) c.setUsername(newUsername);
+                        if (newEmail != null && !newEmail.isBlank()) c.setEmail(newEmail);
+                    });
+        
+        if (project.getAdmin().getUsername().equals(collaboratorUsername)) {
+            if (newUsername != null && !newUsername.isBlank()) {
+                project.getAdmin().setUsername(newUsername);
+            }    
+
+            if (newEmail != null && !newEmail.isBlank()) {
+                project.getAdmin().setEmail(newEmail);
+            }    
+        }
+
+        projectRepository.save(project);
+        return new Result.Success<>(null);
     }
 
 }
