@@ -126,6 +126,7 @@ public class ProjectService {
         }
 
         try {
+            // TODO: Could be very useful transform this logic in an API call to give missing packages
             List<String> missingPackages = new ArrayList<>();
             for (InstalledPackageDTO pkg : newPackages) {
                 if (packageService.getPackageByNameVersion(pkg.getName(), pkg.getVersion()) instanceof Result.Failure) {
@@ -141,7 +142,6 @@ public class ProjectService {
                 .map(InstalledPackageDTO::getName)
                 .collect(Collectors.toSet());
             
-            // TODO: Check list of packets give us by the user 
             project.getPackages().removeIf(p -> newPackageNames.contains(p.getName()));
 
             List<Project.ProjectPackage> pkgsToAdd = newPackages.stream()
