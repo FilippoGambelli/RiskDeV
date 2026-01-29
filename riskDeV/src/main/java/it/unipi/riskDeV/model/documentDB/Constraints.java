@@ -3,10 +3,12 @@ package it.unipi.riskDeV.model.documentDB;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import it.unipi.riskDeV.DTO.packageVersion.ConstraintsDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Constraints {
 

@@ -1,10 +1,14 @@
 package it.unipi.riskDeV.DTO.packageVersion;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.documentDB.Constraints;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "ConstraintsDTO", description = "DTO representing version constraints for a package")
 public class ConstraintsDTO {
 

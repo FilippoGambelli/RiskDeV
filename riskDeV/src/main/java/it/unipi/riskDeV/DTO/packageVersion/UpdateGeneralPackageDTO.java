@@ -8,8 +8,6 @@ import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.documentDB.PackageVersion;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -17,15 +15,12 @@ import jakarta.validation.constraints.Size;
 public class UpdateGeneralPackageDTO {
 
     @Schema(description = "Author of the package", example = "Travis E. Oliphant")
-    @Size(max = 255, message = "Author name is too long")
     private Optional<String> author;
 
     @Schema(description = "Email of the author", example = "travis@numpy.org")
-    @Email(message = "Invalid email format")
     private Optional<String> authorEmail;
 
     @Schema(description = "Description of the package")
-    @Size(max = 2000, message = "Description is too long (max 2000 chars)")
     private Optional<String> description;
 
     @Schema(description = "The official URL of the package", example = "https://numpy.org/")

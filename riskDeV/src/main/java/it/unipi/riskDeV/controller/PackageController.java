@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.packageVersion.AddPackageVersionDTO;
 import it.unipi.riskDeV.DTO.packageVersion.UpdateGeneralPackageDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
@@ -48,7 +49,7 @@ public class PackageController {
         @ApiResponse(responseCode = "200", description = "Package found", content = @Content(schema = @Schema(implementation = PackageVersionDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getPackageByName(@Parameter(description = "Name of the package", required = true, example = "Django") @PathVariable String packageName) {
+    public ResponseEntity<?> getPackageByName(@Parameter(description = "Name of the package", required = true, example = "requests") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getPackageByName(packageName))), HttpStatus.OK);
     }
 
@@ -62,8 +63,8 @@ public class PackageController {
         @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getPackageVersion(
-            @Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
-            @Parameter(description = "Package version", required = true, example = "1.21.0") @PathVariable String version) {
+            @Parameter(description = "Package name", required = true, example = "requests") @PathVariable String packageName,
+            @Parameter(description = "Package version", required = true, example = "2.27.0") @PathVariable String version) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getPackageByNameVersion(packageName, version))), HttpStatus.OK);
     }
 
@@ -106,7 +107,7 @@ public class PackageController {
         @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PackageVersionDTO.class)))),
         @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getSafeVersions(@Parameter(description = "Package name", required = true, example = "Django") @PathVariable String packageName) {
+    public ResponseEntity<?> getSafeVersions(@Parameter(description = "Package name", required = true, example = "requests") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getSafeVersions(packageName))), HttpStatus.OK);
     }
 
@@ -119,7 +120,7 @@ public class PackageController {
         @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PackageVersionDTO.class)))),
         @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getIndirectSafeVersions(@Parameter(description = "Package name", required = true, example = "Django") @PathVariable String packageName) {
+    public ResponseEntity<?> getIndirectSafeVersions(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getIndirectSafeVersions(packageName))), HttpStatus.OK);
     }
 
@@ -129,7 +130,7 @@ public class PackageController {
         description = "Creates a new version of a package in the database and updates graph relationships."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Version published successfully"),
+        @ApiResponse(responseCode = "201", description = "Version published successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "409", description = "Version already exists", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Invalid version format", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
@@ -144,10 +145,10 @@ public class PackageController {
         description = "Updates metadata for all versions of the specified package."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Package metadata updated"),
+        @ApiResponse(responseCode = "200", description = "Package metadata updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> updatePackageMetadata(@Parameter(description = "Package name", required = true, example = "requests") @PathVariable String packageName,
+    public ResponseEntity<?> updatePackageMetadata(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
                                                    @Valid @RequestBody UpdateGeneralPackageDTO packageDTO) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.updatePackageMetadata(packageName, packageDTO))), HttpStatus.OK);
     }
@@ -158,11 +159,11 @@ public class PackageController {
         description = "Updates details of a specific version, such as dependencies, vulnerabilities, and Python requirement."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Package version updated"),
+        @ApiResponse(responseCode = "200", description = "Package version updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> updatePackageVersion(@Parameter(description = "Package name", required = true, example = "Flask") @PathVariable String packageName,
-                                                  @Parameter(description = "Package version", required = true, example = "2.1.1") @PathVariable String  version,
+    public ResponseEntity<?> updatePackageVersion(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
+                                                  @Parameter(description = "Package version", required = true, example = "10.10.0") @PathVariable String  version,
                                                   @Valid @RequestBody UpdatePackageVersionDTO updateDTO) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.updatePackageVersion(packageName, version, updateDTO))), HttpStatus.OK);
     }
@@ -173,11 +174,11 @@ public class PackageController {
         description = "Deletes a specific version from the database and graph."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Version deleted successfully"),
+        @ApiResponse(responseCode = "204", description = "Version deleted successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> deletePackageVersion(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
-                                                  @Parameter(description = "Package version", required = true, example = "1.21.0") @PathVariable String version) {
-        return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.deletePackageVersion(packageName, version))), HttpStatus.NO_CONTENT);
+                                                  @Parameter(description = "Package version", required = true, example = "10.10.0") @PathVariable String version) {
+        return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.deletePackageVersion(packageName, version))), HttpStatus.OK);
     }
 }
