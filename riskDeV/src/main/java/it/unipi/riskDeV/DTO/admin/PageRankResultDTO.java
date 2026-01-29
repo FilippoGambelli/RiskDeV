@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CentralityResultDTO {
+public class PageRankResultDTO {
     @Schema(description = "package name", example = "numpy")
     private String package_name;
 
-    @Schema(description = "score", example = "7426")
+    @Schema(description = "package version", example = "1.0")
+    private String version;
+
+    @Schema(description = "score", example = "65.59")
     private Double score;
 }

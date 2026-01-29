@@ -22,10 +22,10 @@ public class PackageDAO {
                     .first("risk_score").as("risk_score"),
                 Aggregation.bucket("risk_score").withBoundaries(0, 2, 4, 6, 8, 10)
                     .withDefaultBucket("Other").andOutputCount().as("count"),
-                Aggregation.group().sum("count").as("total_packages")
-                    .push(new Document("risk_interval", "$_id").append("count", "$count")).as("buckets"),
+                Aggregation.group().sum("count").as("totalPackages")
+                    .push(new Document("riskInterval", "$_id").append("count", "$count")).as("buckets"),
                 Aggregation.project().andExclude("_id")
-                    .andInclude("total_packages", "buckets")
+                    .andInclude("totalPackages", "buckets")
         );
 
         AggregationResults<RiskAggregationDTO> result = mongoTemplate.aggregate(aggregation, "package", RiskAggregationDTO.class);

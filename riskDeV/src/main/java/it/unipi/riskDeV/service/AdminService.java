@@ -13,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import it.unipi.riskDeV.DAO.PackageDAO;
 import it.unipi.riskDeV.DAO.ProjectDAO;
 import it.unipi.riskDeV.DAO.VulnerabilityDAO;
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
 import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
 import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
+import it.unipi.riskDeV.DTO.admin.PageRankResultDTO;
 import it.unipi.riskDeV.DTO.admin.PerfectStormVulnerabilityDTO;
 import it.unipi.riskDeV.DTO.admin.RiskAggregationDTO;
 import it.unipi.riskDeV.DTO.admin.VulnerabilityTrendDTO;
@@ -30,7 +32,7 @@ public class AdminService {
     private final PackageDAO packageDAO;
     private final VulnerabilityDAO vulnerabilityDAO;
 
-    public Result<String> addNewAdmin(String username) {
+    public Result<MessageResponseDTO> addNewAdmin(String username) {
         
         var optionalUser = userRepository.findByUsername(username);
 
@@ -54,10 +56,10 @@ public class AdminService {
             return new Result.Failure<>(new DomainError.SystemError());
         }
 
-        return new Result.Success<>("Administrator added successfully");
+        return new Result.Success<>(new MessageResponseDTO("Administrator added successfully"));
     }
 
-    public Result<String> removeAdmin(String username) {
+    public Result<MessageResponseDTO> removeAdmin(String username) {
         
         var optionalUser = userRepository.findByUsername(username);
 
@@ -81,7 +83,7 @@ public class AdminService {
             return new Result.Failure<>(new DomainError.SystemError());
         }
 
-        return new Result.Success<>("Administrator removed successfully");
+        return new Result.Success<>(new MessageResponseDTO("Administrator removed successfully"));
     }
 
     public Result<List<CentralityResultDTO>> getTopByDegree() {
@@ -89,8 +91,8 @@ public class AdminService {
         return new Result.Success<>(results);
     }
 
-    public Result<List<CentralityResultDTO>> getTopByPageRank() {
-        var results = PackageGraphRepository.topByPageRank();
+    public Result<List<PageRankResultDTO>> getTopByPageRank(Integer limit) {
+        var results = PackageGraphRepository.topByPageRank(limit);
         return new Result.Success<>(results);
     }
 
@@ -116,10 +118,7 @@ public class AdminService {
     }
 
     public Result<List<PerfectStormVulnerabilityDTO>> getMostDangerousVulnerabilities(int limit) {
-        try {
-            return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
-        }
+        return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
+        
     }
 }

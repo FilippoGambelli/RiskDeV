@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.admin.AggreagationPackageDTO;
 import it.unipi.riskDeV.DTO.admin.CentralityResultDTO;
 import it.unipi.riskDeV.DTO.admin.ContributorCountDTO;
@@ -60,7 +61,7 @@ public class AdminController {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopByDegree())), HttpStatus.OK);
     }
 
-    @GetMapping("/packagesWithPageRank")
+    @GetMapping("/packagesWithPageRank/{limit}")
     @Operation(
         summary = "Get the top packages by PageRank",
         description = "Returns the list of packages ranked by PageRank score, representing their global influence across the dependency network. Packages with higher scores impact a larger portion of the ecosystem."
@@ -68,8 +69,10 @@ public class AdminController {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the top packages by PageRank", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CentralityResultDTO.class)))
     })
-    public ResponseEntity<?> getTopByPageRank() {
-        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopByPageRank())), HttpStatus.OK);
+    public ResponseEntity<?> getTopByPageRank(
+        @Parameter(description = "Limit the number of results", example = "10", required = true) @PathVariable Integer limit
+    ) {
+        return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopByPageRank(limit))), HttpStatus.OK);
     }
 
 
@@ -80,11 +83,11 @@ public class AdminController {
         description = "Promotes an existing user to have administrator privileges."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User successfully promoted to administrator", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string", example = "Administrator added successfully"))),
+        @ApiResponse(responseCode = "200", description = "User successfully promoted to administrator", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> addNewAdmin(
-        @Parameter(description = "The username of the user to be promoted to administrator", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
+        @Parameter(description = "The username of the user to be promoted to administrator", example = "francesca.romano", schema = @Schema(type = "string")) @PathVariable String username
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.addNewAdmin(username))), HttpStatus.OK);
     }
@@ -96,11 +99,11 @@ public class AdminController {
         description = "Revokes administrator privileges from an existing administrator."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Administrator successfully removed", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string", example = "Administrator removed successfully"))),
+        @ApiResponse(responseCode = "200", description = "Administrator successfully removed", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Administrator not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removeAdmin(
-        @Parameter(description = "The username of the administrator to be removed", example = "david.russo", schema = @Schema(type = "string")) @PathVariable String username
+        @Parameter(description = "The username of the administrator to be removed", example = "francesca.romano", schema = @Schema(type = "string")) @PathVariable String username
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.removeAdmin(username))), HttpStatus.OK);
     }
@@ -114,7 +117,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the most used packages", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AggreagationPackageDTO.class)))
     })
     public ResponseEntity<?> getMostUsedPackages(
-        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", required = true) @PathVariable Integer limit
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostUsedPackages(limit))), HttpStatus.OK);
     }
@@ -129,7 +132,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the most used packages from the last month", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AggreagationPackageDTO.class)))
     })
     public ResponseEntity<?> getMostUsedPackagesLastMonth(
-        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", required = true) @PathVariable Integer limit
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostUsedPackagesLastMonth(limit))), HttpStatus.OK);
     }
@@ -143,7 +146,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the top contributors from the last month", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContributorCountDTO.class)))
     })
     public ResponseEntity<?> getTopContributorLastMonth(
-        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", required = true) @PathVariable Integer limit
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getTopContributorsLastMonth(limit))), HttpStatus.OK);
     }
@@ -182,7 +185,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the most critical perfect storm vulnerabilities", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PerfectStormVulnerabilityDTO.class)))
     })
     public ResponseEntity<?> getPerfectStormVulnerabilities(
-        @Parameter(description = "Limit the number of results", example = "10", schema = @Schema(type = "int")) @PathVariable int limit
+        @Parameter(description = "Limit the number of results", example = "10", required = true) @PathVariable Integer limit
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (adminService.getMostDangerousVulnerabilities(limit))), HttpStatus.OK);
     }
