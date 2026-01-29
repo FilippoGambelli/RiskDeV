@@ -21,7 +21,7 @@ public interface PackageGraphRepository extends Neo4jRepository<PackageNode, Str
     // Degree Centrality – packages with the most direct dependents
     @Query("""
         MATCH (v:Version)<-[:DEPENDS_ON]-(d:Version)
-        WITH v.package_name AS packageName, v.version AS packageVersion, count(DISTINCT d) AS score
+        WITH v.package_name AS packageName, v.version AS version, count(DISTINCT d) AS score
         RETURN packageName, version, score
         ORDER BY score DESC
         LIMIT 10

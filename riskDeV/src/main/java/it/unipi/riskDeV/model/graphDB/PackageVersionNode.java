@@ -1,6 +1,5 @@
 package it.unipi.riskDeV.model.graphDB;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
@@ -18,7 +17,6 @@ import java.util.List;
 @Node("Version")
 public class PackageVersionNode {
     @Id
-    @GeneratedValue
     private String id;
 
     @Property("package_name")
@@ -32,21 +30,17 @@ public class PackageVersionNode {
     @Property("risk_score")
     private Double riskScore;
 
-    //private String documentation;
+    private String documentation;
+
+    @Property("requires_python")
+    private String requiresPython;
 
     public PackageVersionNode(PublishedVersionDTO publishedVersionDTO, Double risk_score) {
         this.packageName = publishedVersionDTO.getPackageName();
         this.version = publishedVersionDTO.getVersion();
         this.versionArray = publishedVersionDTO.getVersionArray();
-        //this.documentation = publishedVersionDTO.getDocumentationURL();
+        this.documentation = publishedVersionDTO.getDocumentationURL();
+        this.requiresPython = publishedVersionDTO.getRequiresPython();
         this.riskScore = risk_score;
-    }
-
-    public PackageVersionNode(String packageName, String version, List<Integer> versionArray, Double riskScore, String documentation) {
-        this.packageName = packageName;
-        this.version = version;
-        this.versionArray = versionArray;
-        this.riskScore = riskScore;
-        //this.documentation = documentation;
     }
 }

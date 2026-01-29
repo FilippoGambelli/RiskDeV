@@ -11,7 +11,7 @@ public class CentralityResultDTO {
     private String packageName;
     
     @Schema(description = "package version", example = "1.0")
-    private String packageVersion;
+    private String version;
 
     @Schema(description = "score", example = "8.9")
     private Double score;

@@ -38,6 +38,8 @@ public class PublishedVersionDTO {
     @Valid 
     private List<String> vulnerabilities;
 
+    private String requiresPython;
+
     public PublishedVersionDTO(PackageVersion model) {
         this.packageName = model.getPackageName();
         this.version = model.getVersion();
@@ -52,5 +54,6 @@ public class PublishedVersionDTO {
         }
         this.documentationURL = model.getDocumentationURL();
         this.riskScore = model.getRiskScore();
+        this.requiresPython = model.getRequiresPython();
     }
 }
