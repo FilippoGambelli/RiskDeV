@@ -126,6 +126,17 @@ public class ProjectService {
         }
 
         try {
+            List<String> missingPackages = new ArrayList<>();
+            for (InstalledPackageDTO pkg : newPackages) {
+                if (packageService.getPackageByNameVersion(pkg.getName(), pkg.getVersion()) instanceof Result.Failure) {
+                    missingPackages.add(pkg.getName() + "@" + pkg.getVersion());
+                }
+            }
+
+            if (!missingPackages.isEmpty()) {
+                return new Result.Failure<>(new DomainError.ValidationFailed("The following packtes are not in the system: " + String.join(", ", missingPackages)));
+            }
+
             Set<String> newPackageNames = newPackages.stream()
                 .map(InstalledPackageDTO::getName)
                 .collect(Collectors.toSet());
@@ -398,7 +409,6 @@ public class ProjectService {
             .toList();
         eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
-        // TODO: change with installedDTO
         List<InstalledPackageDTO> pkgList = project.getPackages().stream()
              .map(InstalledPackageDTO::fromEntity)
              .toList();
