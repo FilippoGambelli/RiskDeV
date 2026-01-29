@@ -28,6 +28,10 @@ VERSION_WEIGHTS = {
 
 # --- Helpers ---
 def normalize_version(version_str):
+    """
+    Converts a version string into a list of integers/weights for comparison.
+    Example: "1.0.0-beta" -> [1, 0, 0, -4, 0, 0]
+    """
     if not version_str:
         return [0] * MAX_VERSION_LEN
     
@@ -97,8 +101,21 @@ class Neo4jImporter:
         props = {}
         for neo_key, json_path in mapping.items():
             val = self._extract_value(item, json_path)
+            
             if val is not None:
+                # 1. Enforce Floats (Double in Java)
+                if neo_key in ["risk_score", "baseScore"]:
+                    try:
+                        val = float(val)
+                    except (ValueError, TypeError):
+                        val = 0.0
+                
+                # 2. Enforce Strings (prevents "Cannot construct StringValue from null")
+                elif neo_key in ["documentation", "requires_python", "description", "package_name", "version", "cve_id"]:
+                    val = str(val)
+                
                 props[neo_key] = val
+            
         return props
 
     def _map_rel_properties(self, item, rel_type, extra_data=None):
@@ -136,12 +153,7 @@ class Neo4jImporter:
                 session.run(query, batch=chunk)
 
     def _parse_requirement(self, req_input):
-        """
-        Parses requirements handling both raw strings and dictionary objects 
-        (e.g., {'full': 'name (>=1.0)', 'name': 'name'}).
-        """
         req_str = ""
-        
         # Handle Dictionary input (common in package.json)
         if isinstance(req_input, dict):
             req_str = req_input.get("full") or req_input.get("name")
@@ -152,10 +164,9 @@ class Neo4jImporter:
         if not req_str:
             return None, None
 
-        # Remove environment markers (e.g., "; python_version < '3.8'")
+        # Remove environment markers
         base_req = req_str.split(';')[0].strip()
         
-        # Regex to separate package name from version constraints
         match = re.match(r"^([a-zA-Z0-9_\-\.]+)(.*)$", base_req)
         
         if not match: 
@@ -181,7 +192,6 @@ class Neo4jImporter:
             for req in requirements:
                 req_name, req_constraints = self._parse_requirement(req)
                 
-                # Skip if parsing failed or target package is not in our DB
                 if not req_name or req_name not in self.available_versions_map: 
                     continue
 
@@ -194,7 +204,6 @@ class Neo4jImporter:
                     valid_targets = candidates
                 else:
                     try:
-                        # Filter candidate versions using SpecifierSet
                         spec = SpecifierSet(req_constraints)
                         valid_targets = [c for c in candidates if spec.contains(c["ver_obj"], prereleases=True)]
                     except Exception: 
@@ -255,6 +264,8 @@ class Neo4jImporter:
 
                 pkg_props = self._map_properties(item, "Package")
                 ver_props = self._map_properties(item, "Version")
+                
+                # Calculate version_array immediately for imported nodes
                 ver_props["version_array"] = normalize_version(ver_str)
                 
                 has_ver_props = self._map_rel_properties(item, "HAS_VERSION")
@@ -309,23 +320,41 @@ class Neo4jImporter:
         for item in data:
             props = self._map_properties(item, "Project")
             if not props.get("name"): continue
+            
             dependencies = []
             for dep in item.get("packages", []):
+                # FIX 1: Ensure name and version exist
+                if not dep.get("name") or not dep.get("version"):
+                    continue
+                    
                 rel_props = self._map_rel_properties(dep, "USES")
+                
                 dependencies.append({
                     "name": dep.get("name"), 
                     "version": dep.get("version"),
-                    "rel_props": rel_props
+                    "rel_props": rel_props,
+                    # FIX 2: Compute version array here to avoid nulls later
+                    "version_array": normalize_version(dep.get("version"))
                 })
-            batch.append({ "props": props, "deps": dependencies })
+            
+            if dependencies: # Only append if dependencies exist
+                batch.append({ "props": props, "deps": dependencies })
 
+        # FIX 3: Updated Query with ON CREATE SET for robustness
         query = """
         UNWIND $batch AS row
         MERGE (prj:Project {name: row.props.name})
         SET prj += row.props
         FOREACH (dep IN row.deps |
             MERGE (p:Package {package_name: dep.name})
+            
             MERGE (v:Version {package_name: dep.name, version: dep.version})
+            ON CREATE SET 
+                v.version_array = dep.version_array,
+                v.risk_score = 0.0,
+                v.documentation = '',
+                v.requires_python = ''
+            
             MERGE (p)-[:HAS_VERSION]->(v)
             MERGE (prj)-[r:USES]->(v)
             SET r += dep.rel_props
@@ -333,12 +362,62 @@ class Neo4jImporter:
         """
         self._run_batch(query, batch, "Importing Projects")
 
+    def set_default_values(self):
+        print("Sanitizing data types and setting defaults...")
+        
+        queries = [
+            # 1. Force Strings (Handles NULLs and Type Mismatches)
+            "MATCH (v:Version) SET v.documentation = toString(coalesce(v.documentation, ''))",
+            "MATCH (v:Version) SET v.requires_python = toString(coalesce(v.requires_python, ''))",
+            
+            # 2. Force Floats (Java Double)
+            "MATCH (v:Version) SET v.risk_score = toFloat(coalesce(v.risk_score, 0.0))",
+            
+            # 3. Vulnerability Strings
+            "MATCH (vn:Vulnerability) SET vn.description = toString(coalesce(vn.description, ''))",
+            
+            # 4. Vulnerability Floats
+            "MATCH (vn:Vulnerability) SET vn.baseScore = toFloat(coalesce(vn.baseScore, 0.0))"
+        ]
+        
+        with self.driver.session(database=self.database) as session:
+            for q in queries:
+                session.run(q)
+
+        # Recalculate version_array for any stragglers
+        fetch_query = """
+            MATCH (v:Version)
+            WHERE v.version_array IS NULL
+            RETURN v.package_name AS pkg, v.version AS ver
+        """
+        
+        updates = []
+        with self.driver.session(database=self.database) as session:
+            result = session.run(fetch_query)
+            for record in result:
+                norm_ver = normalize_version(record["ver"])
+                updates.append({
+                    "pkg": record["pkg"],
+                    "ver": record["ver"],
+                    "version_array": norm_ver
+                })
+
+        if updates:
+            update_query = """
+                UNWIND $batch AS row
+                MATCH (v:Version {package_name: row.pkg, version: row.ver})
+                SET v.version_array = row.version_array
+            """
+            self._run_batch(update_query, updates, "Recalculating missing version_arrays")
+
     def run(self):
         self.create_constraints()
         self.import_vulnerabilities_base()
         self.import_packages_and_versions()
         self.import_dependencies()
         self.import_projects()
+
+        self.set_default_values()
         print("\nIMPORT COMPLETED SUCCESSFULLY")
 
 if __name__ == "__main__":
