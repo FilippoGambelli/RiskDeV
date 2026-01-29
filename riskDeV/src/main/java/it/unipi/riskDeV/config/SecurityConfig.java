@@ -29,15 +29,16 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/auth/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")  
-                .requestMatchers("/api/packages/**", "/api/vulnerabilities/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/vulnerabilities/**").permitAll()
+                .requestMatchers("/api/vulnerabilities/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/projects/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/packages/**").permitAll()
+                .requestMatchers("/api/packages/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/error").permitAll()
-                .requestMatchers("/api/events").permitAll()
-                .requestMatchers("/api/admin/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

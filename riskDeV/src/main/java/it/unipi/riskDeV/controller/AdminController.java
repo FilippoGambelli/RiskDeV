@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/admin")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(
     name = "Administrator Controller",
     description = "APIs for managing administrator actions and retrieving package centrality information"
@@ -77,7 +78,6 @@ public class AdminController {
 
 
     @PutMapping("addNewAdmin/{username}")
-    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Add a new administrator",
         description = "Promotes an existing user to have administrator privileges."
@@ -93,7 +93,6 @@ public class AdminController {
     }
 
     @DeleteMapping("removeAdmin/{username}")
-    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Remove an administrator",
         description = "Revokes administrator privileges from an existing administrator."

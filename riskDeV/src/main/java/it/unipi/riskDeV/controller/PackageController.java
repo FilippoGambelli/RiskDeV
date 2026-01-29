@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
 import it.unipi.riskDeV.DTO.MessageResponseDTO;
@@ -125,6 +126,7 @@ public class PackageController {
     }
 
     @PostMapping("/{packageName}/version")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Publish a new version",
         description = "Creates a new version of a package in the database and updates graph relationships."
@@ -140,6 +142,7 @@ public class PackageController {
     }
 
     @PutMapping("/{packageName}")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Update package metadata",
         description = "Updates metadata for all versions of the specified package."
@@ -154,6 +157,7 @@ public class PackageController {
     }
 
     @PutMapping("/{packageName}/{version}")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Update package version info",
         description = "Updates details of a specific version, such as dependencies, vulnerabilities, and Python requirement."
@@ -169,6 +173,7 @@ public class PackageController {
     }
 
     @DeleteMapping("/{packageName}/{version}")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
         summary = "Delete a package version",
         description = "Deletes a specific version from the database and graph."

@@ -3,7 +3,6 @@ package it.unipi.riskDeV.DTO.project;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.documentDB.Project;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +30,6 @@ public class InstalledPackageDTO {
     )
     @NotBlank(message = "Package version must not be blank")
     @Size(max = 50, message = "Version string is too long")
-    @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "Version contains invalid characters")
     private String version;
 
     public static InstalledPackageDTO fromEntity(Project.ProjectPackage projectPackage) {

@@ -12,14 +12,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface PackageGraphRepository extends Neo4jRepository<PackageNode, String> {
 
-    @Query(
-        "MATCH (v:Version {package_name: $packageName, version: $version}) " +
-        "MERGE (p:Package {package_name: $packageName}) " +
-        "MERGE (p)-[:HAS_VERSION]->(v)"
-        )
+    @Query("""
+        MATCH (v:Version {package_name: $packageName, version: $version})
+        MERGE (p:Package {package_name: $packageName})
+        MERGE (p)-[:HAS_VERSION]->(v)
+    """)
     void addVersionToPackage(@Param("packageName") String packageName, @Param("version") String version);
 
-    // Degree Centrality – packages with the most direct dependents
     @Query("""
         MATCH (v:Version)<-[:DEPENDS_ON]-(d:Version)
         WITH v.package_name AS package_name, count(DISTINCT d) AS score
@@ -29,7 +28,6 @@ public interface PackageGraphRepository extends Neo4jRepository<PackageNode, Str
     """)
     List<CentralityResultDTO> topByDegree();
 
-    // PageRank – global impact of packages using pre-projected GDS graph
     @Query("""
         CALL gds.pageRank.stream('pkgGraph')
         YIELD nodeId, score
