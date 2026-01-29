@@ -58,8 +58,7 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
         "RETURN vuln.cve_id AS vulnerabilityId, " +
                 "pkgName AS affectedPackage, " +
                 "maxVersion.version AS affectedVersion, " +
-                "vuln.description AS description, " +
-                "vuln.exploitabilityScore AS exploitabilityScore, " +
-                "vuln.baseScore AS baseScore")
+                "vuln.baseScore AS baseScore, " +
+                "vuln.description AS description")
     List<VulnerabilityReportDTO> findRecursiveVulnerabilities(@Param("package_name") String packageName, @Param("version") String packageVersion);
 }
