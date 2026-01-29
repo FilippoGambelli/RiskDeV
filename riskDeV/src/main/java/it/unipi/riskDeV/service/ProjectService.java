@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
 import it.unipi.riskDeV.DTO.project.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.project.InstalledPackageDTO;
@@ -89,11 +90,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public Result<String> deleteProject(String projectName) {
+    public Result<MessageResponseDTO> deleteProject(String projectName) {
         return projectRepository.findByName(projectName)
-            .map(project -> {
+            .<Result<MessageResponseDTO>>map(project -> {
                 if (!project.getAdmin().getUsername().equals(getCurrentUsername())) {
-                    return new Result.Failure<String>(new DomainError.AccessDenied("Only the owner can delete the project"));
+                    return new Result.Failure<>(new DomainError.AccessDenied("Only the owner can delete the project"));
                 }
                 
                 try {
@@ -104,15 +105,15 @@ public class ProjectService {
                         .toList();
                     eventPublisher.publishEvent(new ProjectEvent.ProjectDeleted(projectName, userIds));
                     
-                    return new Result.Success<>(projectName);
+                    return new Result.Success<>(new MessageResponseDTO("Deleted project " + projectName + "."));
                 } catch (Exception e) {
-                    return new Result.Failure<String>(new DomainError.SystemError());
+                    return new Result.Failure<>(new DomainError.SystemError());
                 }
             })
             .orElse(new Result.Failure<>(new DomainError.NotFound("Project not found")));
     }
 
-    public Result<String> updateProjectPackages(String projectName, List<InstalledPackageDTO> newPackages) {
+    public Result<MessageResponseDTO> updateProjectPackages(String projectName, List<InstalledPackageDTO> newPackages) {
         if (newPackages == null || newPackages.isEmpty()) {
             return new Result.Failure<>(new DomainError.ValidationFailed("Package list cannot be null or empty."));
         }
@@ -160,7 +161,7 @@ public class ProjectService {
 
             triggerPostPackageUpdateEvents(savedProject);
 
-            return new Result.Success<>(projectName);
+            return new Result.Success<>(new MessageResponseDTO("Packages added to " + projectName + "."));
 
         } catch (Exception e) {
             log.error("Error updating packages for project {}", projectName, e);
@@ -168,7 +169,7 @@ public class ProjectService {
         }
     }
 
-    public Result<String> removePackagesFromProject(String projectName, List<String> packagesToRemove) {
+    public Result<MessageResponseDTO> removePackagesFromProject(String projectName, List<String> packagesToRemove) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
         Project project = projectOpt.get();
@@ -182,21 +183,21 @@ public class ProjectService {
                 packagesToRemove.contains(p.getName())
             );
 
-            if (!changed) return new Result.Success<>("No packages matched for removal.");
+            if (!changed) return new Result.Failure<>(new DomainError.NotFound("No packages matched for removal."));
 
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
 
             triggerPostPackageUpdateEvents(project);
 
-            return new Result.Success<>("Packages removed successfully.");
+            return new Result.Success<>(new MessageResponseDTO("Packages removed successfully."));
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError());
         }
     }
 
     @Transactional
-    public Result<String> addCollaboratorToProject(String projectName, String collaboratorUsername) {
+    public Result<MessageResponseDTO> addCollaboratorToProject(String projectName, String collaboratorUsername) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
         Project project = projectOpt.get();
@@ -218,7 +219,7 @@ public class ProjectService {
             projectRepository.save(project);
             
             eventPublisher.publishEvent(new ProjectEvent.CollaboratorAdded(projectName, collaboratorUsername));
-            return new Result.Success<>("Collaborator added");
+            return new Result.Success<>(new MessageResponseDTO("Collaborator " + collaboratorUsername + " added"));
 
         } catch (IllegalStateException e) {
              return new Result.Failure<>(new DomainError.NotFound(e.getMessage()));
@@ -272,7 +273,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public Result<String> removeCollaboratorFromProject(String projectName, String collaboratorUsername) {
+    public Result<MessageResponseDTO> removeCollaboratorFromProject(String projectName, String collaboratorUsername) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
         Project project = projectOpt.get();
@@ -297,7 +298,7 @@ public class ProjectService {
             project.setLastUpdate(Instant.now());
             projectRepository.save(project);
             eventPublisher.publishEvent(new ProjectEvent.CollaboratorRemoved(projectName, collaboratorUsername));
-            return new Result.Success<>(collaboratorUsername);
+            return new Result.Success<>(new MessageResponseDTO("Removed collaborator " + collaboratorUsername + " from project " + projectName + "."));
         } else {
             return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
         }
@@ -307,7 +308,7 @@ public class ProjectService {
         List<DomainError> errors = new ArrayList<>();
 
         for (String pName : projectsName) {
-            Result<String> result = removeCollaboratorFromProject(pName, username);
+            Result<MessageResponseDTO> result = removeCollaboratorFromProject(pName, username);
 
             if (result instanceof Result.Failure<?> failure) {
                 errors.add(failure.error());

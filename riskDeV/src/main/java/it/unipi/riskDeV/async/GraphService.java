@@ -32,14 +32,12 @@ public class GraphService {
     private final Helper helper;
     
 
-    public Result<Void> createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> packageIds) {
+    public Result<Void> createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> installedPackages) {
         try {
             projectGraphRepository.createProjectNode(projectName);
 
-            if (packageIds != null && !packageIds.isEmpty()) {
-                for (InstalledPackageDTO installedPackage : packageIds) {
-                    projectGraphRepository.replaceDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
-                }
+            for (InstalledPackageDTO installedPackage : installedPackages) {
+                projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
             }
 
             return new Result.Success<>(null);
@@ -58,11 +56,14 @@ public class GraphService {
         }
     }
 
-    public Result<Void> syncProjectPackages(String projectName, List<InstalledPackageDTO> packageIds) {
+    public Result<Void> syncProjectPackages(String projectName, List<InstalledPackageDTO> installedPackages) {
         try {
-            for (InstalledPackageDTO installedPackage : packageIds) {
-                projectGraphRepository.replaceDependency(projectName, installedPackage.getName(),installedPackage.getVersion());
+
+            projectGraphRepository.removeAllDependency(projectName);
+            for (InstalledPackageDTO installedPackage : installedPackages) {
+                projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
             }
+
             return new Result.Success<>(null);
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError());

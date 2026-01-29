@@ -34,17 +34,17 @@ public class GraphSyncListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void handleProjectEvent(ProjectEvent event) {
         try {
-            log.debug("Neo4j Sync: Processing project event for {}", event.projectName());
+            log.info("Neo4j Sync: Processing project event for {}", event.projectName());
 
             switch (event) {
                 case ProjectEvent.ProjectCreated c -> 
-                    graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.packageIds());
+                    graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
                 
                 case ProjectEvent.ProjectDeleted d -> 
                     graphService.deleteProjectNode(d.projectName());
                 
                 case ProjectEvent.ProjectPackagesUpdated p -> 
-                    graphService.syncProjectPackages(p.projectName(), p.packageIds());
+                    graphService.syncProjectPackages(p.projectName(), p.projectPackages());
                 
                 case ProjectEvent.CollaboratorAdded a -> {}
                 

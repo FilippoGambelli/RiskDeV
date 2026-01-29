@@ -19,11 +19,15 @@ public interface ProjectGraphRepository extends Neo4jRepository<ProjectNode, Str
     @Query("""
         MATCH (p:Project {name: $projectName})
         MATCH (v_new:Version {package_name: $packageName, version: $packageVersion})
-        OPTIONAL MATCH (p)-[old_r:USES]->(v_old:Version {package_name: $packageName})
-        DELETE old_r
         MERGE (p)-[:USES]->(v_new)
     """)
-    void replaceDependency(@Param("projectName") String projectName, @Param("packageName") String packageName, @Param("packageVersion") String packageVersion);
+    void addDependency(@Param("projectName") String projectName, @Param("packageName") String packageName, @Param("packageVersion") String packageVersion);
 
+    @Query("""
+        MATCH (p:Project {name: $projectName}) 
+        MATCH (p)-[r:USES]->(v:Version) 
+        DELETE r
+    """)
+    void removeAllDependency(@Param("projectName") String projectName);
 }
     

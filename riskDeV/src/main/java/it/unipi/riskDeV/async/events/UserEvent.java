@@ -11,7 +11,7 @@ import java.util.List;
     property = "type"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = UserEvent.UserUpdated.class, name = "UserCreated"),
+    @JsonSubTypes.Type(value = UserEvent.UserUpdated.class, name = "UserUpdated"),
     @JsonSubTypes.Type(value = UserEvent.UserDeleted.class, name = "UserDeleted")
 })
 public sealed interface UserEvent {

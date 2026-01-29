@@ -23,9 +23,9 @@ import java.util.List;
 public sealed interface ProjectEvent {
     String projectName(); 
 
-    record ProjectCreated(String projectName, String adminUsername, List<InstalledPackageDTO> packageIds) implements ProjectEvent {}
+    record ProjectCreated(String projectName, String adminUsername, List<InstalledPackageDTO> projectPackages) implements ProjectEvent {}
     record ProjectDeleted(String projectName, List<String> involvedCollaborators) implements ProjectEvent {}
-    record ProjectPackagesUpdated(String projectName, List<InstalledPackageDTO> packageIds) implements ProjectEvent {}
+    record ProjectPackagesUpdated(String projectName, List<InstalledPackageDTO> projectPackages) implements ProjectEvent {}
     record CollaboratorAdded(String projectName, String collaboratorUsername) implements ProjectEvent {}
     record CollaboratorRemoved(String projectName, String collaboratorUsername) implements ProjectEvent {}
     record CalculateRiskMetrics(String projectName, List<InstalledPackageDTO> dtos) implements ProjectEvent {}

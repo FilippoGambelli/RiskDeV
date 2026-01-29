@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.user.UserDTO;
 import it.unipi.riskDeV.async.events.UserEvent;
@@ -94,6 +95,11 @@ public class UserService {
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
             if (!request.getEmail().equals(user.getEmail())) {
                 
+                // Check uniqueness
+                if (userRepository.existsByEmail(request.getEmail())) {
+                    return new Result.Failure<>(new DomainError.AlreadyExists("Email already taken"));
+                }
+                
                 user.setEmail(request.getEmail());
                 isUpdated = true;
                 importantChanges = true;
@@ -142,12 +148,12 @@ public class UserService {
         return new Result.Success<>(new UserDTO(user));
     }
 
-    public Result<String> deleteUser(String username) {
+    public Result<MessageResponseDTO> deleteUser(String username) {
         log.info("Deleting user profile");
 
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound("User not found"));
+            return new Result.Failure<>(new DomainError.NotFound("User not found."));
         }
         
         User user = userOpt.get();
@@ -156,7 +162,7 @@ public class UserService {
             log.info("User profile deleted");
 
             eventPublisher.publishEvent(new UserEvent.UserDeleted(user.getProjectNames(),username));
-            return new Result.Success<>("User profile deleted");
+            return new Result.Success<>(new MessageResponseDTO("User profile deleted."));
 
         } catch (Exception e) {
             return new Result.Failure<>(new DomainError.SystemError());
@@ -169,7 +175,7 @@ public class UserService {
         
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
-            return new Result.Failure<>(new DomainError.NotFound(String.format("User '%s' not found", username)));
+            return new Result.Failure<>(new DomainError.NotFound(username));
         }
         
         try {

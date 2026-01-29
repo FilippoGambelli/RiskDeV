@@ -11,8 +11,8 @@ public class AuthResponseDTO {
     @Schema(description = "JWT token for authenticated access")
     private String token;
 
-    @Schema(description = "ID of the authenticated user")
-    private String id;
+    @Schema(description = "Username of the authenticated user")
+    private String username;
 
     @Schema(description = "Email of the authenticated user")
     private String email;

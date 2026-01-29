@@ -18,7 +18,7 @@ import java.util.List;
 @Schema(description = "DTO for creating a new project configuration")
 public class ProjectCreationDTO {
 
-    @Schema(description = "Name of the project", example = "RiskAnalysis_Module_A", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the project", example = "RiskAnalysis_AI", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Project name is required")
     @Size(max = 100)
     String name;

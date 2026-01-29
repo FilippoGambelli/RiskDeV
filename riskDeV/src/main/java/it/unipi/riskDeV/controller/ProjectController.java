@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.project.CollaboratorDTO;
 import it.unipi.riskDeV.DTO.project.InstalledPackageDTO;
 import it.unipi.riskDeV.DTO.project.ProjectCreationDTO;
@@ -104,8 +105,8 @@ public class ProjectController {
         @ApiResponse(
             responseCode = "204", 
             description = "Project deleted successfully",
-            content = @Content(mediaType = "text/plain", 
-            schema = @Schema(implementation = String.class))),
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
             responseCode = "403", 
             description = "Access Denied",
@@ -117,7 +118,7 @@ public class ProjectController {
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> deleteProject(@Parameter(description = "Name of the project to delete") @PathVariable String projectName) {
+    public ResponseEntity<?> deleteProject(@Parameter(description = "Name of the project to delete", example = "RiskAnalysis_AI") @PathVariable String projectName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.deleteProject(projectName))), HttpStatus.NO_CONTENT);
     }
 
@@ -127,8 +128,8 @@ public class ProjectController {
         @ApiResponse(
             responseCode = "200", 
             description = "Packages updated successfully",
-            content = @Content(mediaType = "text/plain", 
-            schema = @Schema(implementation = String.class))),
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
             responseCode = "400", 
             description = "Invalid package list",
@@ -158,8 +159,8 @@ public class ProjectController {
         @ApiResponse(
             responseCode = "204", 
             description = "Packages removed successfully",
-            content = @Content(mediaType = "text/plain", 
-            schema = @Schema(implementation = String.class))),
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
             responseCode = "403", 
             description = "Access Denied",
@@ -184,8 +185,8 @@ public class ProjectController {
         @ApiResponse(
             responseCode = "200", 
             description = "Collaborator added successfully",
-            content = @Content(mediaType = "text/plain", 
-            schema = @Schema(implementation = String.class))),
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
             responseCode = "400", 
             description = "User already collaborator or Owner",
@@ -203,7 +204,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> addCollaboratorToProject(
-            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName, 
             @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
         ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.addCollaboratorToProject(projectName, collaboratorUsername))), HttpStatus.OK);
@@ -238,8 +239,8 @@ public class ProjectController {
         @ApiResponse(
             responseCode = "204", 
             description = "Collaborator removed successfully",
-            content = @Content(mediaType = "text/plain", 
-            schema = @Schema(implementation = String.class))),
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
             responseCode = "400", 
             description = "Cannot remove Owner",
@@ -257,7 +258,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removeCollaboratorFromProject(
-            @Parameter(description = "Project name") @PathVariable String projectName,
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName,
             @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removeCollaboratorFromProject(projectName, collaboratorUsername))), HttpStatus.NO_CONTENT);

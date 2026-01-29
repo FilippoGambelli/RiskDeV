@@ -41,13 +41,13 @@ public class ProjectEventHandler implements EventHandler {
 
         return switch (event) {
             case ProjectEvent.ProjectCreated c -> 
-                graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.packageIds());
+                graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
             
             case ProjectEvent.ProjectDeleted d -> 
                 graphService.deleteProjectNode(d.projectName());
             
             case ProjectEvent.ProjectPackagesUpdated p -> 
-                graphService.syncProjectPackages(p.projectName(), p.packageIds());
+                graphService.syncProjectPackages(p.projectName(), p.projectPackages());
             
             case ProjectEvent.CollaboratorAdded a -> 
                 userService.addProjectToUser(a.collaboratorUsername(),a.projectName());

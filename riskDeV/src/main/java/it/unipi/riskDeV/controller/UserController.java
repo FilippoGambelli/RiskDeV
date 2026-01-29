@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
 import it.unipi.riskDeV.DTO.user.UserDTO;
 import it.unipi.riskDeV.results.RestResponseMapper;
@@ -81,7 +82,7 @@ public class UserController {
         return responseMapper.map(ResultExecutor.execute(() -> (userService.getProfile(username))), HttpStatus.OK);
     }
     
-    @PatchMapping("/me")
+    @PutMapping("/me")
     @Operation(
         summary = "Update user profile",
         description = "Updates the current user's profile information. All fields are optional - only provided fields will be updated. Username must be unique if changed."
@@ -134,8 +135,8 @@ public class UserController {
             responseCode = "204", 
             description = "Account deleted successfully",
             content = @Content(
-                mediaType = "text/plain",
-                schema = @Schema(implementation = String.class)
+                mediaType = "application/json",
+                schema = @Schema(implementation = MessageResponseDTO.class)
             )
         ),
         @ApiResponse(
