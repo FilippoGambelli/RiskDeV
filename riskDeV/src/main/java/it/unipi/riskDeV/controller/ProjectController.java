@@ -188,13 +188,13 @@ public class ProjectController {
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = MessageResponseDTO.class))),
         @ApiResponse(
-            responseCode = "400", 
-            description = "User already collaborator or Owner",
+            responseCode = "404", 
+            description = "Project or User not found",
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = ErrorResponseDTO.class))),
         @ApiResponse(
-            responseCode = "404", 
-            description = "Project or User not found",
+            responseCode = "409", 
+            description = "User already collaborator or Owner",
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = ErrorResponseDTO.class))),
         @ApiResponse(
