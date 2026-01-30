@@ -9,17 +9,17 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, Any, List
 
-
+# --- Configuration ---
 OUTPUT_PROJECTS = "projects.json"
 OUTPUT_USERS = "users.json"
 
-PROJECT_COUNT = 50  # Number of projects to generate
-USER_COUNT = 100     # Number of users to generate
-ADMIN_COUNT = 5     # Number of users to assign admin roles
+PROJECT_COUNT = 50 
+USER_COUNT = 100    
+ADMIN_COUNT = 5     
 
-PASSWORD_SALT = "static_salt_for_demo_purposes"  # Salt for password hashing
+PASSWORD_SALT = "static_salt_for_demo_purposes" 
 
-
+# Core packages to seed projects with specific versions
 PACKAGE_VERSIONS = {
     "requests": ["2.31.0"],
     "flask": ["2.2.5"],
@@ -28,6 +28,7 @@ PACKAGE_VERSIONS = {
     "django": ["4.2.7"]
 }
 
+# --- Data Generation Constants ---
 PROJECT_NAME_PREFIXES = [
     "Alpha", "Beta", "Gamma", "Delta", "Echo", "Atlas", "Nimbus",
     "Vector", "Orbit", "Zenith", "Vertex", "Aperture", "Pulse", "Lighthouse"
@@ -54,36 +55,32 @@ EMAIL_DOMAINS = ["example.com", "mail.com", "company.io", "test.org"]
 
 
 def hash_password(plain_password: str) -> str:
-    """
-    Return SHA256 hash of a password with a static salt.
-    """
+    """Returns SHA256 hash of the password using a static salt."""
     salted = f"{PASSWORD_SALT}{plain_password}"
     return hashlib.sha256(salted.encode("utf-8")).hexdigest()
 
 def random_iso_datetime(start: datetime, end: datetime) -> str:
-    """
-    Generate a random ISO 8601 datetime string between start and end.
-    """
+    """Generates a random ISO 8601 formatted datetime string within a range."""
     seconds_range = int((end - start).total_seconds())
     offset = random.randint(0, seconds_range)
     return (start + timedelta(seconds=offset)).isoformat(timespec="seconds")
 
 def get_pip_list(packages: List[Dict[str, str]]) -> List[Dict[str, str]]:
     """
-    Create a temporary virtual environment, install packages, and return
-    the 'pip list' output as a JSON-like list of dicts.
+    Creates a temporary virtual environment, installs specified packages,
+    and captures the full dependency tree via 'pip list --format=json'.
     """
     temp_dir = Path(tempfile.mkdtemp())
     venv_dir = temp_dir / "venv"
 
     try:
-        # Create virtual environment
+        # Create a fresh virtual environment
         subprocess.run([sys.executable, "-m", "venv", str(venv_dir)], check=True)
 
-        # Determine pip path
+        # Locate pip executable based on OS
         pip_path = venv_dir / ("Scripts/pip.exe" if sys.platform == "win32" else "bin/pip")
 
-        # Install packages
+        # Install requested packages
         for pkg in packages:
             subprocess.run(
                 [str(pip_path), "install", "--disable-pip-version-check", f"{pkg['name']}=={pkg['version']}"],
@@ -92,7 +89,7 @@ def get_pip_list(packages: List[Dict[str, str]]) -> List[Dict[str, str]]:
                 stderr=subprocess.DEVNULL
             )
 
-        # Get installed packages list in JSON format
+        # Export installed packages as JSON
         result = subprocess.run(
             [str(pip_path), "list", "--format=json"],
             check=True,
@@ -102,25 +99,23 @@ def get_pip_list(packages: List[Dict[str, str]]) -> List[Dict[str, str]]:
         return json.loads(result.stdout)
 
     except Exception as e:
-        print(f"Error generating packages: {e}")
+        print(f"Error resolving dependencies: {e}")
         return []
 
     finally:
-        # Clean up temporary virtual environment
+        # Clean up temporary files
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 def generate_projects(count: int) -> List[Dict[str, Any]]:
-    """
-    Generate a list of projects with unique names, package info, and metadata.
-    """
+    """Generates synthetic project data including realistic dependency trees."""
     projects = []
     existing_names = set()
 
     print(f"--- Generating {count} projects ---")
 
     for i in range(count):
-        # Generate a unique project name
+        # Generate unique project name
         base_name = f"{random.choice(PROJECT_NAME_PREFIXES)}-{random.choice(PROJECT_NAME_SUFFIXES)}"
         name = base_name
         suffix_num = 1
@@ -129,11 +124,11 @@ def generate_projects(count: int) -> List[Dict[str, Any]]:
             name = f"{base_name}-{suffix_num}"
         existing_names.add(name)
 
-        # Select random packages
+        # Randomly select 1-3 core libraries to install
         initial_packages = random.sample(list(PACKAGE_VERSIONS.keys()), k=random.randint(1, 3))
         requested_packages = [{"name": pkg, "version": random.choice(PACKAGE_VERSIONS[pkg])} for pkg in initial_packages]
 
-        # Get realistic pip metadata
+        # Resolve full dependency tree via pip
         pip_packages = get_pip_list(requested_packages)
 
         description = f"{name} is a Python project using {len(initial_packages)} core libraries."
@@ -145,8 +140,8 @@ def generate_projects(count: int) -> List[Dict[str, Any]]:
             "last_update": last_update,
             "python_version": "3.11.14",
             "packages": pip_packages,
-            "admin": {},         # Admin user will be assigned later
-            "collaborators": []  # Collaborators will be assigned later
+            "admin": {},         # To be assigned later
+            "collaborators": []  # To be assigned later
         })
 
         print(f"Project generated: {name} ({i+1}/{count})")
@@ -155,9 +150,7 @@ def generate_projects(count: int) -> List[Dict[str, Any]]:
 
 
 def generate_users(count: int) -> List[Dict[str, Any]]:
-    """
-    Generate a list of users with unique usernames and hashed passwords.
-    """
+    """Generates synthetic user profiles with hashed passwords."""
     users = []
     existing_usernames = set()
 
@@ -170,6 +163,8 @@ def generate_users(count: int) -> List[Dict[str, Any]]:
         base_username = f"{first.lower()}.{last.lower()}"
         username = base_username
         counter = 1
+        
+        # Ensure unique username
         while username in existing_usernames:
             username = f"{base_username}{counter}"
             counter += 1
@@ -182,10 +177,10 @@ def generate_users(count: int) -> List[Dict[str, Any]]:
             "email": f"{username}@{random.choice(EMAIL_DOMAINS)}",
             "password": hash_password("Password123"),
             "role": "ROLE_USER",
-            "project_names": []  # Projects will be linked later
+            "project_names": []
         })
 
-    # Assign Admin roles randomly
+    # Promote random users to admins
     if users:
         admin_indices = random.sample(range(len(users)), k=min(ADMIN_COUNT, len(users)))
         for idx in admin_indices:
@@ -196,15 +191,14 @@ def generate_users(count: int) -> List[Dict[str, Any]]:
 
 def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str, Any]]):
     """
-    Link users and projects:
-    1. Assign an admin to each project AND add them as a collaborator.
-    2. Assign random additional collaborators to projects.
+    Assigns project admins and random collaborators.
+    Ensures data consistency between user profiles and project metadata.
     """
     print("\n--- Linking Users and Projects ---")
     if not users or not projects:
         return
 
-    # Assign an admin for each project
+    # 1. Assign a mandatory admin for each project
     for proj in projects:
         admin_user = random.choice(users)
         user_info = {
@@ -213,13 +207,16 @@ def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str
         }
         
         proj['admin'] = user_info
-
+        
+        # Admin is also a collaborator
         proj['collaborators'].append(user_info)
 
         if proj['name'] not in admin_user['project_names']:
             admin_user['project_names'].append(proj['name'])
 
+    # 2. Assign random additional projects to users
     for user in users:
+        # Each user joins 0 to 3 random projects
         num_projects = random.randint(0, min(3, len(projects)))
         if num_projects == 0:
             continue
@@ -227,9 +224,11 @@ def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str
         assigned_projects = random.sample(projects, k=num_projects)
         
         for proj in assigned_projects:
+            # Update user's project list
             if proj['name'] not in user['project_names']:
                 user['project_names'].append(proj['name'])
             
+            # Update project's collaborator list
             collaborator_entry = {"username": user['username'], "email": user['email']}
             
             if collaborator_entry not in proj['collaborators']:
@@ -237,21 +236,17 @@ def link_users_and_projects(users: List[Dict[str, Any]], projects: List[Dict[str
 
 
 def main():
-    random.seed(42)  # For reproducibility
+    random.seed(42)  # Ensure reproducible results
 
-    # Generate projects and users
     projects = generate_projects(PROJECT_COUNT)
     users = generate_users(USER_COUNT)
 
-    # Link projects with users
     link_users_and_projects(users, projects)
 
-    # Save projects to JSON
     with open(OUTPUT_PROJECTS, "w", encoding="utf-8") as f:
         json.dump(projects, f, indent=2, ensure_ascii=False)
     print(f"Saved {OUTPUT_PROJECTS}")
 
-    # Save users to JSON
     with open(OUTPUT_USERS, "w", encoding="utf-8") as f:
         json.dump(users, f, indent=2, ensure_ascii=False)
     print(f"Saved {OUTPUT_USERS}")

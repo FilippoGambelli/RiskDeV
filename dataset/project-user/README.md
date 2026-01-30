@@ -102,6 +102,10 @@ Adds **risk scores** and **vulnerability counts** to the packages of the generat
   },
   "collaborators": [
     {
+      "username": "john.smith",
+    "email": "john.smith@example.com"
+    },
+    {
       "username": "jane.doe",
       "email": "jane.doe@mail.com"
     }
