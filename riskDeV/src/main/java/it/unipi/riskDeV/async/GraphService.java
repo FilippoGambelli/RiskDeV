@@ -11,12 +11,12 @@ import it.unipi.riskDeV.repository.graphDB.PackageGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.ProjectGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.VulnerabilityGraphRepository;
-import it.unipi.riskDeV.results.DomainError;
-import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.util.Helper;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -32,162 +32,119 @@ public class GraphService {
     private final Helper helper;
     
 
-    public Result<Void> createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> installedPackages) {
-        try {
-            projectGraphRepository.createProjectNode(projectName);
+    @Transactional("neo4jTransactionManager")
+    public void createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> installedPackages) {
+        projectGraphRepository.createProjectNode(projectName);
 
-            for (InstalledPackageDTO installedPackage : installedPackages) {
-                projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
-            }
-
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
+        for (InstalledPackageDTO installedPackage : installedPackages) {
+            projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
         }
+    }
+
+    @Transactional("neo4jTransactionManager")
+    public void deleteProjectNode(String projectName) {
+        projectGraphRepository.deleteProjectByName(projectName);
+    }
+
+    @Transactional("neo4jTransactionManager")
+    public void syncProjectPackages(String projectName, List<InstalledPackageDTO> installedPackages) {
+        projectGraphRepository.removeAllDependency(projectName);
         
-    }
-
-    public Result<Void> deleteProjectNode(String projectName) {
-        try {
-            projectGraphRepository.deleteProjectByName(projectName);
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
+        for (InstalledPackageDTO installedPackage : installedPackages) {
+            projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
         }
     }
 
-    public Result<Void> syncProjectPackages(String projectName, List<InstalledPackageDTO> installedPackages) {
-        try {
-
-            projectGraphRepository.removeAllDependency(projectName);
-            for (InstalledPackageDTO installedPackage : installedPackages) {
-                projectGraphRepository.addDependency(projectName, installedPackage.getName(), installedPackage.getVersion());
-            }
-
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-    }
-
-    public Result<Void> addVulnerability(String cveId, String description, Double baseScore) {
+    @Transactional("neo4jTransactionManager")
+    public void addVulnerability(String cveId, String description, Double baseScore) {
         VulnerabilityNode vulnerabilityNode = new VulnerabilityNode(cveId, description, baseScore);
-        
-        try {
-            vulnerabilityGraphRepository.save(vulnerabilityNode);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-        return new Result.Success<>(null);
-
+        vulnerabilityGraphRepository.save(vulnerabilityNode);
     }
 
-    public Result<Void> updateVulnerability(String cveId, String description, Double baseScore) {
-        VulnerabilityNode vulnerabilityNode = vulnerabilityGraphRepository.findByCveId(cveId).get();
-        if(description != null) {
+    @Transactional("neo4jTransactionManager")
+    public void updateVulnerability(String cveId, String description, Double baseScore) {
+        VulnerabilityNode vulnerabilityNode = vulnerabilityGraphRepository.findByCveId(cveId)
+                .orElseThrow(() -> new NoSuchElementException("Vulnerability node not found for CVE: " + cveId));
+        
+        if (description != null) {
             vulnerabilityNode.setDescription(description);
         }
-        if(baseScore != null) {
+        if (baseScore != null) {
             vulnerabilityNode.setBaseScore(baseScore);
         }
 
-        try {
-            vulnerabilityGraphRepository.save(vulnerabilityNode);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-        return new Result.Success<>(null);
-        
+        vulnerabilityGraphRepository.save(vulnerabilityNode);
     }
 
-    public Result<Void> deleteVulnerability(String cveId) {
-        try {
-            vulnerabilityGraphRepository.deleteByCveId(cveId);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-        return new Result.Success<>(null);
+    @Transactional("neo4jTransactionManager")
+    public void deleteVulnerability(String cveId) {
+        vulnerabilityGraphRepository.deleteByCveId(cveId);
     }
 
+    @Transactional("neo4jTransactionManager")
+    public void addPackage(PublishedVersionDTO publishedVersionDTO, Double riskScore) {
 
-    public Result<Void> addPackage(PublishedVersionDTO publishedVersionDTO, Double risk_score) {
-        PackageVersionNode packageVersioneNode = new PackageVersionNode(publishedVersionDTO, risk_score);
+        PackageVersionNode packageVersionNode = new PackageVersionNode(publishedVersionDTO, riskScore);
+        packageVersionGraphRepository.save(packageVersionNode);
+    
+        packageGraphRepository.addVersionToPackage(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
         
-        try {
-            packageVersionGraphRepository.save(packageVersioneNode);
-        
-            packageGraphRepository.addVersionToPackage(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
-            
-            List<String> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
+        List<String> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
+        if (vulnerabilityList != null) {
             for (String cveId : vulnerabilityList) {
-                // TODO: We should check if the vulnerability exists, and if it doesn't, make an API request            
+                // TODO We could check if the vulnerability exists, and if it doesn't, make an API request to take it
                 packageVersionGraphRepository.attachVulnerability(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), cveId);
             }
-
-            List<ConstraintsDTO> dependecesList = publishedVersionDTO.getDependencies();
-            
-            List<PackageVersion> packageVersionList = helper.addDependeciesGraph(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), dependecesList);
-            for (PackageVersion packageVersion: packageVersionList) {
-                packageVersionGraphRepository.attachDependency(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), packageVersion.getPackageName(), packageVersion.getVersion());
-            }
-
-            List<PackageVersion> reversePackageVersionList = helper.updateDependeciesGraph(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
-            for(PackageVersion packageVersion : reversePackageVersionList) {
-                packageVersionGraphRepository.attachDependency(packageVersion.getPackageName(), packageVersion.getVersion(), publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
-            }
-
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
         }
 
-    }
+        List<ConstraintsDTO> constraints = publishedVersionDTO.getDependencies();
+        List<PackageVersion> dependencies = helper.addDependeciesGraph(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), constraints);
+        
+        for (PackageVersion dep : dependencies) {
+            packageVersionGraphRepository.attachDependency(
+                publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), 
+                dep.getPackageName(), dep.getVersion()
+            );
+        }
 
-    public Result<Void> updatePackageDocumentation(String packageName, String documentationURL) {
-        try {
-            packageVersionGraphRepository.updateDocumentation(packageName, documentationURL); 
-            return new Result.Success<>(null);  
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
+        List<PackageVersion> reverseDeps = helper.updateDependeciesGraph(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion());
+        
+        for (PackageVersion rev : reverseDeps) {
+            packageVersionGraphRepository.attachDependency(
+                rev.getPackageName(), rev.getVersion(), 
+                publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion()
+            );
         }
     }
 
-    public Result<Void> updatePackageVersion(String packageName, String version, List<ConstraintsDTO> dependecies, List<EmbeddedVulnerabilityDTO> vulnerabilities) {
-        if(!dependecies.isEmpty()) {
+    @Transactional("neo4jTransactionManager")
+    public void updatePackageDocumentation(String packageName, String documentationURL) {
+        packageVersionGraphRepository.updateDocumentation(packageName, documentationURL);
+    }
+
+    @Transactional("neo4jTransactionManager")
+    public void updatePackageVersion(String packageName, String version, List<ConstraintsDTO> dependencies, List<EmbeddedVulnerabilityDTO> vulnerabilities) {
+        
+        if (dependencies != null && !dependencies.isEmpty()) {
             packageVersionGraphRepository.deleteDependencies(packageName, version);
-            List<PackageVersion> packageVersionList = helper.addDependeciesGraph(packageName, version, dependecies);
-            for (PackageVersion packageVersion: packageVersionList) {
-                try {
-                    packageVersionGraphRepository.attachDependency(packageName, version, packageVersion.getPackageName(), packageVersion.getVersion());
-                    return new Result.Success<>(null); 
-                } catch (Exception e) {
-                    return new Result.Failure<>(new DomainError.SystemError(e));
-                }
+            
+            List<PackageVersion> packageVersionList = helper.addDependeciesGraph(packageName, version, dependencies);
+            for (PackageVersion dep : packageVersionList) {
+                packageVersionGraphRepository.attachDependency(packageName, version, dep.getPackageName(), dep.getVersion());
             }
         }
 
-        if(!vulnerabilities.isEmpty()) {
+        if (vulnerabilities != null && !vulnerabilities.isEmpty()) {
             packageVersionGraphRepository.deleteVulnerabilities(packageName, version);
 
-            List<EmbeddedVulnerabilityDTO> vulnerabilityList = vulnerabilities;
-            for (EmbeddedVulnerabilityDTO vulnerability : vulnerabilityList) {
-                try {
-                    packageVersionGraphRepository.attachVulnerability(packageName, version, vulnerability.getCveId());
-                } catch (Exception e) {
-                    return new Result.Failure<>(new DomainError.SystemError(e));
-                }
+            for (EmbeddedVulnerabilityDTO vuln : vulnerabilities) {
+                packageVersionGraphRepository.attachVulnerability(packageName, version, vuln.getCveId());
             }
         }
-
-        return new Result.Failure<>(new DomainError.SystemError("Impossible to update package version."));
     }
 
-    public Result<Void> deletePackageVersion(String packageName, String version) {
-        try {
-            packageVersionGraphRepository.deleteByPackageNameAndVersion(packageName, version);
-            return new Result.Success<>(null);
-        } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
+    @Transactional("neo4jTransactionManager")
+    public void deletePackageVersion(String packageName, String version) {
+        packageVersionGraphRepository.deleteByPackageNameAndVersion(packageName, version);
     }
 }
