@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "project")
@@ -35,11 +34,22 @@ public class Project {
     @Field("python_version")
     private String pythonVersion;
 
-    @Builder.Default
     private List<ProjectPackage> packages = new ArrayList<>();
 
-    @Builder.Default
     private List<Collaborator> collaborators = new ArrayList<>();
+
+    public Project(String name, String description, String pythonVersion, Collaborator admin, List<ProjectPackage> packages) {
+        this.name = name;
+        this.description = description;
+        this.pythonVersion = pythonVersion;
+        this.admin = admin;
+        this.packages = packages != null ? packages : new ArrayList<>();
+        this.lastUpdate = Instant.now();
+        this.collaborators = new ArrayList<>();
+        if (admin != null) {
+            this.collaborators.add(admin);
+        }
+    }
 
     // Inner classes for ProjectPackage and Collaborator
     @Data
@@ -57,6 +67,13 @@ public class Project {
 
         @Field("vulnerabilities_count")
         private Integer vulnerabilitiesCount;
+
+        public ProjectPackage(String name, String version) {
+            this.name = name;
+            this.version = version;
+            this.riskScore = 0.0;
+            this.vulnerabilitiesCount = 0;
+        }
     }
 
     @Data

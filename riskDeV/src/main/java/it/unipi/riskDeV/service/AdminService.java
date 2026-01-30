@@ -3,6 +3,7 @@ package it.unipi.riskDeV.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
 import it.unipi.riskDeV.repository.graphDB.PackageGraphRepository;
@@ -32,91 +33,82 @@ public class AdminService {
     private final PackageDAO packageDAO;
     private final VulnerabilityDAO vulnerabilityDAO;
 
+    @Transactional
     public Result<MessageResponseDTO> addNewAdmin(String username) {
-        
-        var optionalUser = userRepository.findByUsername(username);
-
-        if (optionalUser.isEmpty()) {
+        var userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User " + username + " does not exist"));
         }
 
-        var user = optionalUser.get();
+        var user = userOpt.get();
 
-        if (user.getRole().equals("ROLE_ADMIN")) {
+        if ("ROLE_ADMIN".equals(user.getRole())) {
             return new Result.Failure<>(new DomainError.AlreadyExists("User " + username + " is already an administrator"));
         }
 
         user.setRole("ROLE_ADMIN");
-
-        try {
-            userRepository.save(user);
-            log.info("Administrator {} was successfully added", username);
-        } catch (Exception e) {
-            log.warn("Failed to save administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-
+        userRepository.save(user);
+        
         return new Result.Success<>(new MessageResponseDTO("Administrator added successfully"));
     }
 
+    @Transactional
     public Result<MessageResponseDTO> removeAdmin(String username) {
-        
-        var optionalUser = userRepository.findByUsername(username);
-
-        if (optionalUser.isEmpty()) {
+        var userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User " + username + " does not exist"));
         }
 
-        var user = optionalUser.get();
-        
-        if (user.getRole().equals("ROLE_USER")) {
+        var user = userOpt.get();
+        if ("ROLE_USER".equals(user.getRole())) {
             return new Result.Failure<>(new DomainError.AlreadyExists("User " + username + " is already a standard user"));
         }
 
         user.setRole("ROLE_USER");
+        userRepository.save(user);
 
-        try {
-            userRepository.save(user);
-            log.info("Administrator {} was successfully removed", username);
-        } catch (Exception e) {
-            log.warn("Failed to remove administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError(e));
-        }
-
-        return new Result.Success<>(new MessageResponseDTO("Administrator removed successfully"));
+        return new Result.Success<>(new MessageResponseDTO("Administrator's privilege removed successfully"));
     }
 
+    @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
     public Result<List<CentralityResultDTO>> getTopByDegree() {
         var results = PackageGraphRepository.topByDegree();
         return new Result.Success<>(results);
     }
 
+    @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
     public Result<List<PageRankResultDTO>> getTopByPageRank(Integer limit) {
         var results = PackageGraphRepository.topByPageRank(limit);
         return new Result.Success<>(results);
     }
 
+    @Transactional(readOnly = true)
     public Result<List<AggreagationPackageDTO>> getMostUsedPackages(int limit) {
         return new Result.Success<>(projectDAO.mostUsedPackages(limit));
     }
 
+    @Transactional(readOnly = true)
     public Result<List<AggreagationPackageDTO>> getMostUsedPackagesLastMonth(int limit) {
         return new Result.Success<>(projectDAO.mostUsedPackagesLastMonth(limit));    
     }
 
+    @Transactional(readOnly = true)
     public Result<List<ContributorCountDTO>> getTopContributorsLastMonth(int limit) {
         List<ContributorCountDTO> collaborators = projectDAO.getTopCollaboratorsLastMonth();
         return new Result.Success<>(collaborators);
     }
 
+    @Transactional(readOnly = true)
     public Result<RiskAggregationDTO> getAggregateRiskBuckets() {
         return new Result.Success<>(packageDAO.aggregateRiskBuckets());    
     }
 
+    @Transactional(readOnly = true)
     public Result<List<VulnerabilityTrendDTO>> getTrendVulnerabilityLastYear() {
         return new Result.Success<>(vulnerabilityDAO.getVulnerabilityTrendLastYear());
     }
 
+    @Transactional(readOnly = true)
     public Result<List<PerfectStormVulnerabilityDTO>> getMostDangerousVulnerabilities(int limit) {
         return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
         
