@@ -35,7 +35,7 @@ public class PackageEventHandler implements EventHandler {
         try {
             event = objectMapper.readValue(payloadJson, PackageEvent.class);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         
         log.debug("DLQ Retry: Synchronizing package graph for {}", event.packageName());
@@ -46,7 +46,7 @@ public class PackageEventHandler implements EventHandler {
                 var updateResult = documentService.updateRiskScore(v.publishedVersionDTO().getPackageName(), v.publishedVersionDTO().getVersion(), risk_score);
                 var addResult = graphService.addPackage(v.publishedVersionDTO(), risk_score);
                 if (updateResult instanceof Result.Failure<?> || addResult instanceof Result.Failure<?>) {
-                    yield new Result.Failure<>(new DomainError.SystemError());
+                    yield new Result.Failure<>(new DomainError.SystemError("Package add in graph failed"));
                 } else {
                     yield new Result.Success<>(null);
                 }

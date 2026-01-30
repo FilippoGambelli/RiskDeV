@@ -17,7 +17,7 @@ public class DocumentService {
             packageVersionRepository.updateRiskScoreByPackageNameAndVersion(packageName, version, risk_score);
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 }

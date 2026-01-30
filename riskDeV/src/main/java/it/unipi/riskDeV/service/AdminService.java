@@ -53,7 +53,7 @@ public class AdminService {
             log.info("Administrator {} was successfully added", username);
         } catch (Exception e) {
             log.warn("Failed to save administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
 
         return new Result.Success<>(new MessageResponseDTO("Administrator added successfully"));
@@ -80,7 +80,7 @@ public class AdminService {
             log.info("Administrator {} was successfully removed", username);
         } catch (Exception e) {
             log.warn("Failed to remove administrator with username {}", username);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
 
         return new Result.Success<>(new MessageResponseDTO("Administrator removed successfully"));

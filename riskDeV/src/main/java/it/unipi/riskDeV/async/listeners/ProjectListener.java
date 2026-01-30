@@ -55,7 +55,7 @@ public class ProjectListener {
             };
         } catch (Exception e) {
             log.error("Unexpected error in ProjectListener for project {}", event.projectName(), e);
-            saveToDLQ(event, new DomainError.SystemError());
+            saveToDLQ(event, new DomainError.SystemError(e));
         }
     }
 

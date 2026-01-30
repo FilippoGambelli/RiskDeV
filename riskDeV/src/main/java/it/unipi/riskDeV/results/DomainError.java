@@ -15,7 +15,7 @@ public sealed interface DomainError permits
 
     record NotFound(String message) implements DomainError {}
     record AlreadyExists(String message) implements DomainError {}
-    record SystemError() implements DomainError {}
+    record SystemError(Throwable exception) implements DomainError {public SystemError(String errorMessage) {this(new RuntimeException(errorMessage));}}
     record InvalidCredentials(String message) implements DomainError {}
     record ValidationFailed(String message) implements DomainError {}
     record AccessDenied(String message) implements DomainError {}

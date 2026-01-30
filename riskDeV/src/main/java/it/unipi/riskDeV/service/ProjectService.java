@@ -84,7 +84,7 @@ public class ProjectService {
             return new Result.Success<>(ProjectDTO.fromEntity(savedProject));
         } catch (Exception e) {
             log.error("Error creating project", e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         } 
 
     }
@@ -107,7 +107,7 @@ public class ProjectService {
                     
                     return new Result.Success<>(new MessageResponseDTO("Deleted project " + projectName + "."));
                 } catch (Exception e) {
-                    return new Result.Failure<>(new DomainError.SystemError());
+                    return new Result.Failure<>(new DomainError.SystemError(e));
                 }
             })
             .orElse(new Result.Failure<>(new DomainError.NotFound("Project not found")));
@@ -165,7 +165,7 @@ public class ProjectService {
 
         } catch (Exception e) {
             log.error("Error updating packages for project {}", projectName, e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -192,7 +192,7 @@ public class ProjectService {
 
             return new Result.Success<>(new MessageResponseDTO("Packages removed successfully."));
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -224,7 +224,7 @@ public class ProjectService {
         } catch (IllegalStateException e) {
              return new Result.Failure<>(new DomainError.NotFound(e.getMessage()));
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -265,8 +265,7 @@ public class ProjectService {
         }
 
         if (!errors.isEmpty()) {
-            log.error("Aggiornamento parziale per {} fallito in alcuni progetti. Errori: {}", collaboratorUsername, errors);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError("Impossible to change collaborator data in his projects"));
         }
 
         return new Result.Success<>(null);
@@ -316,8 +315,7 @@ public class ProjectService {
         }
 
         if (!errors.isEmpty()) {
-            log.error("Failed removal of user {} from a project.", username);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError("Impossible to remove collaborator from project"));
         }
 
         return new Result.Success<>(null);
@@ -353,7 +351,7 @@ public class ProjectService {
                         }
                     }
                 } catch (Exception ex) {
-                    log.error("Error calculating risk for package {} in project {}", pkg.getName(), project.getName(), ex);
+                    new Result.Failure<>(new DomainError.SystemError("Error calculating risk for package " + pkg.getName() + " in project " + project.getName()));
                 }
             }
         }
@@ -366,7 +364,7 @@ public class ProjectService {
                 return new Result.Success<>(null);
             } catch (Exception e) {
                 log.error("Error saving updated risk metrics for project {}", projectName, e);
-                return new Result.Failure<>(new DomainError.SystemError());
+                return new Result.Failure<>(new DomainError.SystemError(e));
             }
         } else {
             log.debug("No risk changes detected for project {}", projectName);

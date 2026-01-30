@@ -53,7 +53,7 @@ public class AuthService {
             return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));
         } catch (Exception e) {
             log.error("Failed to save user in Mongo.", e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 

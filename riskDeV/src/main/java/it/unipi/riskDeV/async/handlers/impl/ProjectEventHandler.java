@@ -33,7 +33,7 @@ public class ProjectEventHandler implements EventHandler {
         try {
             event = objectMapper.readValue(payloadJson, ProjectEvent.class);    
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         
         

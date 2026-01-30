@@ -140,7 +140,7 @@ public class UserService {
                 return new Result.Success<>(new UserDTO(savedUser));
 
             } catch (Exception e) {
-                return new Result.Failure<>(new DomainError.SystemError());
+                return new Result.Failure<>(new DomainError.SystemError(e));
             }
         }
 
@@ -165,7 +165,7 @@ public class UserService {
             return new Result.Success<>(new MessageResponseDTO("User profile deleted."));
 
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
 
     }
@@ -195,7 +195,7 @@ public class UserService {
             return new Result.Success<>(null);
         } catch (Exception e) {
             log.error("Failed to add project '{}' to user '{}'", projectName, username, e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         
     }
@@ -221,7 +221,7 @@ public class UserService {
             return new Result.Success<>(null);
         } catch (Exception e) {
             log.error("Failed to remove project '{}' from user '{}'", projectName, username, e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         
     }

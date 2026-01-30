@@ -42,7 +42,7 @@ public class GraphService {
 
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         
     }
@@ -52,7 +52,7 @@ public class GraphService {
             projectGraphRepository.deleteProjectByName(projectName);
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -66,7 +66,7 @@ public class GraphService {
 
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -76,7 +76,7 @@ public class GraphService {
         try {
             vulnerabilityGraphRepository.save(vulnerabilityNode);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         return new Result.Success<>(null);
 
@@ -94,7 +94,7 @@ public class GraphService {
         try {
             vulnerabilityGraphRepository.save(vulnerabilityNode);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         return new Result.Success<>(null);
         
@@ -104,7 +104,7 @@ public class GraphService {
         try {
             vulnerabilityGraphRepository.deleteByCveId(cveId);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
         return new Result.Success<>(null);
     }
@@ -138,7 +138,7 @@ public class GraphService {
 
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
 
     }
@@ -148,7 +148,7 @@ public class GraphService {
             packageVersionGraphRepository.updateDocumentation(packageName, documentationURL); 
             return new Result.Success<>(null);  
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
@@ -161,7 +161,7 @@ public class GraphService {
                     packageVersionGraphRepository.attachDependency(packageName, version, packageVersion.getPackageName(), packageVersion.getVersion());
                     return new Result.Success<>(null); 
                 } catch (Exception e) {
-                    return new Result.Failure<>(new DomainError.SystemError());
+                    return new Result.Failure<>(new DomainError.SystemError(e));
                 }
             }
         }
@@ -174,12 +174,12 @@ public class GraphService {
                 try {
                     packageVersionGraphRepository.attachVulnerability(packageName, version, vulnerability.getCveId());
                 } catch (Exception e) {
-                    return new Result.Failure<>(new DomainError.SystemError());
+                    return new Result.Failure<>(new DomainError.SystemError(e));
                 }
             }
         }
 
-        return new Result.Failure<>(new DomainError.SystemError());
+        return new Result.Failure<>(new DomainError.SystemError("Impossible to update package version."));
     }
 
     public Result<Void> deletePackageVersion(String packageName, String version) {
@@ -187,7 +187,7 @@ public class GraphService {
             packageVersionGraphRepository.deleteByPackageNameAndVersion(packageName, version);
             return new Result.Success<>(null);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 }
