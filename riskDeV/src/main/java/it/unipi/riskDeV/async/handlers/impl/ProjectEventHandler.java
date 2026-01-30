@@ -32,7 +32,8 @@ public class ProjectEventHandler implements EventHandler {
         try {
             event = objectMapper.readValue(payloadJson, ProjectEvent.class);    
         } catch (Exception e) {
-            throw new RuntimeException("JSON Deserialization failed", e);
+            log.error("Detailed serialization error: ", e); // Questo lo vedi nella console
+            throw new RuntimeException("JSON Deserialization failed: " + e.toString(), e);
         }
         
         log.debug("DLQ Retry: Project event for {}", event.projectName());

@@ -18,7 +18,7 @@ import java.util.List;
     @JsonSubTypes.Type(value = ProjectEvent.ProjectPackagesUpdated.class, name = "ProjectPackagesUpdated"),
     @JsonSubTypes.Type(value = ProjectEvent.CollaboratorAdded.class, name = "CollaboratorAdded"),
     @JsonSubTypes.Type(value = ProjectEvent.CollaboratorRemoved.class, name = "CollaboratorRemoved"),
-    @JsonSubTypes.Type(value = ProjectEvent.CalculateRiskMetrics.class, name = "CalculateRiskMetricsEvent")
+    @JsonSubTypes.Type(value = ProjectEvent.CalculateRiskMetrics.class, name = "CalculateRiskMetrics")
 })
 public sealed interface ProjectEvent {
     String projectName(); 
