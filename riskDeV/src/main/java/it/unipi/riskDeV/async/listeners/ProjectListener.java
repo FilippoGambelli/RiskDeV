@@ -2,8 +2,6 @@ package it.unipi.riskDeV.async.listeners;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import it.unipi.riskDeV.async.FailedEventService;
 import it.unipi.riskDeV.async.events.ProjectEvent;
@@ -23,7 +21,6 @@ public class ProjectListener {
     private final FailedEventService failedEventService;
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleProjectEvent(ProjectEvent event) {
         
         log.info("[Project Listener] Processing {} for project: {}", event.getClass().getSimpleName(), event.projectName());
