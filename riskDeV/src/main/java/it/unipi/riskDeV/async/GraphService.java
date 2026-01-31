@@ -12,7 +12,6 @@ import it.unipi.riskDeV.repository.graphDB.PackageVersionGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.ProjectGraphRepository;
 import it.unipi.riskDeV.repository.graphDB.VulnerabilityGraphRepository;
 import it.unipi.riskDeV.util.Helper;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
@@ -32,7 +31,6 @@ public class GraphService {
     private final Helper helper;
     
 
-    @Transactional("neo4jTransactionManager")
     public void createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> installedPackages) {
         projectGraphRepository.createProjectNode(projectName);
 
@@ -41,12 +39,10 @@ public class GraphService {
         }
     }
 
-    @Transactional("neo4jTransactionManager")
     public void deleteProjectNode(String projectName) {
         projectGraphRepository.deleteProjectByName(projectName);
     }
 
-    @Transactional("neo4jTransactionManager")
     public void syncProjectPackages(String projectName, List<InstalledPackageDTO> installedPackages) {
         projectGraphRepository.removeAllDependency(projectName);
         
@@ -55,13 +51,11 @@ public class GraphService {
         }
     }
 
-    @Transactional("neo4jTransactionManager")
     public void addVulnerability(String cveId, String description, Double baseScore) {
         VulnerabilityNode vulnerabilityNode = new VulnerabilityNode(cveId, description, baseScore);
         vulnerabilityGraphRepository.save(vulnerabilityNode);
     }
 
-    @Transactional("neo4jTransactionManager")
     public void updateVulnerability(String cveId, String description, Double baseScore) {
         VulnerabilityNode vulnerabilityNode = vulnerabilityGraphRepository.findByCveId(cveId)
                 .orElseThrow(() -> new NoSuchElementException("Vulnerability node not found for CVE: " + cveId));
@@ -76,12 +70,10 @@ public class GraphService {
         vulnerabilityGraphRepository.save(vulnerabilityNode);
     }
 
-    @Transactional("neo4jTransactionManager")
     public void deleteVulnerability(String cveId) {
         vulnerabilityGraphRepository.deleteByCveId(cveId);
     }
 
-    @Transactional("neo4jTransactionManager")
     public void addPackage(PublishedVersionDTO publishedVersionDTO, Double riskScore) {
 
         PackageVersionNode packageVersionNode = new PackageVersionNode(publishedVersionDTO, riskScore);
@@ -117,12 +109,10 @@ public class GraphService {
         }
     }
 
-    @Transactional("neo4jTransactionManager")
     public void updatePackageDocumentation(String packageName, String documentationURL) {
         packageVersionGraphRepository.updateDocumentation(packageName, documentationURL);
     }
 
-    @Transactional("neo4jTransactionManager")
     public void updatePackageVersion(String packageName, String version, List<ConstraintsDTO> dependencies, List<EmbeddedVulnerabilityDTO> vulnerabilities) {
         
         if (dependencies != null && !dependencies.isEmpty()) {
@@ -143,7 +133,6 @@ public class GraphService {
         }
     }
 
-    @Transactional("neo4jTransactionManager")
     public void deletePackageVersion(String packageName, String version) {
         packageVersionGraphRepository.deleteByPackageNameAndVersion(packageName, version);
     }
