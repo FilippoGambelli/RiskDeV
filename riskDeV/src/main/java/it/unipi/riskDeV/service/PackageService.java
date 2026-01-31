@@ -199,7 +199,7 @@ public class PackageService {
         
         PackageVersion updateVersion = existingOpt.get();
         updateVersionDTO.getRequiresPython().ifPresent(updateVersion::setRequiresPython);
-        updateVersion.setUploadTime(Instant.now().toString());
+        updateVersion.setUploadTime(Instant.now());
 
         if (updateVersionDTO.getDependencies() != null) {
             List<Constraints> dependencyList = updateVersionDTO.getDependencies().stream()

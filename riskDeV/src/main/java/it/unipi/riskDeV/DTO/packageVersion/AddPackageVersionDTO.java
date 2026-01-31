@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data
@@ -40,6 +41,9 @@ public class AddPackageVersionDTO {
 
     @Schema(description = "The official documentation URL of the package")
     private String documentationURL;
+
+    @Schema(description = "upload time")
+    private String uploadTime;
 
     @Schema(description = "Python version requirements", example = ">=3.6")
     private String requiresPython;
