@@ -210,6 +210,37 @@ public class ProjectController {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.addCollaboratorToProject(projectName, collaboratorUsername))), HttpStatus.OK);
     }
 
+    @PutMapping("/{projectName}/admin/{newAdminUsername}")
+    @Operation(summary = "Transfer ownership", description = "Transfers the project admin role to another existing collaborator.")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Ownership transferred successfully",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "403", 
+            description = "Only the current owner can transfer ownership",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project or new Admin not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "The new admin must be a current collaborator",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    public ResponseEntity<?> transferOwnership(
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName,
+            @Parameter(description = "Username of the new administrator") @PathVariable String newAdminUsername
+    ) {
+        return restResponseMapper.map(ResultExecutor.execute(() -> projectService.transferOwnership(projectName, newAdminUsername)), HttpStatus.OK);
+    }
+
     @GetMapping("/{projectName}/users")
     @Operation(summary = "List collaborators", description = "Get the list of all collaborators for the project.")
     @ApiResponses(value = {
@@ -237,7 +268,7 @@ public class ProjectController {
     @Operation(summary = "Remove collaborator", description = "Revokes access to a collaborator. Only Owner can remove collaborators.")
     @ApiResponses(value = {
         @ApiResponse(
-            responseCode = "204", 
+            responseCode = "200", 
             description = "Collaborator removed successfully",
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = MessageResponseDTO.class))),
@@ -261,7 +292,31 @@ public class ProjectController {
             @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName,
             @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
     ) {
-        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removeCollaboratorFromProject(projectName, collaboratorUsername))), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removeCollaboratorFromProject(projectName, collaboratorUsername))), HttpStatus.OK);
     }
     
+    @DeleteMapping("/{projectName}/users/me")
+    @Operation(summary = "Leave project", description = "The authenticated user voluntarily leaves the project.")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Successfully left the project",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = MessageResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Owners cannot leave without transferring ownership first",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Project not found",
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    public ResponseEntity<?> leaveProject(
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName
+    ) {
+        return restResponseMapper.map(ResultExecutor.execute(() -> projectService.leaveProject(projectName)), HttpStatus.OK);
+    }
 }

@@ -36,10 +36,6 @@ public class UserEventHandler implements EventHandler {
             case UserEvent.UserUpdated u -> projectService.changeCollaboratorDataInProjects(
                     u.projectNames(), u.username(), u.newUsername(), u.newEmail()
             );
-                
-            case UserEvent.UserDeleted d -> projectService.removeCollaboratorFromProjects(
-                    d.projectNames(), d.username()
-            );
         }
     }
 }

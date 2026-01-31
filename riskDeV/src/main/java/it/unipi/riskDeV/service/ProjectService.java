@@ -56,6 +56,10 @@ public class ProjectService {
 
     @Transactional
     public Result<ProjectDTO> addProject(ProjectCreationDTO dto) {
+        if (projectRepository.existsByName(dto.getName())) {
+            return new Result.Failure<>(new DomainError.AlreadyExists("Project " + dto.getName() + " already exists."));
+        }
+
         String username = getCurrentUsername();
         Project.Collaborator admin = getCollaboratorInfo(username);
 
@@ -63,14 +67,7 @@ public class ProjectService {
                 .map(pkgDto -> new Project.ProjectPackage(pkgDto.getName(), pkgDto.getVersion()))
                 .toList();
 
-        Project project = new Project(
-            dto.getName(),
-            dto.getDescription(),
-            dto.getPythonVersion(),
-            admin,
-            packages
-        );
-
+        Project project = new Project(dto.getName(), dto.getDescription(), dto.getPythonVersion(), admin, packages);
         Project savedProject = projectRepository.save(project);
 
         triggerPostCreationEvents(savedProject);
@@ -226,7 +223,7 @@ public class ProjectService {
         }
 
         if (currentOwner.equals(collaboratorUsername)) {
-            return new Result.Failure<>(new DomainError.InvalidOperation("Owner cannot be removed. Transfer ownership or delete project."));
+            return new Result.Failure<>(new DomainError.InvalidOperation("Owner cannot be removed. Transfer ownership."));
         }
 
         boolean removed = project.getCollaborators().removeIf(c -> c.getUsername().equals(collaboratorUsername));
@@ -240,6 +237,44 @@ public class ProjectService {
         } 
     
         return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
+    }
+
+    @Transactional
+    public Result<MessageResponseDTO> leaveProject(String projectName) {
+        String requester = getCurrentUsername();
+        return removeCollaboratorFromProject(projectName, requester);
+    }
+
+    @Transactional
+    public Result<MessageResponseDTO> transferOwnership(String projectName, String newAdminUsername) {
+        var projectOpt = projectRepository.findByName(projectName);
+        if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
+        Project project = projectOpt.get();
+
+        if (!project.getAdmin().getUsername().equals(getCurrentUsername())) {
+            return new Result.Failure<>(new DomainError.AccessDenied("Only the current owner can transfer ownership"));
+        }
+
+        boolean isCollaborator = project.getCollaborators().stream()
+                .anyMatch(c -> c.getUsername().equals(newAdminUsername));
+
+        if (!isCollaborator) {
+            return new Result.Failure<>(new DomainError.InvalidOperation("New owner must be an existing collaborator"));
+        }
+
+        Project.Collaborator oldAdmin = project.getAdmin();
+        Project.Collaborator newAdmin = project.getCollaborators().stream()
+                .filter(c -> c.getUsername().equals(newAdminUsername))
+                .findFirst().get();
+
+        project.getCollaborators().remove(newAdmin);
+        project.getCollaborators().add(oldAdmin);
+        project.setAdmin(newAdmin);
+        
+        project.setLastUpdate(Instant.now());
+        projectRepository.save(project);
+
+        return new Result.Success<>(new MessageResponseDTO("Ownership transferred to " + newAdminUsername));
     }
 
     @Transactional(readOnly = true)

@@ -127,11 +127,14 @@ public class UserService {
         }
         
         User user = userOpt.get();
-        List<String> projectNames = user.getProjectNames() != null ? user.getProjectNames() : List.of();
+        if (!user.getProjectNames().isEmpty()) {
+            return new Result.Failure<>(new DomainError.InvalidOperation("Quit from all your projects before delete your account."));
+        }
+        //List<String> projectNames = user.getProjectNames() != null ? user.getProjectNames() : List.of();
 
         userRepository.deleteByUsername(username);
 
-        eventPublisher.publishEvent(new UserEvent.UserDeleted(projectNames, username));
+        //eventPublisher.publishEvent(new UserEvent.UserDeleted(projectNames, username));
         return new Result.Success<>(new MessageResponseDTO("User profile deleted."));
     }
 
