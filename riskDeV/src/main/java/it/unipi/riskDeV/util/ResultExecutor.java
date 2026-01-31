@@ -13,7 +13,7 @@ public class ResultExecutor {
             } 
         catch (Exception e) {
             log.error("Unhandled exception caught in executor", e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 }

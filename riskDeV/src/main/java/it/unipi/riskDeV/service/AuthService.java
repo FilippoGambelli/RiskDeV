@@ -1,6 +1,7 @@
 package it.unipi.riskDeV.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;  
     private final JwtUtil jwtUtil;
 
+    @Transactional
     public Result<AuthResponseDTO> register(RegisterRequestDTO request) {
 
         log.info("Registering new user with username: {}", request.getUsername());
@@ -53,10 +55,11 @@ public class AuthService {
             return new Result.Success<>(new AuthResponseDTO(token, savedUser.getUsername(), savedUser.getEmail()));
         } catch (Exception e) {
             log.error("Failed to save user in Mongo.", e);
-            return new Result.Failure<>(new DomainError.SystemError());
+            return new Result.Failure<>(new DomainError.SystemError(e));
         }
     }
 
+    @Transactional
     public Result<AuthResponseDTO> login(LoginRequestDTO request) {
 
         log.info("Authenticating user with username {}.", request.getUsername());

@@ -6,8 +6,6 @@ import it.unipi.riskDeV.async.DocumentService;
 import it.unipi.riskDeV.async.GraphService;
 import it.unipi.riskDeV.async.events.PackageEvent;
 import it.unipi.riskDeV.async.handlers.EventHandler;
-import it.unipi.riskDeV.results.DomainError;
-import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.util.Helper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,33 +21,28 @@ public class PackageEventHandler implements EventHandler {
     private final ObjectMapper objectMapper;
     private final Helper helper;
 
-
     @Override
     public boolean canHandle(String eventType) {
         return eventType.contains("Package") || eventType.contains("Version") || eventType.contains("Documentation");
     }
 
     @Override
-    public Result<Void> handle(String payloadJson) {
+    public void handle(String payloadJson) {
         PackageEvent event;
         try {
             event = objectMapper.readValue(payloadJson, PackageEvent.class);
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            throw new RuntimeException("JSON Deserialization failed", e);
         }
         
-        log.debug("DLQ Retry: Synchronizing package graph for {}", event.packageName());
+        log.debug("DLQ Retry: Package event for {}", event.packageName());
 
-        return switch (event) {
+        switch (event) {
             case PackageEvent.VersionRelease v -> {
-                Double risk_score = helper.getMaxBaseScore(v.publishedVersionDTO().getVulnerabilities());
-                var updateResult = documentService.updateRiskScore(v.publishedVersionDTO().getPackageName(), v.publishedVersionDTO().getVersion(), risk_score);
-                var addResult = graphService.addPackage(v.publishedVersionDTO(), risk_score);
-                if (updateResult instanceof Result.Failure<?> || addResult instanceof Result.Failure<?>) {
-                    yield new Result.Failure<>(new DomainError.SystemError());
-                } else {
-                    yield new Result.Success<>(null);
-                }
+                Double riskScore = helper.getMaxBaseScore(v.publishedVersionDTO().getVulnerabilities());
+                
+                documentService.updateRiskScore(v.publishedVersionDTO().getPackageName(), v.publishedVersionDTO().getVersion(), riskScore);
+                graphService.addPackage(v.publishedVersionDTO(), riskScore);
             }
             
             case PackageEvent.UpdateDocumentation d -> 
@@ -60,6 +53,6 @@ public class PackageEventHandler implements EventHandler {
             
             case PackageEvent.DeletePackageVersion del -> 
                 graphService.deletePackageVersion(del.packageName(), del.version());
-        };
+        }
     }
 }

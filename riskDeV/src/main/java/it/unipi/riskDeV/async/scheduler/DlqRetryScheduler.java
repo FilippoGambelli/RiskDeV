@@ -3,7 +3,6 @@ package it.unipi.riskDeV.async.scheduler;
 import it.unipi.riskDeV.async.handlers.EventHandler;
 import it.unipi.riskDeV.model.documentDB.FailedEvent;
 import it.unipi.riskDeV.repository.documentDB.FailedEventRepository;
-import it.unipi.riskDeV.results.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,16 +22,17 @@ public class DlqRetryScheduler {
     private final FailedEventRepository failedEventRepository;
     private final List<EventHandler> eventHandlers; 
     private static final int BATCH_SIZE = 50;
+    private static final int MAX_RETRIES = 5;
 
     @Scheduled(fixedDelayString = "${app.scheduler.retry.delay:300000}")
     public void retryFailedEvents() {
         
         Pageable limit = PageRequest.of(0, BATCH_SIZE);
-        List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(5, limit);
+        List<FailedEvent> events = failedEventRepository.findByResolvedAtIsNullAndRetryCountLessThan(MAX_RETRIES, limit);
 
         if (events.isEmpty()) return;
 
-        log.info("Processing batch of {} failed events.", events.size());
+        log.info("[DLQ Scheduler] Processing batch of {} failed events.", events.size());
 
         for (FailedEvent failedEvent : events) {
             processSingleEvent(failedEvent);
@@ -45,34 +45,34 @@ public class DlqRetryScheduler {
             EventHandler handler = eventHandlers.stream()
                 .filter(h -> h.canHandle(failedEvent.getEventType()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No handler for type: " + failedEvent.getEventType()));
+                .orElseThrow(() -> new IllegalArgumentException("No handler found for type: " + failedEvent.getEventType()));
 
-            // logic execution
-            var result = handler.handle(failedEvent.getPayloadJson());
-            if (result instanceof Result.Success) {
-                markAsResolved(failedEvent);
-            } else if (result instanceof Result.Failure failure) {
-                String errorMessage = failure.error().message();
-                markAsFailedAgain(failedEvent, errorMessage);
-            }
-            
+            handler.handle(failedEvent.getPayloadJson());
+            markAsResolved(failedEvent);
+
         } catch (Exception e) {
+            log.warn("Retry failed for event {}: {}", failedEvent.getId(), e.getMessage());
             markAsFailedAgain(failedEvent, e.getMessage());
         }
     }
 
     private void markAsResolved(FailedEvent event) {
         event.setResolvedAt(Instant.now());
-        event.setExceptionMessage("Resolved by Scheduler");
+        event.setExceptionMessage("Resolved by Scheduler"); 
         failedEventRepository.save(event);
         log.info("Event {} healed successfully.", event.getId());
     }
 
-    private void markAsFailedAgain(FailedEvent event, String resultMessage) {
+    private void markAsFailedAgain(FailedEvent event, String errorMessage) {
         event.setRetryCount(event.getRetryCount() + 1);
         event.setLastRetryAt(Instant.now());
-        event.setExceptionMessage(resultMessage);
+        
+        String safeMessage = (errorMessage != null && errorMessage.length() > 1000) 
+            ? errorMessage.substring(0, 1000) + "..." 
+            : errorMessage;
+            
+        event.setExceptionMessage(safeMessage);
+        
         failedEventRepository.save(event);
-        log.error("Retry failed for event {}. Count: {}", event.getId(), event.getRetryCount());
     }
 }

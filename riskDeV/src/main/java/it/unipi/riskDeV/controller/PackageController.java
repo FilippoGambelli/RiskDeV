@@ -133,8 +133,8 @@ public class PackageController {
     )
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Version published successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
-        @ApiResponse(responseCode = "409", description = "Version already exists", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid version format", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "400", description = "Invalid version format", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(responseCode = "409", description = "Version already exists", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> addNewVersion(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
                                            @Valid @RequestBody AddPackageVersionDTO newVersionDTO) {

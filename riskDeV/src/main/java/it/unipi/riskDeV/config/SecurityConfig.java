@@ -30,6 +30,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/vulnerabilities/{CVEID}/packages").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/vulnerabilities/**").permitAll()
                 .requestMatchers("/api/vulnerabilities/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/projects/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")

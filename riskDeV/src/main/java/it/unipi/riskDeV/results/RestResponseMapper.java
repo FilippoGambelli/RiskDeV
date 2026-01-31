@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import it.unipi.riskDeV.DTO.ErrorResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class RestResponseMapper {
 
     public <T> ResponseEntity<?> map(Result<T> result, HttpStatus successStatus) {
@@ -26,7 +28,10 @@ public class RestResponseMapper {
             case DomainError.ValidationFailed e -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
             case DomainError.AccessDenied e -> ResponseEntity.status(HttpStatus.FORBIDDEN).body(payload);
             case DomainError.InvalidOperation e -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
-            case DomainError.SystemError e -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(payload);
+            case DomainError.SystemError e -> {
+                log.error("System Error caught: ", e.exception());
+                yield ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(payload);
+            }
         };
     }
 }

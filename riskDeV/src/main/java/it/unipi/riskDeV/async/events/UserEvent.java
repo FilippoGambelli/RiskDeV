@@ -11,12 +11,10 @@ import java.util.List;
     property = "type"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = UserEvent.UserUpdated.class, name = "UserUpdated"),
-    @JsonSubTypes.Type(value = UserEvent.UserDeleted.class, name = "UserDeleted")
+    @JsonSubTypes.Type(value = UserEvent.UserUpdated.class, name = "UserUpdated")
 })
 public sealed interface UserEvent {
     String username(); 
 
     record UserUpdated(List<String> projectNames, String username, String newUsername, String newEmail) implements UserEvent {}
-    record UserDeleted(List<String> projectNames, String username) implements UserEvent {}
 }

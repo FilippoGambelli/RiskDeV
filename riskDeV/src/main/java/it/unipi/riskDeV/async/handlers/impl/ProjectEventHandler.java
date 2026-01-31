@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unipi.riskDeV.async.GraphService;
 import it.unipi.riskDeV.async.events.ProjectEvent;
 import it.unipi.riskDeV.async.handlers.EventHandler;
-import it.unipi.riskDeV.results.DomainError;
 import it.unipi.riskDeV.results.Result;
 import it.unipi.riskDeV.service.ProjectService;
 import it.unipi.riskDeV.service.UserService;
@@ -28,18 +27,18 @@ public class ProjectEventHandler implements EventHandler {
     }
 
     @Override
-    public Result<Void> handle(String payloadJson) {
+    public void handle(String payloadJson) {
         ProjectEvent event;
         try {
             event = objectMapper.readValue(payloadJson, ProjectEvent.class);    
         } catch (Exception e) {
-            return new Result.Failure<>(new DomainError.SystemError());
+            log.error("Detailed serialization error: ", e); // Questo lo vedi nella console
+            throw new RuntimeException("JSON Deserialization failed: " + e.toString(), e);
         }
         
-        
-        log.debug("DLQ Retry: Handling project event for {}", event.projectName());
+        log.debug("DLQ Retry: Project event for {}", event.projectName());
 
-        return switch (event) {
+        switch (event) {
             case ProjectEvent.ProjectCreated c -> 
                 graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
             
@@ -48,15 +47,22 @@ public class ProjectEventHandler implements EventHandler {
             
             case ProjectEvent.ProjectPackagesUpdated p -> 
                 graphService.syncProjectPackages(p.projectName(), p.projectPackages());
-            
-            case ProjectEvent.CollaboratorAdded a -> 
-                userService.addProjectToUser(a.collaboratorUsername(),a.projectName());
-            
-            case ProjectEvent.CollaboratorRemoved r -> 
-                userService.removeProjectFromUser(r.collaboratorUsername(),r.projectName());
 
             case ProjectEvent.CalculateRiskMetrics m -> 
                 projectService.updateRiskMetrics(m.projectName());
-        };
+
+            case ProjectEvent.CollaboratorAdded a -> 
+                unwrap(userService.addProjectToUser(a.collaboratorUsername(), a.projectName()));
+            
+            case ProjectEvent.CollaboratorRemoved r -> 
+                unwrap(userService.removeProjectFromUser(r.collaboratorUsername(), r.projectName()));
+
+        }
+    }
+
+    private void unwrap(Result<?> result) {
+        if (result instanceof Result.Failure<?> failure) {
+            throw new RuntimeException(failure.error().message());
+        }
     }
 }

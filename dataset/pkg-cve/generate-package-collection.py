@@ -6,20 +6,18 @@ INPUT_FILE = "allInfoPackages.json"
 VULN_DB_FILE = "vulnerability.json"
 OUTPUT_FILE = "package.json"
 
-# Configuration for version normalization
-MAX_VERSION_LEN = 6  # Fixed length of version array (Major.Minor.Patch.PreType.PreNum.Dev)
+# Fixed length for version comparison arrays (Major.Minor.Patch.PreType.PreNum.Dev)
+MAX_VERSION_LEN = 6 
 
-# Mapping for converting strings (alpha, beta, etc.) into numbers for sorting
-# Negative values < 0 (pre-release) < 0 (final release) < Positive values (post release)
+# Numeric weights for pre/post release tags to allow mathematical comparison
 VERSION_WEIGHTS = {
     'dev': -4,
     'a': -3, 'alpha': -3,
     'b': -2, 'beta': -2,
     'rc': -1, 'c': -1, 'pre': -1,
-    'post': 1, 'pl': 1,  # Patch level / post release
+    'post': 1, 'pl': 1,
 }
 
-# --- Dependency Parsing ---
 VERSION_PATTERNS = {
     "version_gte": r">=\s*([0-9a-zA-Z\.\-_]+)",
     "version_lte": r"<=\s*([0-9a-zA-Z\.\-_]+)",
@@ -30,28 +28,26 @@ VERSION_PATTERNS = {
 }
 
 def parse_dependency(dep_string):
+    """Extracts package name and version constraints from a PEP 508 dependency string."""
     result = {
         "full": dep_string,
         "name": None,
-        "version_gte": None,
-        "version_lte": None,
-        "version_gt": None,
-        "version_lt": None,
-        "version_eq": None,
-        "version_neq": None
+        "version_gte": None, "version_lte": None,
+        "version_gt": None, "version_lt": None,
+        "version_eq": None, "version_neq": None
     }
     if not dep_string:
         return result
 
-    # Prendi solo la parte prima del punto e virgola
+    # Strip environment markers (parts after ;)
     main_part = dep_string.split(";", 1)[0].strip()
 
-    # Estrai il nome del pacchetto
+    # Match the package name at the start of the string
     name_match = re.match(r"^([a-zA-Z0-9\-_\.]+)", main_part)
     if name_match:
         result["name"] = name_match.group(1)
 
-    # Estrai le versioni
+    # Extract specific version constraints using regex patterns
     for field, pattern in VERSION_PATTERNS.items():
         match = re.search(pattern, main_part)
         if match:
@@ -59,16 +55,12 @@ def parse_dependency(dep_string):
 
     return result
 
-# --- JSON Utilities ---
 def load_json(filename):
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             return json.load(f)
-    except FileNotFoundError:
-        print(f"Error: '{filename}' not found.")
-        return None
-    except json.JSONDecodeError:
-        print(f"Error: '{filename}' is not a valid JSON.")
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading {filename}: {e}")
         return None
 
 def save_json(data, filename):
@@ -79,29 +71,29 @@ def save_json(data, filename):
     except Exception as e:
         print(f"Error saving {filename}: {e}")
 
-# --- Version Normalization ---
 def normalize_version(version_str):
+    """Converts a version string into a list of integers for easy sorting."""
     if not version_str:
         return [0] * MAX_VERSION_LEN
 
     v = str(version_str).lower()
+    # Split into numeric and alphabetic chunks
     parts = re.findall(r'(\d+|[a-z]+)', v)
     
     normalized = []
-
     for part in parts:
         if part.isdigit():
             normalized.append(int(part))
         else:
-            weight = VERSION_WEIGHTS.get(part, -5)
-            normalized.append(weight)
+            # Default to -5 for unknown tags to ensure they rank below known releases
+            normalized.append(VERSION_WEIGHTS.get(part, -5))
     
+    # Pad with zeros to maintain fixed length
     while len(normalized) < MAX_VERSION_LEN:
         normalized.append(0)
         
     return normalized[:MAX_VERSION_LEN]
 
-# --- Main Processing ---
 def main():
     raw_packages = load_json(INPUT_FILE)
     vuln_db = load_json(VULN_DB_FILE)
@@ -109,7 +101,7 @@ def main():
     if raw_packages is None:
         return
 
-    # Build CVE lookup table
+    # Create a quick lookup for CVE scores
     vuln_map = {}
     if vuln_db:
         for item in vuln_db:
@@ -126,7 +118,7 @@ def main():
         for ver in pkg.get("versions_detailed", []):
             raw_vulns = ver.get("vulnerabilities") or []
             
-            # Compute risk score (max of CVE scores)
+            # Map CVE IDs to their numeric scores and find the highest risk
             scores = []
             seen_cves = set()
             for v in raw_vulns:
@@ -137,26 +129,20 @@ def main():
                     seen_cves.add(cve_id)
 
             max_risk_score = round(max(scores), 1) if scores else 0.0
-
-            # --- VERSION NORMALIZATION ---
+            
             version_str = ver.get("version")
-            version_array = normalize_version(version_str)
-
-            # --- DEPENDENCY PARSING ---
-            requires = ver.get("requires_dist") or []
-            structured_requires = [parse_dependency(dep) for dep in requires]
-
+            
             entry = {
                 "package_name": package_id,
                 "version": version_str,
-                "version_array": version_array,
+                "version_array": normalize_version(version_str),
                 "author": pkg.get("author"),
                 "author_email": pkg.get("author_email"),
                 "description": pkg.get("description"),
                 "package_url": pkg.get("package_url"),
                 "documentation": pkg.get("Documentation"),
                 "upload_time": ver.get("upload_time"),
-                "requires_dist": structured_requires,
+                "requires_dist": [parse_dependency(dep) for dep in (ver.get("requires_dist") or [])],
                 "requires_python": ver.get("requires_python"),
                 "vulnerabilities": raw_vulns,
                 "risk_score": max_risk_score

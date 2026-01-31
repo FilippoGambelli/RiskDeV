@@ -8,4 +8,6 @@ import it.unipi.riskDeV.model.documentDB.Project;
 
 public interface ProjectRepository extends MongoRepository<Project, String> {
     Optional<Project> findByName(String name);
+
+    boolean existsByName(String name);
 }
