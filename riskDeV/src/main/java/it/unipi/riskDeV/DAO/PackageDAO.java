@@ -17,15 +17,23 @@ public class PackageDAO {
 
     public RiskAggregationDTO aggregateRiskBuckets() {
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.sort(Sort.by(Sort.Direction.DESC, "version_array")),
-                Aggregation.group("package_name").first("package_name").as("package_name")
-                    .first("risk_score").as("risk_score"),
-                Aggregation.bucket("risk_score").withBoundaries(0, 2, 4, 6, 8, 10)
-                    .withDefaultBucket("Other").andOutputCount().as("count"),
-                Aggregation.group().sum("count").as("totalPackages")
-                    .push(new Document("riskInterval", "$_id").append("count", "$count")).as("buckets"),
-                Aggregation.project().andExclude("_id")
-                    .andInclude("totalPackages", "buckets")
+            Aggregation.sort(Sort.by(Sort.Direction.ASC, "package_name")
+                        .and(Sort.by(Sort.Direction.DESC, "version_array"))),
+            
+            Aggregation.group("package_name")
+                .first("package_name").as("package_name")
+                .first("risk_score").as("risk_score"),
+            
+            Aggregation.bucket("risk_score")
+                .withBoundaries(0, 2, 4, 6, 8, 10)
+                .withDefaultBucket("Other")
+                .andOutputCount().as("count"),
+                
+            Aggregation.group().sum("count").as("totalPackages")
+                .push(new Document("riskInterval", "$_id").append("count", "$count")).as("buckets"),
+                
+            Aggregation.project().andExclude("_id")
+                .andInclude("totalPackages", "buckets")
         );
 
         AggregationResults<RiskAggregationDTO> result = mongoTemplate.aggregate(aggregation, "package", RiskAggregationDTO.class);

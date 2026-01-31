@@ -2,7 +2,6 @@ package it.unipi.riskDeV.model.documentDB;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 
@@ -24,6 +23,5 @@ public class FailedEvent {
 
     private int retryCount;        
 
-    @Indexed(expireAfter = "7d") 
     private Instant resolvedAt;   
 }
