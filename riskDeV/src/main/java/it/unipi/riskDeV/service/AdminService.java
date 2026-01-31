@@ -70,45 +70,45 @@ public class AdminService {
         return new Result.Success<>(new MessageResponseDTO("Administrator's privilege removed successfully"));
     }
 
-    @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
+    @Transactional(transactionManager = "neo4jTransactionManager")
     public Result<List<CentralityResultDTO>> getTopByDegree() {
         var results = PackageGraphRepository.topByDegree();
         return new Result.Success<>(results);
     }
 
-    @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
+    @Transactional(transactionManager = "neo4jTransactionManager")
     public Result<List<PageRankResultDTO>> getTopByPageRank(Integer limit) {
         var results = PackageGraphRepository.topByPageRank(limit);
         return new Result.Success<>(results);
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<AggreagationPackageDTO>> getMostUsedPackages(int limit) {
         return new Result.Success<>(projectDAO.mostUsedPackages(limit));
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<AggreagationPackageDTO>> getMostUsedPackagesLastMonth(int limit) {
         return new Result.Success<>(projectDAO.mostUsedPackagesLastMonth(limit));    
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<ContributorCountDTO>> getTopContributorsLastMonth(int limit) {
         List<ContributorCountDTO> collaborators = projectDAO.getTopCollaboratorsLastMonth();
         return new Result.Success<>(collaborators);
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<RiskAggregationDTO> getAggregateRiskBuckets() {
         return new Result.Success<>(packageDAO.aggregateRiskBuckets());    
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<VulnerabilityTrendDTO>> getTrendVulnerabilityLastYear() {
         return new Result.Success<>(vulnerabilityDAO.getVulnerabilityTrendLastYear());
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<PerfectStormVulnerabilityDTO>> getMostDangerousVulnerabilities(int limit) {
         return new Result.Success<>(vulnerabilityDAO.getMostDangerousVulnerabilities(limit));
         

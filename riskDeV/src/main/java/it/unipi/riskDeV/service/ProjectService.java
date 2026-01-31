@@ -37,7 +37,7 @@ public class ProjectService {
     private final PackageService packageService;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional(readOnly = true)
+    
     public Result<ProjectDTO> getProject(String projectName) {
         var projectOpt = projectRepository.findByName(projectName);
         
@@ -277,7 +277,7 @@ public class ProjectService {
         return new Result.Success<>(new MessageResponseDTO("Ownership transferred to " + newAdminUsername));
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<CollaboratorDTO>> getProjectCollaborators(String projectName) {
 
         var projectOpt = projectRepository.findByName(projectName);

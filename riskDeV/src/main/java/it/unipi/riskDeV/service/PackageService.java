@@ -45,7 +45,7 @@ public class PackageService {
     private final Helper helper;
 
     // Returns information about a package using the latest available version.
-    @Transactional(readOnly = true)
+    
     public Result<PackageVersionDTO> getPackageByName(String packageName) {
         var optionalPackage = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
 
@@ -60,7 +60,7 @@ public class PackageService {
     }
 
     // Returns information about a specific version of a package
-    @Transactional(readOnly = true)
+    
     public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
         var optionalPackage = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
             
@@ -75,7 +75,7 @@ public class PackageService {
     }
 
     // Returns the direct dependencies of a specific package version.
-    @Transactional(readOnly = true)
+    
     public Result<List<String>> getDirectDependencies(String packageName, String version) {
         var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
 
@@ -97,7 +97,7 @@ public class PackageService {
     }
 
     // Returns a list of package versions that depend on the given package version.
-    @Transactional(readOnly = true, transactionManager = "neo4jTransactionManager")
+    @Transactional(transactionManager = "neo4jTransactionManager")
     public Result<List<ReverseDependencyDTO>> getPackagesDependingOn(String packageName, String version) {
         if (!packageVersionGraphRepository.existsByPackageNameAndVersion(packageName, version)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found in the system."));
@@ -123,7 +123,7 @@ public class PackageService {
     }
 
     // Returns the last version of the specified package that have no known vulnerabilities.
-    @Transactional(readOnly = true)
+    
     public Result<PackageVersionDTO> getSafeVersions(String packageName) {
         if (!packageVersionRepository.existsByPackageName(packageName)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));

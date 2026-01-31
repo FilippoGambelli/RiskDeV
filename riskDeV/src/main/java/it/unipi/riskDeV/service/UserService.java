@@ -28,7 +28,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional(readOnly = true)
+    
     public Result<UserDTO> getProfile(String username) {
         log.info("Get user profile");
         
@@ -41,7 +41,7 @@ public class UserService {
         return new Result.Success<>(new UserDTO(user));
     }
 
-    @Transactional(readOnly = true)
+    
     public Result<List<String>> getUserProjectNames(String username) {
         log.info("Get user projects");
 
