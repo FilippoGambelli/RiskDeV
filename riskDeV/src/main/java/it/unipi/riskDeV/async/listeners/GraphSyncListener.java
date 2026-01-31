@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +23,6 @@ public class GraphSyncListener {
     private final Helper helper;
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleProjectEvent(ProjectEvent event) {
         log.info("[Graph Listener] Processing project event: {}", event.projectName());
 
@@ -48,7 +45,6 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleVulnerabilityEvent(VulnerabilityEvent event) {
         log.debug("[Graph Listener] Processing vulnerability event: {}", event.cveId());
 
@@ -69,7 +65,6 @@ public class GraphSyncListener {
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handlePackageEvent(PackageEvent event) {
         log.debug("[Graph Listener] Processing package event: {}", event.packageName());
 

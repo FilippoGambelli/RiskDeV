@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.user.UpdateProfileDTO;
@@ -56,7 +56,6 @@ public class UserService {
         return new Result.Success<>(projectNames);
     }
 
-    @Transactional
     public Result<UserDTO> updateProfile(String username, UpdateProfileDTO request) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
@@ -119,7 +118,6 @@ public class UserService {
         return new Result.Success<>(new UserDTO(savedUser));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> deleteUser(String username) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
@@ -135,7 +133,6 @@ public class UserService {
         return new Result.Success<>(new MessageResponseDTO("User profile deleted."));
     }
 
-    @Transactional
     public Result<Void> addProjectToUser(String username, String projectName) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
@@ -158,7 +155,6 @@ public class UserService {
         return new Result.Success<>(null);
     }
     
-    @Transactional
     public Result<Void> removeProjectFromUser(String username, String projectName) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {

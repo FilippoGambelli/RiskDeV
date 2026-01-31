@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import it.unipi.riskDeV.DTO.MessageResponseDTO;
 import it.unipi.riskDeV.DTO.packageVersion.PackageVersionDTO;
@@ -54,7 +54,6 @@ public class ProjectService {
         return new Result.Success<>(ProjectDTO.fromEntity(project));
     }
 
-    @Transactional
     public Result<ProjectDTO> addProject(ProjectCreationDTO dto) {
         if (projectRepository.existsByName(dto.getName())) {
             return new Result.Failure<>(new DomainError.AlreadyExists("Project " + dto.getName() + " already exists."));
@@ -74,7 +73,6 @@ public class ProjectService {
         return new Result.Success<>(ProjectDTO.fromEntity(savedProject));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> deleteProject(String projectName) {
         var projectOpt = projectRepository.findByName(projectName);
         
@@ -98,7 +96,6 @@ public class ProjectService {
         return new Result.Success<>(new MessageResponseDTO("Deleted project " + projectName + "."));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> updateProjectPackages(String projectName, List<InstalledPackageDTO> newPackages) {
         if (newPackages == null || newPackages.isEmpty()) {
             return new Result.Failure<>(new DomainError.ValidationFailed("Package list cannot be null or empty."));
@@ -145,7 +142,6 @@ public class ProjectService {
         return new Result.Success<>(new MessageResponseDTO("Packages updated for " + projectName + "."));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> removePackagesFromProject(String projectName, List<String> packagesToRemove) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) {
@@ -173,7 +169,6 @@ public class ProjectService {
         return new Result.Success<>(new MessageResponseDTO("Packages removed successfully."));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> addCollaboratorToProject(String projectName, String collaboratorUsername) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
@@ -206,7 +201,6 @@ public class ProjectService {
         return new Result.Success<>(new MessageResponseDTO("Collaborator " + collaboratorUsername + " added"));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> removeCollaboratorFromProject(String projectName, String collaboratorUsername) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
@@ -239,13 +233,11 @@ public class ProjectService {
         return new Result.Failure<>(new DomainError.NotFound("Collaborator not found"));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> leaveProject(String projectName) {
         String requester = getCurrentUsername();
         return removeCollaboratorFromProject(projectName, requester);
     }
 
-    @Transactional
     public Result<MessageResponseDTO> transferOwnership(String projectName, String newAdminUsername) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) return new Result.Failure<>(new DomainError.NotFound("Project not found"));
@@ -304,7 +296,6 @@ public class ProjectService {
     }
 
     // The following 3 methods are used only by async functionalities
-    @Transactional
     public void changeCollaboratorDataInProjects(List<String> projectNames, String collaboratorUsername, String newUsername, String newEmail) {
         for (String projectName : projectNames) {
             Result<Void> result = changeCollaboratorData(projectName, collaboratorUsername, newUsername, newEmail);
@@ -315,7 +306,6 @@ public class ProjectService {
         }
     }
 
-    @Transactional
     public void removeCollaboratorFromProjects(List<String> projectsName, String username) {
         for (String pName : projectsName) {
             Result<MessageResponseDTO> result = removeCollaboratorFromProject(pName, username);
@@ -326,7 +316,6 @@ public class ProjectService {
         }
     }
 
-    @Transactional
     public void updateRiskMetrics(String projectName) {
         var projectOpt = projectRepository.findByName(projectName);
         if (projectOpt.isEmpty()) {

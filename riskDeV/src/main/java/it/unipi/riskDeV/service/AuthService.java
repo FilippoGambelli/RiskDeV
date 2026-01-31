@@ -1,7 +1,6 @@
 package it.unipi.riskDeV.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;  
     private final JwtUtil jwtUtil;
 
-    @Transactional
     public Result<AuthResponseDTO> register(RegisterRequestDTO request) {
 
         log.info("Registering new user with username: {}", request.getUsername());
@@ -59,7 +57,6 @@ public class AuthService {
         }
     }
 
-    @Transactional
     public Result<AuthResponseDTO> login(LoginRequestDTO request) {
 
         log.info("Authenticating user with username {}.", request.getUsername());

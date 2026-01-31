@@ -3,8 +3,7 @@ package it.unipi.riskDeV.async;
 import java.time.Instant;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,7 +21,6 @@ public class FailedEventService {
     private final ObjectMapper objectMapper;
 
     // Open another transaction, this must be indipendent from the precedent (it could do rollback)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Object event, String errorMessage) {
         try {
             FailedEvent dlq = new FailedEvent();

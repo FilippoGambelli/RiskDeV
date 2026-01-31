@@ -3,7 +3,6 @@ package it.unipi.riskDeV.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import it.unipi.riskDeV.repository.documentDB.UserRepository;
 import it.unipi.riskDeV.repository.graphDB.PackageGraphRepository;
@@ -33,7 +32,6 @@ public class AdminService {
     private final PackageDAO packageDAO;
     private final VulnerabilityDAO vulnerabilityDAO;
 
-    @Transactional
     public Result<MessageResponseDTO> addNewAdmin(String username) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
@@ -52,7 +50,6 @@ public class AdminService {
         return new Result.Success<>(new MessageResponseDTO("Administrator added successfully"));
     }
 
-    @Transactional
     public Result<MessageResponseDTO> removeAdmin(String username) {
         var userOpt = userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
@@ -70,13 +67,11 @@ public class AdminService {
         return new Result.Success<>(new MessageResponseDTO("Administrator's privilege removed successfully"));
     }
 
-    @Transactional(transactionManager = "neo4jTransactionManager")
     public Result<List<CentralityResultDTO>> getTopByDegree() {
         var results = PackageGraphRepository.topByDegree();
         return new Result.Success<>(results);
     }
 
-    @Transactional(transactionManager = "neo4jTransactionManager")
     public Result<List<PageRankResultDTO>> getTopByPageRank(Integer limit) {
         var results = PackageGraphRepository.topByPageRank(limit);
         return new Result.Success<>(results);

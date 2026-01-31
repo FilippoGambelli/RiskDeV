@@ -42,7 +42,7 @@ public class AddPackageVersionDTO {
     @Schema(description = "The official documentation URL of the package")
     private String documentationURL;
 
-    @Schema(description = "upload time")
+    @Schema(description = "upload time", example = "2011-10-23T21:40:37Z")
     private String uploadTime;
 
     @Schema(description = "Python version requirements", example = ">=3.6")
