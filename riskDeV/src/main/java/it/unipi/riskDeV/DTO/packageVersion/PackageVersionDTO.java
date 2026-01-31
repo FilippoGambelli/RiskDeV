@@ -69,7 +69,7 @@ public class PackageVersionDTO {
     public PackageVersionDTO(PackageVersion model) {
         this.packageName = model.getPackageName();
         this.version = model.getVersion();
-        this.uploadTime = model.getUploadTime();
+        this.uploadTime = model.getUploadTime().toString();
         this.vulnerabilities = new ArrayList<>();
         for (EmbeddedVulnerability ev : model.getVulnerabilities()) {
             this.vulnerabilities.add(new EmbeddedVulnerabilityDTO(ev));

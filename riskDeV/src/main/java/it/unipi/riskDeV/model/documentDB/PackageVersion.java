@@ -49,7 +49,7 @@ public class PackageVersion {
     private String documentationURL;
 
     @Field("upload_time")
-    private String uploadTime;
+    private Instant uploadTime;
 
     @Field("requires_dist")
     private List<Constraints> dependencies = new ArrayList<>();
@@ -70,7 +70,7 @@ public class PackageVersion {
         this.description = dto.getDescription();
         this.packageURL = dto.getPackageURL();
         this.documentationURL = dto.getDocumentationURL();
-        this.uploadTime = dto.getUploadTime();
+        this.uploadTime = Instant.parse(dto.getUploadTime());
         this.requiresPython = dto.getRequiresPython();
         this.riskScore = dto.getRiskScore();
         this.versionArray = new ArrayList<>();
@@ -96,7 +96,7 @@ public class PackageVersion {
         this.description = dto.getDescription();
         this.packageURL = dto.getPackageURL();
         this.documentationURL = dto.getDocumentationURL();
-        this.uploadTime = Instant.now().toString();
+        this.uploadTime = Instant.parse(dto.getUploadTime());
         this.requiresPython = dto.getRequiresPython();
         this.versionArray = versionParser.generateVersionArray(dto.getVersion());
         
