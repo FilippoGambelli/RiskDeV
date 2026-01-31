@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.ConvertOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +48,7 @@ public class ProjectDAO {
         LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
 
         Aggregation aggregation = Aggregation.newAggregation(
-            Aggregation.addFields().addFieldWithValue("lastUpdateDate", 
-                ConvertOperators.ToDate.toDate("$last_update")).build(),
-            
-            Aggregation.match(Criteria.where("lastUpdateDate").gte(oneMonthAgo)),
+            Aggregation.match(Criteria.where("last_update").gte(oneMonthAgo)),
             
             Aggregation.unwind("packages"),
             
@@ -76,10 +72,7 @@ public class ProjectDAO {
         LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
 
         Aggregation aggregation = Aggregation.newAggregation(
-            Aggregation.addFields().addFieldWithValue("lastUpdateDate", 
-                ConvertOperators.ToDate.toDate("$last_update")).build(),
-            
-            Aggregation.match(Criteria.where("lastUpdateDate").gte(oneMonthAgo)),
+            Aggregation.match(Criteria.where("last_update").gte(oneMonthAgo)),
             
             Aggregation.unwind("collaborators"),
             
