@@ -9,6 +9,8 @@ import it.unipi.riskDeV.async.events.VulnerabilityEvent;
 import it.unipi.riskDeV.util.Helper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +25,14 @@ public class GraphSyncListener {
     private final Helper helper;
 
     @Async
+    @EventListener
     public void handleProjectEvent(ProjectEvent event) {
         log.info("[Graph Listener] Processing project event: {}", event.projectName());
 
         try {
             switch (event) {
                 case ProjectEvent.ProjectCreated c -> 
-                    graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
+                    graphService.createProjectStructure(c.projectName(), c.projectPackages());
                 
                 case ProjectEvent.ProjectDeleted d -> 
                     graphService.deleteProjectNode(d.projectName());
@@ -45,6 +48,7 @@ public class GraphSyncListener {
     }
 
     @Async
+    @EventListener
     public void handleVulnerabilityEvent(VulnerabilityEvent event) {
         log.debug("[Graph Listener] Processing vulnerability event: {}", event.cveId());
 
@@ -65,6 +69,7 @@ public class GraphSyncListener {
     }
 
     @Async
+    @EventListener
     public void handlePackageEvent(PackageEvent event) {
         log.debug("[Graph Listener] Processing package event: {}", event.packageName());
 

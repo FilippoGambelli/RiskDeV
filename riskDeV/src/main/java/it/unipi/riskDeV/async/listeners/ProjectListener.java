@@ -1,5 +1,6 @@
 package it.unipi.riskDeV.async.listeners;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class ProjectListener {
     private final FailedEventService failedEventService;
 
     @Async
+    @EventListener
     public void handleProjectEvent(ProjectEvent event) {
         
         log.info("[Project Listener] Processing {} for project: {}", event.getClass().getSimpleName(), event.projectName());

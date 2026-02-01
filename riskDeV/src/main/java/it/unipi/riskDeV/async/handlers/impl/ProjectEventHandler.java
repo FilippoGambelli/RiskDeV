@@ -32,7 +32,7 @@ public class ProjectEventHandler implements EventHandler {
         try {
             event = objectMapper.readValue(payloadJson, ProjectEvent.class);    
         } catch (Exception e) {
-            log.error("Detailed serialization error: ", e); // Questo lo vedi nella console
+            log.error("Detailed serialization error: ", e); 
             throw new RuntimeException("JSON Deserialization failed: " + e.toString(), e);
         }
         
@@ -40,7 +40,7 @@ public class ProjectEventHandler implements EventHandler {
 
         switch (event) {
             case ProjectEvent.ProjectCreated c -> 
-                graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
+                graphService.createProjectStructure(c.projectName(), c.projectPackages());
             
             case ProjectEvent.ProjectDeleted d -> 
                 graphService.deleteProjectNode(d.projectName());

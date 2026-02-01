@@ -31,7 +31,7 @@ public class GraphService {
     private final Helper helper;
     
 
-    public void createProjectStructure(String projectName, String adminId, List<InstalledPackageDTO> installedPackages) {
+    public void createProjectStructure(String projectName, List<InstalledPackageDTO> installedPackages) {
         projectGraphRepository.createProjectNode(projectName);
 
         for (InstalledPackageDTO installedPackage : installedPackages) {

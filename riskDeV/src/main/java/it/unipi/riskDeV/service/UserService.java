@@ -66,18 +66,6 @@ public class UserService {
         boolean importantChanges = false;
         boolean isUpdated = false;
 
-        if (request.getUsername() != null && !request.getUsername().isBlank() && 
-            !request.getUsername().equals(user.getUsername())) {
-
-            if (userRepository.existsByUsername(request.getUsername())) {
-                return new Result.Failure<>(new DomainError.AlreadyExists("Username already taken"));
-            }
-
-            user.setUsername(request.getUsername());
-            isUpdated = true;
-            importantChanges = true;
-        }
-
         if (request.getEmail() != null && !request.getEmail().isBlank() && 
             !request.getEmail().equals(user.getEmail())) {
             
@@ -138,7 +126,7 @@ public class UserService {
         if (userOpt.isEmpty()) {
             return new Result.Failure<>(new DomainError.NotFound("User " + username + " not found"));
         }
-        
+
         User user = userOpt.get();
         
         if (user.getProjectNames() == null) {
