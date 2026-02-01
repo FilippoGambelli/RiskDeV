@@ -149,7 +149,7 @@ public class UserController {
         )
     })
     public ResponseEntity<?> deleteAccount(@AuthenticationPrincipal String username) {
-        return responseMapper.map(ResultExecutor.execute(() -> (userService.deleteUser(username))), HttpStatus.NO_CONTENT);
+        return responseMapper.map(ResultExecutor.execute(() -> (userService.deleteUser(username))), HttpStatus.OK);
     }
 
     @GetMapping("/me/projects")

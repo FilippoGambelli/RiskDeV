@@ -84,7 +84,7 @@ public class GraphService {
         List<String> vulnerabilityList = publishedVersionDTO.getVulnerabilities();
         if (vulnerabilityList != null) {
             for (String cveId : vulnerabilityList) {
-                // TODO We could check if the vulnerability exists, and if it doesn't, make an API request to take it
+                // TODO: We should check if the vulnerability exists, and if it doesn't, make an API request to take it
                 packageVersionGraphRepository.attachVulnerability(publishedVersionDTO.getPackageName(), publishedVersionDTO.getVersion(), cveId);
             }
         }

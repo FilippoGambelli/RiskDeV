@@ -43,7 +43,6 @@ public class PackageService {
     private final VersionParser versionParser;
     private final Helper helper;
 
-    // Returns information about a package using the latest available version.
     public Result<PackageVersionDTO> getPackageByName(String packageName) {
         var optionalPackage = packageVersionRepository.findTopByPackageNameOrderByVersionArrayDesc(packageName);
 
@@ -57,7 +56,6 @@ public class PackageService {
         return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
     }
 
-    // Returns information about a specific version of a package
     public Result<PackageVersionDTO> getPackageByNameVersion(String packageName, String packageVersion) {
         var optionalPackage = packageVersionRepository.findByPackageNameAndVersion(packageName, packageVersion);
             
@@ -71,7 +69,6 @@ public class PackageService {
         return new Result.Failure<>(new DomainError.NotFound("Version " + packageVersion + " of package " + packageName + " not found."));
     }
 
-    // Returns the direct dependencies of a specific package version.
     public Result<List<String>> getDirectDependencies(String packageName, String version) {
         var versionDocOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
 
@@ -105,7 +102,7 @@ public class PackageService {
         for (PackageVersionNode node : dependents) {
             String name = node.getPackageName();
             String ver = node.getVersion();
-            grouped.computeIfAbsent(name, k -> new ArrayList<>()); // Initialize a new list if the package is not yet in the map
+            grouped.computeIfAbsent(name, k -> new ArrayList<>());
             grouped.get(name).add(ver);
         }
 
@@ -147,7 +144,6 @@ public class PackageService {
         return new Result.Success<>(new MessageResponseDTO("No versions found."));
     }
 
-    // Add a new version of a package.
     public Result<MessageResponseDTO> addNewVersion(String packageName, AddPackageVersionDTO newVersionDTO) {
         if (!packageName.equals(newVersionDTO.getPackageName())) {
             return new Result.Failure<>(new DomainError.InvalidOperation("The package name in the URL does not match the body"));
@@ -167,7 +163,6 @@ public class PackageService {
         return new Result.Success<>(new MessageResponseDTO("Package version created successfully"));    
     }
 
-    // Updates the general metadata of a package for all its versions.
     public Result<MessageResponseDTO> updatePackageMetadata(String packageName, UpdateGeneralPackageDTO updateData) {
         if (!packageVersionRepository.existsByPackageName(packageName)) {
             return new Result.Failure<>(new DomainError.NotFound("Package " + packageName + " not found."));
@@ -179,7 +174,6 @@ public class PackageService {
         return new Result.Success<>(new MessageResponseDTO("Update executed successfully"));
     }
 
-    // Updates the data of a specific package version.
     public Result<MessageResponseDTO> updatePackageVersion(String packageName, String version, UpdatePackageVersionDTO updateVersionDTO) {
         var existingOpt = packageVersionRepository.findByPackageNameAndVersion(packageName, version);
         if (existingOpt.isEmpty()) {
@@ -214,7 +208,6 @@ public class PackageService {
         return new Result.Success<>(new MessageResponseDTO("Package updated successfully"));
     }
 
-    // Deletes a specific version of a package.
     public Result<MessageResponseDTO> deletePackageVersion(String packageName, String version) {
         if (!packageVersionRepository.existsByPackageNameAndVersion(packageName, version)) {
             return new Result.Failure<>(new DomainError.NotFound("Package version not found."));

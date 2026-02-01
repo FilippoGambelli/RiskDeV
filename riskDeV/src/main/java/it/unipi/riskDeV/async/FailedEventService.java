@@ -20,7 +20,6 @@ public class FailedEventService {
     private final FailedEventRepository failedEventRepository;
     private final ObjectMapper objectMapper;
 
-    // Open another transaction, this must be indipendent from the precedent (it could do rollback)
     public void saveError(Object event, String errorMessage) {
         try {
             FailedEvent dlq = new FailedEvent();

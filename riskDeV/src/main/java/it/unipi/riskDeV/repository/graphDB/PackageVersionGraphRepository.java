@@ -51,16 +51,16 @@ public interface PackageVersionGraphRepository extends Neo4jRepository<PackageVe
 
     @Query("""
         MATCH (start:Version {package_name: $package_name, version: $version})
-        "MATCH (start)-[:DEPENDS_ON*]->(dep:Version)
-        "WITH DISTINCT dep
-        "ORDER BY dep.version_array DESC
-        "WITH dep.package_name AS pkgName, head(collect(dep)) AS maxVersion
-        "MATCH (maxVersion)-[:AFFECTED_BY]->(vuln:Vulnerability)
-        "RETURN vuln.cve_id AS vulnerabilityId,
-                "pkgName AS affectedPackage,
-                "maxVersion.version AS affectedVersion, 
-                "vuln.baseScore AS baseScore,
-                "vuln.description AS description
+        MATCH (start)-[:DEPENDS_ON*]->(dep:Version)
+        WITH DISTINCT dep
+        ORDER BY dep.version_array DESC
+        WITH dep.package_name AS pkgName, head(collect(dep)) AS maxVersion
+        MATCH (maxVersion)-[:AFFECTED_BY]->(vuln:Vulnerability)
+        RETURN vuln.cve_id AS vulnerabilityId,
+                pkgName AS affectedPackage,
+                maxVersion.version AS affectedVersion, 
+                vuln.baseScore AS baseScore,
+                vuln.description AS description
     """)
     List<VulnerabilityReportDTO> findRecursiveVulnerabilities(@Param("package_name") String packageName, @Param("version") String packageVersion);
 }

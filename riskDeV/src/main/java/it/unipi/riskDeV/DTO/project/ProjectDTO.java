@@ -9,15 +9,16 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.unipi.riskDeV.model.documentDB.Project;
+import it.unipi.riskDeV.model.documentDB.Project.Collaborator;
+import it.unipi.riskDeV.model.documentDB.Project.ProjectPackage;
 
 @Data
 @Builder
@@ -60,30 +61,19 @@ public class ProjectDTO {
     @Valid
     private List<CollaboratorDTO> collaborators;
 
-    public static ProjectDTO fromEntity(Project project) {
-        if (project == null) return null;
-
-        return ProjectDTO.builder()
-                .name(project.getName())
-                .description(project.getDescription())
-                .lastUpdate(project.getLastUpdate())
-                .pythonVersion(project.getPythonVersion())
-                .admin(CollaboratorDTO.fromEntity(project.getAdmin()))
-                .packages(
-                    Optional.ofNullable(project.getPackages())
-                        .orElse(Collections.emptyList())
-                        .stream()
-                        .map(InstalledPackageDTO::fromEntity)
-                        .toList() 
-                )
-                .collaborators(
-                    Optional.ofNullable(project.getCollaborators())
-                        .orElse(Collections.emptyList())
-                        .stream()
-                        .map(CollaboratorDTO::fromEntity)
-                        .toList()
-                )
-                .build();
+    public ProjectDTO(Project project) {
+        this.name = project.getName();
+        this.description = project.getDescription();
+        this.lastUpdate = project.getLastUpdate();
+        this.pythonVersion = project.getPythonVersion();
+        this.admin = new CollaboratorDTO(project.getAdmin());
+        this.packages = new ArrayList<>();
+        for(ProjectPackage pkg: project.getPackages()) {
+            this.packages.add(new InstalledPackageDTO(pkg));
+        }
+        this.collaborators = new ArrayList<>();
+        for(Collaborator tmp: project.getCollaborators()) {
+            this.collaborators.add(new CollaboratorDTO(tmp));
+        }
     }
-
 }

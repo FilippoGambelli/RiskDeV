@@ -31,11 +31,8 @@ public class CollaboratorDTO {
     @Email(message = "Email format is invalid", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") 
     private String email;
 
-    public static CollaboratorDTO fromEntity(Project.Collaborator collaborator) {
-        if (collaborator == null) return null;
-        return CollaboratorDTO.builder()
-                .username(collaborator.getUsername())
-                .email(collaborator.getEmail())
-                .build();
+    public CollaboratorDTO(Project.Collaborator collaborator) {
+        this.username = collaborator.getUsername();
+        this.email = collaborator.getEmail();
     }
 }

@@ -1,7 +1,7 @@
 package it.unipi.riskDeV.DTO.project;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.unipi.riskDeV.model.documentDB.Project;
+import it.unipi.riskDeV.model.documentDB.Project.ProjectPackage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,11 +32,8 @@ public class InstalledPackageDTO {
     @Size(max = 50, message = "Version string is too long")
     private String version;
 
-    public static InstalledPackageDTO fromEntity(Project.ProjectPackage projectPackage) {
-        if (projectPackage == null) return null;
-        return InstalledPackageDTO.builder()
-                .name(projectPackage.getName())
-                .version(projectPackage.getVersion())
-                .build();
+    public InstalledPackageDTO(ProjectPackage projectPackage) {
+        this.name = projectPackage.getName();
+        this.version = projectPackage.getVersion();
     }
 }
