@@ -51,7 +51,6 @@ public class Project {
         }
     }
 
-    // Inner classes for ProjectPackage and Collaborator
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

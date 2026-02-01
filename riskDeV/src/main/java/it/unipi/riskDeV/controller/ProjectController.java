@@ -119,7 +119,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> deleteProject(@Parameter(description = "Name of the project to delete", example = "RiskAnalysis_AI") @PathVariable String projectName) {
-        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.deleteProject(projectName))), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.deleteProject(projectName))), HttpStatus.OK);
     }
 
     @PutMapping("/{projectName}/packages")
@@ -147,7 +147,7 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> updateProjectPackages(
-            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName, 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to add/update")
             @Valid @RequestBody List<InstalledPackageDTO> packages) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.updateProjectPackages(projectName, packages))), HttpStatus.OK);
@@ -173,10 +173,10 @@ public class ProjectController {
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> removePackagesFromProject(
-            @Parameter(description = "Project name") @PathVariable String projectName, 
+            @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName, 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of packages to remove")
             @Valid @RequestBody List<String> packages) {
-        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removePackagesFromProject(projectName, packages))), HttpStatus.NO_CONTENT);
+        return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removePackagesFromProject(projectName, packages))), HttpStatus.OK);
     }
 
     @PutMapping("/{projectName}/users/{collaboratorUsername}")
@@ -205,7 +205,7 @@ public class ProjectController {
     })
     public ResponseEntity<?> addCollaboratorToProject(
             @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName, 
-            @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
+            @Parameter(description= "Collaborator username", example = "francesca.romano") @PathVariable String collaboratorUsername
         ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.addCollaboratorToProject(projectName, collaboratorUsername))), HttpStatus.OK);
     }
@@ -236,7 +236,7 @@ public class ProjectController {
     })
     public ResponseEntity<?> transferOwnership(
             @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName,
-            @Parameter(description = "Username of the new administrator") @PathVariable String newAdminUsername
+            @Parameter(description = "Username of the new administrator", example = "francesca.romano") @PathVariable String newAdminUsername
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> projectService.transferOwnership(projectName, newAdminUsername)), HttpStatus.OK);
     }
@@ -260,7 +260,7 @@ public class ProjectController {
             content = @Content(mediaType = "application/json", 
             schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    public ResponseEntity<?> getCollaboratorsOfProject(@Parameter(description = "Project name") @PathVariable String projectName) {
+    public ResponseEntity<?> getCollaboratorsOfProject(@Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.getProjectCollaborators(projectName))), HttpStatus.OK);
     }   
     
@@ -290,7 +290,7 @@ public class ProjectController {
     })
     public ResponseEntity<?> removeCollaboratorFromProject(
             @Parameter(description = "Project name", example = "RiskAnalysis_AI") @PathVariable String projectName,
-            @Parameter(description= "Collaborator username") @PathVariable String collaboratorUsername
+            @Parameter(description= "Collaborator username", example = "francesca.romano") @PathVariable String collaboratorUsername
     ) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (projectService.removeCollaboratorFromProject(projectName, collaboratorUsername))), HttpStatus.OK);
     }

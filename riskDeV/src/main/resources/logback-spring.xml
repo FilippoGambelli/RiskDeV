@@ -1,32 +1,16 @@
 <configuration>
 
-    <!-- Log pattern -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
 
-    <!-- Console appender (commented out to disable console output) -->
-    <!--
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-    -->
-
-    <!-- File appender with deletion at startup -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- Main log file -->
         <file>logs/app.log</file>
-
-        <!-- Delete the file at each startup -->
         <append>true</append>
 
         <!-- Daily rolling policy -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Pattern for rolled files -->
             <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- Keep a maximum of 30 days -->
             <maxHistory>30</maxHistory>
-            <!-- Clean old files on startup -->
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
 
@@ -35,9 +19,7 @@
         </encoder>
     </appender>
 
-    <!-- Root log level (logs only to file now) -->
     <root level="INFO">
-        <!-- <appender-ref ref="CONSOLE"/> --> <!-- Console output disabled -->
         <appender-ref ref="FILE"/>
     </root>
 

@@ -96,14 +96,12 @@ public class Helper {
         Query query = new Query(Criteria.where("package_name").is(packageName));
         Update update = new Update();
         
-        // For each Optional field: if a value is present, execute the lambda
         updateData.getAuthor().ifPresent(value -> update.set("author", value));
         updateData.getAuthorEmail().ifPresent(value -> update.set("author_email", value));
         updateData.getDescription().ifPresent(value -> update.set("description", value));
         updateData.getPackageURL().ifPresent(value -> update.set("package_url", value));
         updateData.getDocumentationURL().ifPresent(value -> update.set("documentation", value));
 
-        // Only execute the update if there are fields to update
         if (!update.getUpdateObject().isEmpty()) {
             mongoTemplate.updateMulti(query, update, PackageVersion.class);
         }

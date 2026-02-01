@@ -51,7 +51,7 @@ public class ProjectService {
             return new Result.Failure<>(new DomainError.AccessDenied("You are not authorized to view this project."));
         }
 
-        return new Result.Success<>(ProjectDTO.fromEntity(project));
+        return new Result.Success<>(new ProjectDTO(project));
     }
 
     public Result<ProjectDTO> addProject(ProjectCreationDTO dto) {
@@ -70,7 +70,7 @@ public class ProjectService {
         Project savedProject = projectRepository.save(project);
 
         triggerPostCreationEvents(savedProject);
-        return new Result.Success<>(ProjectDTO.fromEntity(savedProject));
+        return new Result.Success<>(new ProjectDTO(savedProject));
     }
 
     public Result<MessageResponseDTO> deleteProject(String projectName) {
@@ -254,13 +254,10 @@ public class ProjectService {
             return new Result.Failure<>(new DomainError.InvalidOperation("New owner must be an existing collaborator"));
         }
 
-        Project.Collaborator oldAdmin = project.getAdmin();
         Project.Collaborator newAdmin = project.getCollaborators().stream()
                 .filter(c -> c.getUsername().equals(newAdminUsername))
                 .findFirst().get();
 
-        project.getCollaborators().remove(newAdmin);
-        project.getCollaborators().add(oldAdmin);
         project.setAdmin(newAdmin);
         
         project.setLastUpdate(Instant.now());
@@ -289,7 +286,7 @@ public class ProjectService {
         }
 
         List<CollaboratorDTO> dtos = project.getCollaborators().stream()
-                .map(CollaboratorDTO::fromEntity)
+                .map(CollaboratorDTO::new)
                 .toList(); 
 
         return new Result.Success<>(dtos);
@@ -363,7 +360,6 @@ public class ProjectService {
                project.getCollaborators().stream().anyMatch(c -> c.getUsername().equals(username));
     }
 
-    // We could implement a different logic in future
     private boolean canView(String username, Project project) {
         return canEdit(username, project); 
     }
@@ -389,24 +385,24 @@ public class ProjectService {
 
     private void triggerPostCreationEvents(Project project) {
         List<InstalledPackageDTO> dtos = project.getPackages().stream()
-            .map(InstalledPackageDTO::fromEntity)
+            .map(InstalledPackageDTO::new)
             .toList();
         eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
         List<InstalledPackageDTO> pkgList = project.getPackages().stream()
-             .map(InstalledPackageDTO::fromEntity)
+             .map(InstalledPackageDTO::new)
              .toList();
         eventPublisher.publishEvent(new ProjectEvent.ProjectCreated(project.getName(), project.getAdmin().getUsername(), pkgList));
     }
 
     private void triggerPostPackageUpdateEvents(Project project) {
         List<InstalledPackageDTO> dtos = project.getPackages().stream()
-            .map(InstalledPackageDTO::fromEntity)
+            .map(InstalledPackageDTO::new)
             .toList();
         eventPublisher.publishEvent(new ProjectEvent.CalculateRiskMetrics(project.getName(), dtos));
 
         List<InstalledPackageDTO> pkgList = project.getPackages().stream()
-             .map(InstalledPackageDTO::fromEntity)
+             .map(InstalledPackageDTO::new)
              .toList();
         eventPublisher.publishEvent(new ProjectEvent.ProjectPackagesUpdated(project.getName(), pkgList));
     }

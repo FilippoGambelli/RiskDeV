@@ -10,5 +10,5 @@ public class BucketDTO {
     @Schema(description = "The risk score interval range", example = "2")
     private String riskInterval;
     @Schema(description = "The number of packages within this risk interval", example = "1500")
-    private int count;
+    private Integer count;
 }
