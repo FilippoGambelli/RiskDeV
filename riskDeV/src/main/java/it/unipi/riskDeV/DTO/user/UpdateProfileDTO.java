@@ -14,10 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateProfileDTO {
     
-    @Schema(description = "New username. Must be unique and alphanumeric.", example = "john.doe")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
-    private String username;
-    
     @Schema(description = "New first name", example = "John")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     private String firstName;
