@@ -1,7 +1,11 @@
 package it.unipi.riskDeV.DTO.admin;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class ContributorCountDTO {
     @Schema(description = "The username of the contributor", example = "john.doe")
     private String username;

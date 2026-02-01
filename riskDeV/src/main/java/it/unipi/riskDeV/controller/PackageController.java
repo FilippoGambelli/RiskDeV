@@ -2,7 +2,6 @@ package it.unipi.riskDeV.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +32,7 @@ import org.springframework.http.ResponseEntity;
     @ApiResponse(
         responseCode = "500",
         description = "Internal Server Error",
-        content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
     )
 })
 public class PackageController {
@@ -47,8 +46,8 @@ public class PackageController {
         description = "Returns all information about the latest version of the specified package, including metadata, dependencies and vulnerabilities."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Package found", content = @Content(schema = @Schema(implementation = PackageVersionDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Package found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PackageVersionDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getPackageByName(@Parameter(description = "Name of the package", required = true, example = "requests") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getPackageByName(packageName))), HttpStatus.OK);
@@ -60,8 +59,8 @@ public class PackageController {
         description = "Returns all information about a specific version of a package, including metadata, dependencies and vulnerabilities."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Package version found", content = @Content(schema = @Schema(implementation = PackageVersionDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Package version found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PackageVersionDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getPackageVersion(
             @Parameter(description = "Package name", required = true, example = "requests") @PathVariable String packageName,
@@ -75,8 +74,8 @@ public class PackageController {
         description = "Returns a list of direct dependency for a specific package version"
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Dependencies found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))),
-        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Dependencies found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getDirectDependencies(
             @Parameter(description = "Package name", required = true, example = "pandas") @PathVariable String packageName,
@@ -90,8 +89,8 @@ public class PackageController {
         description = "Returns a list of package versions that depend on the specified package version."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Reverse dependencies found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReverseDependencyDTO.class)))),
-        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Reverse dependencies found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ReverseDependencyDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package version not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getReverseDependencies(
             @Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName,
@@ -105,8 +104,8 @@ public class PackageController {
         description = "Returns the last version of the specified package with no known vulnerabilities."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PackageVersionDTO.class)))),
-        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PackageVersionDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getSafeVersions(@Parameter(description = "Package name", required = true, example = "requests") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getSafeVersions(packageName))), HttpStatus.OK);
@@ -118,8 +117,8 @@ public class PackageController {
         description = "Returns the latest version of the specified package with no known vulnerabilities, also taking transactional vulnerabilities into account."
     )
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PackageVersionDTO.class)))),
-        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+        @ApiResponse(responseCode = "200", description = "Safe versions found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PackageVersionDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Package not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<?> getIndirectSafeVersions(@Parameter(description = "Package name", required = true, example = "numpy") @PathVariable String packageName) {
         return restResponseMapper.map(ResultExecutor.execute(() -> (packageService.getIndirectSafeVersions(packageName))), HttpStatus.OK);
