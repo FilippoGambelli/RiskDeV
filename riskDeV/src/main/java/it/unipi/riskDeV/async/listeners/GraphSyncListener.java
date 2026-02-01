@@ -29,7 +29,7 @@ public class GraphSyncListener {
         try {
             switch (event) {
                 case ProjectEvent.ProjectCreated c -> 
-                    graphService.createProjectStructure(c.projectName(), c.adminUsername(), c.projectPackages());
+                    graphService.createProjectStructure(c.projectName(), c.projectPackages());
                 
                 case ProjectEvent.ProjectDeleted d -> 
                     graphService.deleteProjectNode(d.projectName());
